@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Eaglercraft 1.8 artwork — original voxel landscape</title>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1c3f7a"/>
+      <stop offset="1" stop-color="#0b0f1a"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#sky)"/>
+  <rect x="470" y="48" width="56" height="56" fill="#fde047"/>
+  <rect x="470" y="48" width="56" height="14" fill="#fef08a"/>
+  <g fill="#e0e7ff" opacity=".85">
+    <rect x="90" y="70" width="110" height="26"/>
+    <rect x="120" y="50" width="70" height="22"/>
+    <rect x="400" y="130" width="90" height="22"/>
+  </g>
+  <g>
+    <rect x="0" y="252" width="640" height="108" fill="#5b3b22"/>
+    <rect x="0" y="252" width="640" height="26" fill="#4ade80"/>
+    <rect x="0" y="272" width="640" height="8" fill="#22c55e" opacity=".6"/>
+    <rect x="60" y="292" width="34" height="22" fill="#3f2a18"/>
+    <rect x="180" y="300" width="34" height="22" fill="#3f2a18"/>
+    <rect x="420" y="292" width="34" height="22" fill="#3f2a18"/>
+    <rect x="530" y="304" width="34" height="22" fill="#3f2a18"/>
+  </g>
+  <g>
+    <rect x="120" y="188" width="64" height="64" fill="#5b3b22"/>
+    <rect x="120" y="188" width="64" height="18" fill="#4ade80"/>
+    <rect x="184" y="156" width="64" height="96" fill="#5b3b22"/>
+    <rect x="184" y="156" width="64" height="18" fill="#4ade80"/>
+    <rect x="248" y="188" width="64" height="64" fill="#5b3b22"/>
+    <rect x="248" y="188" width="64" height="18" fill="#86efac"/>
+  </g>
+  <g>
+    <rect x="470" y="172" width="24" height="80" fill="#6b4a2c"/>
+    <rect x="438" y="120" width="88" height="56" fill="#16a34a"/>
+    <rect x="450" y="106" width="64" height="18" fill="#22c55e"/>
+  </g>
+  <g fill="#4ade80" opacity=".5">
+    <rect x="330" y="120" width="10" height="10"/>
+    <rect x="360" y="90" width="8" height="8"/>
+    <rect x="300" y="70" width="8" height="8"/>
+  </g>
+</svg>

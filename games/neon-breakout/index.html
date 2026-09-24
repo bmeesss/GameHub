@@ -34,6 +34,7 @@
         <a href="../../index.html#home">Home</a>
         <a href="../../index.html#games">Games</a>
         <a href="../../index.html#categories">Categories</a>
+        <a href="../../index.html?category=Minecraft#games">Minecraft</a>
       </nav>
 
       <form class="header-search" role="search" action="../../index.html" method="get">
@@ -61,7 +62,7 @@
           <img src="../../assets/thumbnails/neon-breakout.svg" alt="Neon Breakout artwork" width="640" height="360" data-art="N">
         </div>
         <div class="game-info">
-          <span class="pill">Arcade</span>
+          <div class="pill-row"><span class="pill">Arcade</span><span class="type-badge">HTML5</span></div>
           <h1>Neon Breakout</h1>
           <p class="lede">Smash through glowing brick waves with a light-charged paddle and chain massive combos.</p>
           <div class="notice" role="status">
@@ -70,15 +71,55 @@
           </div>
           <dl class="game-meta">
             <div><dt>Category</dt><dd>Arcade</dd></div>
+            <div><dt>Type</dt><dd>HTML5</dd></div>
+            <div><dt>Version</dt><dd>1.0.0</dd></div>
             <div><dt>Status</dt><dd>Coming soon</dd></div>
-            <div><dt>Format</dt><dd>Browser</dd></div>
           </dl>
           <div class="game-actions">
-            <a class="btn btn-primary" href="../../index.html#games">Browse games</a>
-            <a class="btn btn-ghost" href="../../index.html#categories">Categories</a>
+            <a class="btn btn-primary" href="#launcher">Play now</a>
+            <a class="btn btn-ghost" href="../../index.html#games">Browse games</a>
           </div>
         </div>
       </div>
+
+      <section class="launcher" id="launcher" aria-labelledby="launcher-title"
+        data-slug="neon-breakout"
+        data-title="Neon Breakout"
+        data-type="html5"
+        data-version="1.0.0"
+        data-status="coming-soon">
+        <div class="launcher-head">
+          <div>
+            <p class="eyebrow">Game launcher</p>
+            <h2 id="launcher-title">Play Neon Breakout</h2>
+          </div>
+          <div class="launcher-meta">
+            <span class="type-badge">HTML5</span>
+            <span class="tag">v1.0.0</span>
+            <span class="tag">breakout</span>
+            <span class="tag">single-player</span>
+          </div>
+        </div>
+        <div class="launcher-stage" id="launcher-stage" aria-live="polite">
+          <noscript><p class="noscript-note" style="border:none">The game launcher needs JavaScript enabled.</p></noscript>
+        </div>
+        <div class="launcher-toolbar" hidden>
+          <button class="btn btn-ghost btn-sm launcher-fullscreen" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"></path></svg>
+            Fullscreen
+          </button>
+          <button class="btn btn-ghost btn-sm launcher-close" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+            Close game
+          </button>
+          <span class="spacer"></span>
+          <a class="launcher-back" href="../../index.html#games">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>
+            Back to catalog
+          </a>
+        </div>
+
+      </section>
 
       <section class="game-about" aria-labelledby="about-title">
         <h2 id="about-title">About this game</h2>
@@ -109,6 +150,7 @@
             <li><a href="../../index.html#home">Home</a></li>
             <li><a href="../../index.html#games">All games</a></li>
             <li><a href="../../index.html#categories">Categories</a></li>
+            <li><a href="../../index.html?category=Minecraft#games">Minecraft</a></li>
           </ul>
         </nav>
       </div>
@@ -119,22 +161,6 @@
     </div>
   </footer>
 
-  <script>
-    (function () {
-      var y = document.getElementById("year");
-      if (y) y.textContent = new Date().getFullYear();
-      document.addEventListener("error", function (event) {
-        var img = event.target;
-        if (!(img instanceof HTMLImageElement)) return;
-        var cover = img.closest(".game-cover");
-        if (!cover) return;
-        var art = document.createElement("span");
-        art.className = "media-art";
-        art.textContent = img.getAttribute("data-art") || "G";
-        img.remove();
-        cover.prepend(art);
-      }, true);
-    })();
-  </script>
+  <script src="../../launcher.js" defer></script>
 </body>
 </html>

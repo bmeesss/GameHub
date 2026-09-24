@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Arena Clash artwork</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a1540"/>
+      <stop offset="1" stop-color="#0b0f1a"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <circle cx="120" cy="180" r="130" fill="#7c5cff" opacity=".14"/>
+  <circle cx="520" cy="180" r="130" fill="#fb923c" opacity=".14"/>
+  <ellipse cx="320" cy="296" rx="230" ry="30" fill="#1a2340"/>
+  <ellipse cx="320" cy="290" rx="230" ry="30" fill="#232c50"/>
+  <ellipse cx="320" cy="290" rx="90" ry="14" fill="none" stroke="#94a3d8" stroke-width="3" opacity=".5"/>
+  <g transform="rotate(-24 320 190)">
+    <rect x="310" y="80" width="20" height="150" rx="6" fill="#c4b5fd"/>
+    <polygon points="310,80 330,80 320,52" fill="#e9e5ff"/>
+    <rect x="282" y="228" width="76" height="16" rx="8" fill="#7c5cff"/>
+    <rect x="313" y="244" width="14" height="34" rx="7" fill="#4c3cb8"/>
+  </g>
+  <g transform="rotate(24 320 190)">
+    <rect x="310" y="80" width="20" height="150" rx="6" fill="#fed7aa"/>
+    <polygon points="310,80 330,80 320,52" fill="#fff7ed"/>
+    <rect x="282" y="228" width="76" height="16" rx="8" fill="#ea580c"/>
+    <rect x="313" y="244" width="14" height="34" rx="7" fill="#9a3412"/>
+  </g>
+  <circle cx="320" cy="150" r="16" fill="#fff"/>
+  <circle cx="320" cy="150" r="26" fill="#fde047" opacity=".4"/>
+  <g stroke="#fde047" stroke-width="4" stroke-linecap="round">
+    <path d="M268 108l14 14M372 108l-14 14M258 190l16-6M382 190l-16-6"/>
+  </g>
+  <circle cx="160" cy="90" r="5" fill="#7c5cff"/>
+  <circle cx="480" cy="90" r="5" fill="#fb923c"/>
+  <circle cx="210" cy="60" r="4" fill="#7c5cff" opacity=".7"/>
+  <circle cx="440" cy="60" r="4" fill="#fb923c" opacity=".7"/>
+</svg>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GameHub — Play Free Browser Games</title>
+  <meta name="description" content="GameHub is a free browser game hub. Browse arcade, puzzle, action and strategy games and play instantly — no downloads, no sign-up.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="GameHub home">
+        <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#7c5cff"></stop>
+              <stop offset="1" stop-color="#22d3ee"></stop>
+            </linearGradient>
+          </defs>
+          <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#logoGrad)"></rect>
+          <path d="M12.5 11.5v9M8 16h9" stroke="#fff" stroke-width="2.6" stroke-linecap="round"></path>
+          <circle cx="21.5" cy="13.8" r="1.9" fill="#fff"></circle>
+          <circle cx="21.5" cy="18.6" r="1.9" fill="#fff" opacity="0.75"></circle>
+        </svg>
+        Game<span>Hub</span>
+      </a>
+
+      <nav class="site-nav" aria-label="Primary">
+        <a href="#home" aria-current="true">Home</a>
+        <a href="#games">Games</a>
+        <a href="#categories">Categories</a>
+      </nav>
+
+      <form id="search-form" class="header-search" role="search" action="index.html" method="get">
+        <div class="search-field">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="M20 20l-3.5-3.5"></path>
+          </svg>
+          <label class="sr-only" for="search-input">Search games</label>
+          <input type="search" id="search-input" name="q" placeholder="Search games…" autocomplete="off" maxlength="80">
+        </div>
+      </form>
+    </div>
+  </header>
+
+  <noscript>
+    <p class="noscript-note">GameHub needs JavaScript enabled to browse the game catalog.</p>
+  </noscript>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero" id="home" aria-labelledby="hero-title">
+      <div class="container hero-inner">
+        <p class="hero-badge"><span class="dot" aria-hidden="true"></span> Free browser games · No downloads</p>
+        <h1 id="hero-title">Play great games.<br><span class="gradient-text">Right in your browser.</span></h1>
+        <p class="hero-sub">GameHub is a growing hub of fast, free browser games. Pick a game, hit play, and jump straight in — on desktop or mobile.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#games">Browse games
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+          </a>
+          <a class="btn btn-ghost" href="#categories">Explore categories</a>
+        </div>
+        <dl class="hero-stats" aria-label="GameHub at a glance">
+          <div>
+            <dt>Games</dt>
+            <dd id="stat-games">6</dd>
+          </div>
+          <div>
+            <dt>Categories</dt>
+            <dd id="stat-categories">4</dd>
+          </div>
+          <div>
+            <dt>Cost to play</dt>
+            <dd>Free</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- Featured -->
+    <section class="section section--tight" id="featured" aria-labelledby="featured-title">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Hand-picked</p>
+          <h2 id="featured-title">Featured games</h2>
+          <p>Spotlight picks from the GameHub catalog.</p>
+        </div>
+        <div class="grid" id="featured-grid" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- All games -->
+    <section class="section section--tight" id="games" aria-labelledby="games-title">
+      <div class="container">
+        <div class="section-head section-head--split">
+          <div>
+            <p class="eyebrow">Catalog</p>
+            <h2 id="games-title">All games</h2>
+            <p>Search or filter by category to find your next game.</p>
+          </div>
+          <p class="results-count" id="results-count" role="status"></p>
+        </div>
+
+        <div class="filter-bar" id="filter-bar" role="group" aria-label="Filter games by category">
+          <span class="filter-label" id="filter-label">Category:</span>
+        </div>
+
+        <div class="grid" id="games-grid" aria-live="polite"></div>
+
+        <div class="empty-state" id="empty-state" hidden>
+          <div class="empty-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2.5" y="7" width="19" height="11" rx="5.5"></rect>
+              <path d="M8 10.5v4M6 12.5h4"></path>
+              <circle cx="15.8" cy="11.5" r="1" fill="currentColor" stroke="none"></circle>
+              <circle cx="18" cy="13.8" r="1" fill="currentColor" stroke="none"></circle>
+            </svg>
+          </div>
+          <h3>No games found</h3>
+          <p id="empty-message">Try a different search term or category.</p>
+          <button class="btn btn-ghost btn-sm" id="clear-search" type="button">Clear search &amp; filters</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="section section--tight" id="categories" aria-labelledby="categories-title">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Browse</p>
+          <h2 id="categories-title">Categories</h2>
+          <p>Jump into a genre. Selecting a category filters the catalog above.</p>
+        </div>
+        <div class="category-grid" id="categories-grid"></div>
+      </div>
+    </section>
+
+    <!-- Popular -->
+    <section class="section section--tight" id="popular" aria-labelledby="popular-title">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Player favorites</p>
+          <h2 id="popular-title">Popular games</h2>
+          <p>The most-played titles on GameHub right now.</p>
+        </div>
+        <div class="grid" id="popular-grid" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- Why GameHub -->
+    <section class="section section--tight" id="about" aria-labelledby="about-title">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Why GameHub</p>
+          <h2 id="about-title">Built for instant play</h2>
+        </div>
+        <div class="feature-grid">
+          <div class="feature">
+            <div class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4.5 13.5H11L9.5 22 19 10h-6.5L13 2z"></path></svg>
+            </div>
+            <h3>Instant play</h3>
+            <p>Every game runs directly in the browser. No installs, no launchers, no waiting.</p>
+          </div>
+          <div class="feature">
+            <div class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="14" height="10" rx="2"></rect><rect x="17" y="9" width="5" height="11" rx="1.5"></rect><path d="M6 18h6"></path></svg>
+            </div>
+            <h3>Desktop &amp; mobile</h3>
+            <p>A responsive layout that works on phones, tablets and desktops alike.</p>
+          </div>
+          <div class="feature">
+            <div class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"></path></svg>
+            </div>
+            <h3>Growing catalog</h3>
+            <p>New games are added to one central catalog, so the hub keeps expanding.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="brand" href="index.html" aria-label="GameHub home">
+            <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+              <rect x="1" y="1" width="30" height="30" rx="9" fill="#2a3560"></rect>
+              <path d="M12.5 11.5v9M8 16h9" stroke="#22d3ee" stroke-width="2.6" stroke-linecap="round"></path>
+              <circle cx="21.5" cy="13.8" r="1.9" fill="#22d3ee"></circle>
+              <circle cx="21.5" cy="18.6" r="1.9" fill="#22d3ee" opacity="0.75"></circle>
+            </svg>
+            Game<span>Hub</span>
+          </a>
+          <p>A free, static browser game hub. Fast by design — no accounts, no tracking, just games.</p>
+        </div>
+        <nav aria-label="Footer">
+          <h2 class="footer-heading">Explore</h2>
+          <ul class="footer-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#featured">Featured games</a></li>
+            <li><a href="#games">All games</a></li>
+            <li><a href="#categories">Categories</a></li>
+          </ul>
+        </nav>
+        <div>
+          <h2 class="footer-heading">About</h2>
+          <ul class="footer-links">
+            <li><a href="#about">Why GameHub</a></li>
+            <li><a href="#popular">Popular games</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© <span id="year">2026</span> GameHub. All placeholder artwork is original and made for this project.</p>
+        <p>Static site · Works offline from any static host</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>

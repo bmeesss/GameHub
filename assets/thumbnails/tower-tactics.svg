@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Tower Tactics artwork</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2b2111"/>
+      <stop offset="1" stop-color="#0b0f1a"/>
+    </linearGradient>
+    <linearGradient id="tower" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#cbd5e1"/>
+      <stop offset="1" stop-color="#64748b"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <path d="M0 296c90-24 150 8 240-8s150-22 220-6 120 6 180-4v82H0z" fill="#1a2340"/>
+  <circle cx="320" cy="180" r="120" fill="none" stroke="#fbbf24" stroke-width="3" stroke-dasharray="10 10" opacity=".6"/>
+  <rect x="280" y="130" width="80" height="150" rx="8" fill="url(#tower)"/>
+  <rect x="268" y="108" width="26" height="30" rx="4" fill="url(#tower)"/>
+  <rect x="307" y="108" width="26" height="30" rx="4" fill="url(#tower)"/>
+  <rect x="346" y="108" width="26" height="30" rx="4" fill="url(#tower)"/>
+  <rect x="268" y="132" width="104" height="14" rx="5" fill="#94a3d8"/>
+  <circle cx="320" cy="200" r="20" fill="#0b0f1a"/>
+  <circle cx="320" cy="200" r="11" fill="#22d3ee"/>
+  <rect x="150" y="220" width="44" height="76" rx="6" fill="#475569"/>
+  <rect x="446" y="220" width="44" height="76" rx="6" fill="#475569"/>
+  <circle cx="150" cy="150" r="12" fill="#fb7185"/>
+  <circle cx="196" cy="120" r="12" fill="#fb7185" opacity=".8"/>
+  <circle cx="490" cy="130" r="12" fill="#fb7185" opacity=".9"/>
+  <circle cx="320" cy="70" r="5" fill="#fbbf24"/>
+  <circle cx="360" cy="52" r="4" fill="#fbbf24" opacity=".7"/>
+</svg>

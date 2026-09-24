@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Star Voyager artwork</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1b1035"/>
+      <stop offset="1" stop-color="#0b0f1a"/>
+    </linearGradient>
+    <linearGradient id="ship" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e0e7ff"/>
+      <stop offset="1" stop-color="#7c5cff"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <g fill="#fff">
+    <circle cx="70" cy="50" r="2.5"/><circle cx="150" cy="110" r="1.8"/><circle cx="230" cy="45" r="2.2"/><circle cx="310" cy="90" r="1.6"/><circle cx="390" cy="40" r="2.4"/><circle cx="470" cy="100" r="1.7"/><circle cx="550" cy="55" r="2.5"/><circle cx="600" cy="150" r="1.8"/><circle cx="110" cy="200" r="1.7"/><circle cx="200" cy="250" r="2.2"/><circle cx="90" cy="300" r="2"/><circle cx="420" cy="290" r="1.8"/><circle cx="520" cy="250" r="2.3"/><circle cx="580" cy="310" r="1.7"/><circle cx="350" cy="180" r="1.6"/>
+  </g>
+  <circle cx="508" cy="236" r="62" fill="#fb7185" opacity=".28"/>
+  <circle cx="508" cy="236" r="44" fill="#fb7185" opacity=".5"/>
+  <ellipse cx="508" cy="236" rx="86" ry="20" fill="none" stroke="#fda4af" stroke-width="4" opacity=".6" transform="rotate(-18 508 236)"/>
+  <polygon points="250,150 205,262 250,238 295,262" fill="url(#ship)"/>
+  <polygon points="250,196 236,238 250,230 264,238" fill="#22d3ee"/>
+  <polygon points="250,262 240,296 250,288 260,296" fill="#fbbf24"/>
+  <circle cx="250" cy="216" r="7" fill="#0b0f1a"/>
+  <circle cx="160" cy="150" r="4" fill="#22d3ee"/>
+  <circle cx="130" cy="170" r="3" fill="#22d3ee" opacity=".7"/>
+  <circle cx="345" cy="140" r="4" fill="#22d3ee"/>
+  <circle cx="375" cy="160" r="3" fill="#22d3ee" opacity=".7"/>
+</svg>

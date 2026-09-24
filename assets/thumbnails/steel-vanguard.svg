@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Steel Vanguard artwork</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#12283d"/>
+      <stop offset="1" stop-color="#0b0f1a"/>
+    </linearGradient>
+    <linearGradient id="steel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#cbd5e1"/>
+      <stop offset="1" stop-color="#475569"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <g stroke="#22d3ee" stroke-width="2" opacity=".25">
+    <path d="M0 300h640M0 240h640M0 180h640"/>
+    <path d="M120 120v240M260 120v240M400 120v240M520 120v240"/>
+  </g>
+  <circle cx="320" cy="180" r="130" fill="#22d3ee" opacity=".08"/>
+  <polygon points="320,60 420,110 420,230 320,280 220,230 220,110" fill="url(#steel)"/>
+  <polygon points="320,60 420,110 420,140 320,92 220,140 220,110" fill="#e2e8f0"/>
+  <polygon points="320,280 420,230 420,205 320,255 220,205 220,230" fill="#334155"/>
+  <polygon points="250,150 390,150 370,190 270,190" fill="#0b0f1a"/>
+  <polygon points="262,158 378,158 364,182 276,182" fill="#22d3ee"/>
+  <polygon points="262,158 300,158 292,182 276,182" fill="#a5f3fc"/>
+  <rect x="248" y="210" width="144" height="12" rx="6" fill="#334155"/>
+  <rect x="270" y="210" width="40" height="12" rx="6" fill="#22d3ee" opacity=".8"/>
+  <polygon points="220,110 190,140 190,220 220,230" fill="#64748b"/>
+  <polygon points="420,110 450,140 450,220 420,230" fill="#64748b"/>
+  <circle cx="190" cy="180" r="10" fill="#22d3ee"/>
+  <circle cx="450" cy="180" r="10" fill="#22d3ee"/>
+  <g fill="#22d3ee" opacity=".8">
+    <circle cx="150" cy="90" r="4"/><circle cx="490" cy="90" r="4"/>
+    <circle cx="120" cy="250" r="4"/><circle cx="520" cy="250" r="4"/>
+  </g>
+</svg>

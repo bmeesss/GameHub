@@ -1,148 +1,268 @@
 # GameHub
 
-GameHub is a free browser game hub: a fast, fully static website where players can
-browse arcade, puzzle, action and strategy games and play them instantly.
-No backend, no database, no build step — just HTML, CSS and vanilla JavaScript.
+GameHub is a free browser gaming platform: a fast, fully static website
+where players browse HTML5, iframe, WebGL, WASM and external games —
+including a dedicated Minecraft section for Eaglercraft-style voxel
+clients — and launch them instantly. No backend, no database, no build
+step: just HTML, CSS and vanilla JavaScript.
 
-Once GitHub Pages is enabled, the site is served as a project page at:
+Live project page (once Pages is enabled):
 
 **https://bmeesss.github.io/GameHub/**
+
+> GameHub does **not** ship Minecraft itself. Voxel clients (Eaglercraft
+> builds, texture packs, `assets.epk`-style files) are never downloaded,
+> mirrored or bundled by this project. Where a game needs files we cannot
+> legally redistribute, the launcher stays honest about it and the guides
+> below explain exactly where to place your own legally sourced build.
 
 ## Features
 
 - Modern dark gaming interface, responsive from mobile to desktop
-- Hero section, featured games, full catalog, categories and popular games
-- Live game search with shareable URLs (`?q=...`) and an empty-state UI
-- Category filtering via chips and category cards
-- Centralized JavaScript game catalog — one entry per game
-- One page per game at `games/<slug>/`
-- Original placeholder SVG artwork (no copyrighted assets)
+- Homepage rails: Featured, Popular, Minecraft, New Games, All Games
+- Live search (titles, descriptions, categories, types, tags) with
+  shareable URLs (`?q=...`, `?category=...`, `?type=...`) and an empty state
+- Catalog-generated filters: categories plus game-type labels
+  (HTML5, Iframe, WebGL, WASM, External) with computed counts
+- One centralized game catalog — new games appear on the homepage
+  without touching homepage HTML
+- Reusable per-game launcher (`launcher.js`) with cover, loading,
+  error and playing states, responsive viewport and fullscreen support
+- Minecraft-ready: WebGL client slots, per-version pages, placement docs
+- Original SVG artwork only — no copyrighted game assets or logos
 - Accessible: skip link, semantic landmarks, keyboard-friendly controls,
-  visible focus states and `prefers-reduced-motion` support
-- Zero dependencies, zero console errors
+  visible focus states, `prefers-reduced-motion` support
+- Zero dependencies, zero console errors, committed test suites
+
+## Supported game types
+
+| Type       | How it launches                                                        |
+| ---------- | ---------------------------------------------------------------------- |
+| `html5`    | Verifies the local game page exists, then navigates to it              |
+| `iframe`   | Embeds the game in a sandboxed, responsive viewport                    |
+| `webgl`    | Embeds a local WebGL client (e.g. Eaglercraft) in a large viewport     |
+| `wasm`     | Embeds a local WebAssembly client in a large viewport                  |
+| `external` | Navigates to a configured HTTPS URL (same tab, never embedded blindly) |
+
+Local targets are verified with a lightweight HEAD request **only after
+the user presses Play** — game clients are never preloaded on the
+homepage. Anything missing fails gracefully (`Game currently
+unavailable` + the exact reason) instead of pretending to work.
 
 ## Project structure
 
 ```text
 GameHub/
-├── index.html                  # Homepage (catalog renders here)
-├── style.css                   # Full design system (CSS variables)
+├── index.html                  # Homepage (all rails render from catalog)
+├── style.css                   # Design system (CSS variables, launcher UI)
 ├── script.js                   # Game catalog + search/filter/render logic
+├── launcher.js                 # Reusable per-game launcher runtime
 ├── assets/
 │   ├── favicon.svg
 │   └── thumbnails/             # One SVG per game: <slug>.svg
 ├── games/
 │   └── <game-slug>/
-│       └── index.html          # One page per game
+│       ├── index.html          # Launcher page (Play/fullscreen/back)
+│       ├── play/               # (optional) local HTML5 game files
+│       ├── embed/              # (optional) local iframe game files
+│       └── client/             # (optional) local WebGL/WASM client files
+├── tests/
+│   ├── smoke.mjs               # Runtime tests: node tests/smoke.mjs
+│   └── check.py                # Static checks: python3 tests/check.py
 ├── 404.html                    # Self-contained not-found page
 ├── .nojekyll                   # Disables Jekyll on GitHub Pages
 └── README.md
 ```
 
-## How to add a game
+## The catalog
 
-Adding a game takes three steps. No build, no other files to touch.
-
-**1. Add a catalog entry** in `script.js` (`GAMES` array):
+`script.js` holds the `GAMES` array — the single source of truth.
+Every entry supports:
 
 ```js
 {
-  id: "my-game",
+  id: "my-game",                 // unique, matches slug by convention
   title: "My Game",
-  slug: "my-game",
-  description: "One or two sentences about the game.",
-  category: "Arcade",
-  thumbnail: "assets/thumbnails/my-game.svg",
-  featured: false,
-  popular: false,
-  status: "playable"
+  slug: "my-game",               // folder name under games/
+  description: "One or two sentences.",
+  category: "Arcade",            // drives category chips + rails
+  thumbnail: "assets/thumbnails/my-game.svg",  // or null for generated art
+  featured: false,               // shows in Featured rail
+  popular: false,                // shows in Popular rail
+  status: "playable",            // "playable" | "coming-soon"
+  type: "html5",                 // html5 | iframe | external | webgl | wasm
+  version: "1.0.0",              // shown on the game page
+  playUrl: "games/my-game/play/index.html",    // or https URL, or null
+  embed: null,                   // or { sandbox, allow } iframe overrides
+  tags: ["single-player"]        // lowercase search keywords
 }
 ```
 
-Field notes:
+Rules:
 
-- `slug` must match the folder name in `games/` and the thumbnail filename.
-- `thumbnail` is a path relative to the site root. Use `null` to fall back to
-  generated gradient art instead of an image file.
-- `status` is `"playable"` or `"coming-soon"`. Coming-soon games get a badge
-  on their card.
+- Append new entries **last** — the New Games rail is the tail of the
+  array, newest first.
+- `playUrl` for local games is relative to the **site root**
+  (`games/<slug>/play/index.html`). For `external` it must be a full
+  `https://` URL. Use `null` when nothing is wired up yet.
+- `embed` overrides iframe attributes, e.g.
+  `{ sandbox: "allow-scripts", allow: "fullscreen" }`.
+- The game page's `data-*` attributes must mirror the catalog entry
+  (`tests/check.py` enforces this).
 
-**2. Create the game page** at `games/my-game/index.html`.
+## How to add a normal HTML5 game
 
-Copy any existing page under `games/` and update the title, description,
-category and artwork path. All paths on game pages go up two levels:
+1. Append a catalog entry with `type: "html5"`,
+   `playUrl: "games/<slug>/play/index.html"`.
+2. Copy any page under `games/` to `games/<slug>/index.html` and update
+   the title, description, category, artwork path and the `#launcher`
+   `data-*` config (`data-type="html5"`,
+   `data-play-url="play/index.html"` — page-relative).
+3. Add `assets/thumbnails/<slug>.svg` (640×360, original art).
+4. Put the game itself at `games/<slug>/play/index.html`
+   (all its asset paths relative to `play/` or `../../` as needed).
+5. Run `node tests/smoke.mjs && python3 tests/check.py`.
 
-- stylesheet: `../../style.css`
-- favicon: `../../assets/favicon.svg`
-- artwork: `../../assets/thumbnails/my-game.svg`
-- home links: `../../index.html` (never `/` or `/index.html`)
+## How to add an iframe game
 
-**3. Add the thumbnail** at `assets/thumbnails/my-game.svg` (640×360).
-Any original SVG/PNG/WebP works — just keep the catalog path in sync.
+Same as above, with `type: "iframe"` and
+`playUrl: "games/<slug>/embed/index.html"`
+(`data-play-url="embed/index.html"` on the page). Only embed content
+you host yourself or that explicitly permits framing. Use `embed` /
+`data-embed-sandbox` to sandbox untrusted content
+(see Security below).
 
-The homepage (featured, popular, categories, search, counts) updates
-automatically from the catalog.
+## How to add a WebGL/WASM game
+
+1. Catalog entry with `type: "webgl"` (or `"wasm"`) and
+   `playUrl: "games/<slug>/client/index.html"`.
+2. Game page with `data-type="webgl"` and
+   `data-play-url="client/index.html"`.
+3. Place the client build (its `index.html` plus JS/WASM/data files) in
+   `games/<slug>/client/`, all paths relative.
+4. The launcher embeds it in a large responsive viewport with
+   fullscreen support — only after Play is pressed.
+
+## How to add an Eaglercraft client
+
+GameHub is **Eaglercraft-ready, not Eaglercraft-bundled**. Placeholder
+entries (`Eaglercraft 1.8`, `EaglercraftX 1.8`, `Eaglercraft 1.12.2`)
+already exist with working launcher pages that clearly state the client
+is missing. To make one playable:
+
+1. Obtain a browser client build you are **legally allowed to
+   redistribute**. Examples of legitimate sources, depending on your
+   situation:
+   - an open-source client whose license permits redistribution
+     (keep its license file with the build),
+   - a client you wrote yourself,
+   - a build the rights holder explicitly allowed you to host.
+2. If the client needs Mojang-copyrighted assets (textures, sounds,
+   `assets.epk`-style packs) that you may **not** redistribute, do not
+   commit them. Either ship the client asset-free (many clients can
+   load vanilla assets from the player's own files at runtime) or do
+   not publish the game at all.
+3. Copy the build into the matching folder, e.g.:
+
+   ```text
+   games/eaglercraft-1-8/client/
+   ├── index.html
+   └── ... (client JS, WASM, data)
+   ```
+
+   Each `client/` folder has a README describing the expected layout.
+4. Keep every client-internal path relative so it works under the
+   `/GameHub/` project URL.
+5. Set the catalog entry's `status` to `"playable"`.
+6. Run the test suites and press Play to verify.
+
+To add a future version (e.g. 1.20.x): append a catalog entry, copy a
+game page to `games/eaglercraft-1-20/index.html`, add a thumbnail, and
+create `games/eaglercraft-1-20/client/README.md` following the existing
+ones. The Minecraft rail, nav filter and type chips pick it up
+automatically.
 
 ## Local preview
 
 Any static file server works. From the repository root:
 
 ```bash
-# Python (usually pre-installed)
 python3 -m http.server 8080
-
-# or Node
-npx serve .
+# then open http://localhost:8080/
 ```
 
-Then open http://localhost:8080/ in a browser.
-VS Code's "Live Server" extension works too.
+> The server is only for previewing. The site has no server-side code
+> and behaves identically from any static host. Note: availability
+> probing is skipped under `file://`, so always preview over HTTP.
 
-> The live server is only for previewing. The site itself has no
-> server-side code and runs the same from any static host.
+## Tests
+
+```bash
+node tests/smoke.mjs     # catalog, search, filters, URL hydration, launcher
+python3 tests/check.py   # links, fragments, configs, artwork, Pages rules
+```
+
+Both are dependency-free (Node.js and Python 3 standard libraries
+only — dev tools, not site dependencies).
 
 ## Deploying to GitHub Pages
 
 1. Push the branch to GitHub.
-2. Open the repository on GitHub and go to **Settings → Pages**.
-3. Under **Build and deployment → Source**, choose **Deploy from a branch**.
-4. Select your branch (e.g. `main`) and the `/ (root)` folder, then **Save**.
-5. Wait a minute, then open **https://bmeesss.github.io/GameHub/**.
+2. Open the repository → **Settings → Pages**.
+3. **Source:** Deploy from a branch → your branch → `/ (root)` → Save.
+4. Open **https://bmeesss.github.io/GameHub/** after a minute.
 
 Notes:
 
-- The `.nojekyll` file is required — it tells GitHub Pages to serve the
-  site as plain static files.
-- The site uses only relative paths, so it works identically at a project
-  URL (`...github.io/GameHub/`), a user URL, a custom domain, or `localhost`.
-- Every link and asset is verified relative — see "Path rules" below.
+- `.nojekyll` is required — Pages must serve the site as plain files.
+- Everything is relative, so the same code works at a project URL,
+  user URL, custom domain or localhost.
+- Large clients stay out of the homepage bundle: each loads only when
+  its game page's Play button is pressed.
 
-## Path rules (read before editing)
+## Path rules
 
-GitHub Pages project sites are hosted under a sub-path, so absolute
-root paths break. Follow these rules:
+- NEVER root-absolute: `/assets/...`, `/games/...`, `/index.html`.
+- Homepage: `style.css`, `script.js`, `assets/...`, `games/<slug>/`.
+- Game pages (two levels deep): `../../style.css`,
+  `../../launcher.js`, `../../assets/...`.
+- Catalog `playUrl` is root-relative; game-page `data-play-url` is
+  page-relative — both must resolve to the same file.
+- `404.html` is self-contained (inline CSS/JS) since Pages can serve it
+  from any depth.
 
-- NEVER use root-absolute paths: `/assets/...`, `/games/...`, `/index.html`.
-- Homepage assets: `style.css`, `script.js`, `assets/...`, `games/<slug>/`.
-- Game pages (two levels deep): `../../style.css`, `../../assets/...`.
-- In-page anchors (`#games`, `#categories`) are fine everywhere.
-- `404.html` is fully self-contained (inline CSS, no external files) because
-  GitHub Pages can serve it from any URL depth.
+## Security considerations
+
+- **External games:** only `https://` URLs are accepted, and they are
+  navigated to — never embedded in a hidden iframe. Review every
+  external URL before publishing; you are sending players there.
+- **Iframe embeds:** default `allow` is limited to
+  `autoplay; fullscreen; gamepad; pointer-lock`. For content you do not
+  fully trust, set `embed.sandbox` (e.g. `"allow-scripts"`) and omit
+  `allow-same-origin` so the embed cannot touch GameHub's origin.
+- **Local clients** (your own HTML5/WebGL/WASM builds) run unsandboxed
+  by default since over-sandboxing breaks storage, pointer lock and
+  WebGL. Only ship code you trust — treat `games/*/` like first-party
+  code and review it accordingly.
+- **No secrets:** the site is 100% static and public; never commit API
+  keys, tokens or private URLs.
+- Advise players to use official server addresses with voxel clients
+  and never enter Mojang/Microsoft credentials into third-party pages.
 
 ## Browser support
 
-Modern evergreen browsers (Chrome, Edge, Firefox, Safari). No polyfills.
-Where a browser API is missing (e.g. `IntersectionObserver`, History API),
-features degrade gracefully without errors.
+Modern evergreen browsers (Chrome, Edge, Firefox, Safari). Missing
+APIs (History, Fullscreen, `fetch`, `IntersectionObserver`) degrade
+gracefully without errors.
 
 ## Roadmap
 
-- Replace placeholder entries with real playable browser games
-- Per-game instructions/controls sections as games become playable
-- More categories as the catalog grows
-- Optional: tags, sorting and "recently added" rails
+- Real playable HTML5 games replacing placeholders
+- More voxel client versions as legal builds become available
+- Per-game controls/instructions sections
+- Optional: combined category+type filtering, recently-played rail
 
 ## Assets & license
 
-All artwork in `assets/` (favicon and thumbnails) is original SVG created
-for this project — no third-party or copyrighted game assets are used.
+All artwork in `assets/` is original SVG created for this project —
+no third-party or copyrighted game assets, no official Minecraft logos.

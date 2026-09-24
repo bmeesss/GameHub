@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Cloud Hopper artwork</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#164e63"/>
+      <stop offset="1" stop-color="#0b0f1a"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <circle cx="540" cy="70" r="30" fill="#fde047"/>
+  <circle cx="540" cy="70" r="44" fill="#fde047" opacity=".25"/>
+  <g fill="#e0f2fe">
+    <rect x="60" y="80" width="150" height="30" rx="15"/>
+    <rect x="95" y="60" width="80" height="28" rx="14"/>
+    <rect x="420" y="150" width="130" height="28" rx="14"/>
+    <rect x="450" y="132" width="70" height="24" rx="12"/>
+    <rect x="180" y="250" width="170" height="32" rx="16"/>
+    <rect x="220" y="230" width="90" height="26" rx="13"/>
+  </g>
+  <g fill="#e0f2fe" opacity=".45">
+    <rect x="380" y="250" width="120" height="26" rx="13"/>
+    <rect x="60" y="270" width="90" height="24" rx="12"/>
+  </g>
+  <path d="M120 330c30-40 60-40 90-70s60-30 90-60" fill="none" stroke="#22d3ee" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 16" opacity=".7"/>
+  <g>
+    <rect x="290" y="120" width="64" height="58" rx="18" fill="#a78bfa"/>
+    <rect x="290" y="120" width="64" height="20" rx="10" fill="#c4b5fd"/>
+    <circle cx="312" cy="152" r="7" fill="#0b0f1a"/>
+    <circle cx="334" cy="152" r="7" fill="#0b0f1a"/>
+    <circle cx="314" cy="150" r="2.4" fill="#fff"/>
+    <circle cx="336" cy="150" r="2.4" fill="#fff"/>
+    <path d="M312 166q11 8 22 0" stroke="#0b0f1a" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <rect x="278" y="140" width="12" height="26" rx="6" fill="#7c5cff"/>
+    <rect x="354" y="140" width="12" height="26" rx="6" fill="#7c5cff"/>
+  </g>
+  <g fill="#fde047">
+    <circle cx="200" cy="120" r="5"/><circle cx="430" cy="100" r="5"/><circle cx="480" cy="220" r="4"/>
+  </g>
+</svg>

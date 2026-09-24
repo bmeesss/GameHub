@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Eaglercraft 1.12.2 artwork — original voxel night cave</title>
+  <defs>
+    <linearGradient id="cave" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#101a33"/>
+      <stop offset="1" stop-color="#05070f"/>
+    </linearGradient>
+    <radialGradient id="glow" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#fbbf24" stop-opacity=".5"/>
+      <stop offset="1" stop-color="#fbbf24" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#cave)"/>
+  <g fill="#fff" opacity=".8">
+    <circle cx="80" cy="50" r="2.4"/><circle cx="180" cy="36" r="1.8"/><circle cx="300" cy="56" r="2.2"/>
+    <circle cx="420" cy="34" r="1.8"/><circle cx="520" cy="60" r="2.4"/><circle cx="590" cy="40" r="1.7"/>
+  </g>
+  <rect x="70" y="60" width="46" height="46" fill="#e2e8f0"/>
+  <rect x="70" y="60" width="46" height="12" fill="#f8fafc"/>
+  <rect x="82" y="76" width="12" height="12" fill="#94a3b8"/>
+  <g>
+    <rect x="0" y="230" width="640" height="130" fill="#2b3247"/>
+    <rect x="0" y="230" width="640" height="18" fill="#47516e"/>
+    <rect x="0" y="248" width="70" height="112" fill="#232a40"/>
+    <rect x="570" y="248" width="70" height="112" fill="#232a40"/>
+  </g>
+  <g>
+    <rect x="150" y="170" width="52" height="60" fill="#2b3247"/>
+    <rect x="150" y="170" width="52" height="14" fill="#47516e"/>
+    <rect x="202" y="196" width="52" height="34" fill="#2b3247"/>
+    <rect x="202" y="196" width="52" height="12" fill="#47516e"/>
+    <rect x="400" y="178" width="52" height="52" fill="#2b3247"/>
+    <rect x="400" y="178" width="52" height="14" fill="#47516e"/>
+  </g>
+  <g fill="#22d3ee">
+    <rect x="290" y="270" width="14" height="14" transform="rotate(45 297 277)"/>
+    <rect x="340" y="300" width="12" height="12" transform="rotate(45 346 306)"/>
+    <rect x="480" y="286" width="14" height="14" transform="rotate(45 487 293)"/>
+  </g>
+  <g fill="#22d3ee" opacity=".35">
+    <rect x="284" y="264" width="26" height="26" transform="rotate(45 297 277)"/>
+    <rect x="474" y="280" width="26" height="26" transform="rotate(45 487 293)"/>
+  </g>
+  <circle cx="520" cy="150" r="70" fill="url(#glow)"/>
+  <rect x="514" y="130" width="12" height="44" fill="#6b4a2c"/>
+  <rect x="508" y="112" width="24" height="22" fill="#fbbf24"/>
+  <rect x="512" y="103" width="16" height="12" fill="#fde68a"/>
+</svg>

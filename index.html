@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GameHub — Play Free Browser Games</title>
-  <meta name="description" content="GameHub is a free browser game hub. Browse arcade, puzzle, action and strategy games and play instantly — no downloads, no sign-up.">
+  <meta name="description" content="GameHub is a free browser game hub. Browse arcade, puzzle, action, racing, multiplayer and Minecraft games and play instantly — no downloads, no sign-up.">
   <meta name="theme-color" content="#0b0f1a">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="stylesheet" href="style.css">
@@ -92,6 +92,45 @@
           <p>Spotlight picks from the GameHub catalog.</p>
         </div>
         <div class="grid" id="featured-grid" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- Popular -->
+    <section class="section section--tight" id="popular" aria-labelledby="popular-title">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Player favorites</p>
+          <h2 id="popular-title">Popular games</h2>
+          <p>The most-played titles on GameHub right now.</p>
+        </div>
+        <div class="grid" id="popular-grid" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- Minecraft -->
+    <section class="section section--tight section--minecraft" id="minecraft" aria-labelledby="minecraft-title">
+      <div class="container">
+        <div class="section-head section-head--split">
+          <div>
+            <p class="eyebrow eyebrow--green">Blocky worlds</p>
+            <h2 id="minecraft-title">Minecraft on GameHub</h2>
+            <p>Browser voxel clients powered by WebGL. The launcher is ready — client files plug in per game.</p>
+          </div>
+          <a class="btn btn-ghost btn-sm" href="?category=Minecraft#games">View all Minecraft</a>
+        </div>
+        <div class="grid" id="minecraft-grid" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- New games -->
+    <section class="section section--tight" id="new" aria-labelledby="new-title">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Fresh additions</p>
+          <h2 id="new-title">New games</h2>
+          <p>The latest entries added to the GameHub catalog.</p>
+        </div>
+        <div class="grid" id="new-grid" aria-live="polite"></div>
       </div>
     </section>
 
@@ -209,6 +248,8 @@
             <li><a href="#featured">Featured games</a></li>
             <li><a href="#games">All games</a></li>
             <li><a href="#categories">Categories</a></li>
+            <li><a href="?category=Minecraft#games">Minecraft</a></li>
+            <li><a href="#new">New games</a></li>
           </ul>
         </nav>
         <div>

@@ -4,7 +4,9 @@ GameHub is a free browser gaming platform: a fast, fully static website
 where players browse HTML5, iframe, WebGL, WASM and external games —
 including a dedicated Minecraft section for Eaglercraft-style voxel
 clients — and launch them instantly. No backend, no database, no build
-step: just HTML, CSS and vanilla JavaScript.
+step: just HTML, CSS and vanilla JavaScript. The catalog ships 26
+games: 21 original playable titles plus 5 coming-soon placeholders
+(including the Minecraft client slots).
 
 Live project page (once Pages is enabled):
 
@@ -20,6 +22,9 @@ Live project page (once Pages is enabled):
 
 - Modern dark gaming interface, responsive from mobile to desktop
 - Homepage rails: Featured, Popular, Minecraft, New Games, All Games
+- 21 original playable games across Arcade, Puzzle, Casual, Action,
+  Racing and Strategy — each self-contained under `games/<slug>/play/`
+  with keyboard + touch controls
 - Live search (titles, descriptions, categories, types, tags) with
   shareable URLs (`?q=...`, `?category=...`, `?type=...`) and an empty state
 - Catalog-generated filters: categories plus game-type labels
@@ -63,7 +68,7 @@ GameHub/
 ├── games/
 │   └── <game-slug>/
 │       ├── index.html          # Launcher page (Play/fullscreen/back)
-│       ├── play/               # (optional) local HTML5 game files
+│       ├── play/               # local HTML5 game bundle (index.html, game.js, style.css)
 │       ├── embed/              # (optional) local iframe game files
 │       └── client/             # (optional) local WebGL/WASM client files
 ├── tests/
@@ -89,7 +94,7 @@ Every entry supports:
   thumbnail: "assets/thumbnails/my-game.svg",  // or null for generated art
   featured: false,               // shows in Featured rail
   popular: false,                // shows in Popular rail
-  status: "playable",            // "playable" | "coming-soon"
+  status: "available",           // "available" | "coming-soon"
   type: "html5",                 // html5 | iframe | external | webgl | wasm
   version: "1.0.0",              // shown on the game page
   playUrl: "games/my-game/play/index.html",    // or https URL, or null
@@ -119,8 +124,12 @@ Rules:
    `data-*` config (`data-type="html5"`,
    `data-play-url="play/index.html"` — page-relative).
 3. Add `assets/thumbnails/<slug>.svg` (640×360, original art).
-4. Put the game itself at `games/<slug>/play/index.html`
-   (all its asset paths relative to `play/` or `../../` as needed).
+4. Put the game itself in `games/<slug>/play/` as a self-contained
+   bundle: `index.html` + `game.js` + `style.css`, with no external
+   URLs. Every game needs a start screen, a game-over/restart flow,
+   a score or objective, keyboard + touch controls, instructions,
+   and pause where it makes sense (see the existing games for the
+   pattern).
 5. Run `node tests/smoke.mjs && python3 tests/check.py`.
 
 ## How to add an iframe game
@@ -199,6 +208,7 @@ python3 -m http.server 8080
 
 ```bash
 node tests/smoke.mjs     # catalog, search, filters, URL hydration, launcher
+node tests/games.mjs     # per-game runtime harness (every play bundle)
 python3 tests/check.py   # links, fragments, configs, artwork, Pages rules
 ```
 
@@ -257,12 +267,15 @@ gracefully without errors.
 
 ## Roadmap
 
-- Real playable HTML5 games replacing placeholders
+- More original games across every category
 - More voxel client versions as legal builds become available
-- Per-game controls/instructions sections
+- Recently-played rail and saved player preferences
 - Optional: combined category+type filtering, recently-played rail
 
 ## Assets & license
 
 All artwork in `assets/` is original SVG created for this project —
 no third-party or copyrighted game assets, no official Minecraft logos.
+Every playable title under `games/*/play/` is original code and art
+created for GameHub. If a third-party game is ever added, its license
+file and attribution must ship alongside it and be noted here.

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sudoku — Play — GameHub</title>
+  <meta name="description" content="Play Sudoku on GameHub: the classic number puzzle with notes, hints and three difficulties.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Sudoku</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">Mistakes</span><span class="hud-value" id="mistakes">0/3</span></div>
+        <div class="hud-item"><span class="hud-label">Hints</span><span class="hud-value" id="hints">3</span></div>
+        <div class="hud-item"><span class="hud-label">Time</span><span class="hud-value" id="timer">0:00</span></div>
+        <button class="hud-btn" id="newBtn" type="button">New</button>
+      </div>
+      <div class="mode-row" id="modeRow" role="group" aria-label="Difficulty">
+        <button type="button" data-diff="easy" aria-pressed="true">Easy</button>
+        <button type="button" data-diff="medium" aria-pressed="false">Medium</button>
+        <button type="button" data-diff="hard" aria-pressed="false">Hard</button>
+      </div>
+      <div class="stage">
+        <div class="board" id="board" role="grid" aria-label="Sudoku board"></div>
+        <div class="overlay" id="overlay" hidden>
+          <h2 id="overlayTitle">Sudoku</h2>
+          <p id="overlayText"></p>
+          <button class="primary-btn" id="primaryBtn" type="button">Play again</button>
+        </div>
+      </div>
+      <div class="tools">
+        <button type="button" id="notesBtn" aria-pressed="false">Notes: off</button>
+        <button type="button" id="hintBtn">Hint</button>
+        <button type="button" id="eraseBtn">Erase</button>
+      </div>
+      <div class="pad" id="pad" role="group" aria-label="Number pad"></div>
+      <p class="hint">Select a cell, then a number · toggle Notes for pencil marks · 3 mistakes ends the game</p>
+    </main>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>

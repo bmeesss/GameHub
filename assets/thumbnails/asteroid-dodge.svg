@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Asteroid Dodge artwork</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0b0f1a"/>
+      <stop offset="1" stop-color="#1a1030"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <g fill="#fff">
+    <circle cx="60" cy="50" r="2.4"/>
+    <circle cx="150" cy="120" r="1.8"/>
+    <circle cx="240" cy="60" r="2.6"/>
+    <circle cx="350" cy="110" r="1.8"/>
+    <circle cx="450" cy="50" r="2.4"/>
+    <circle cx="560" cy="130" r="2"/>
+    <circle cx="90" cy="260" r="2.2"/>
+    <circle cx="200" cy="300" r="1.8"/>
+    <circle cx="420" cy="290" r="2.4"/>
+    <circle cx="540" cy="250" r="2"/>
+    <circle cx="600" cy="60" r="2.6"/>
+    <circle cx="300" cy="200" r="1.6"/>
+  </g>
+  <polygon points="120,90 160,70 190,100 175,145 130,150 105,120" fill="#64748b"/>
+  <polygon points="120,90 160,70 190,100 175,145 130,150 105,120" fill="#0b0f1a" opacity=".25"/>
+  <circle cx="145" cy="110" r="10" fill="#475569"/>
+  <polygon points="480,220 530,210 555,250 535,295 490,290 470,255" fill="#64748b"/>
+  <polygon points="480,220 530,210 555,250 535,295 490,290 470,255" fill="#0b0f1a" opacity=".25"/>
+  <circle cx="512" cy="252" r="9" fill="#475569"/>
+  <circle cx="80" cy="200" r="26" fill="#64748b"/>
+  <circle cx="72" cy="194" r="7" fill="#475569"/>
+  <path d="M320 150 L352 230 L320 212 L288 230 Z" fill="#22d3ee"/>
+  <path d="M320 150 L334 200 L320 192 L306 200 Z" fill="#fff" opacity=".7"/>
+  <ellipse cx="320" cy="246" rx="10" ry="22" fill="#fb923c"/>
+  <ellipse cx="320" cy="240" rx="5" ry="12" fill="#fde047"/>
+  <circle cx="320" cy="180" r="52" fill="none" stroke="#22d3ee" stroke-width="3" stroke-dasharray="10 12" opacity=".7"/>
+</svg>

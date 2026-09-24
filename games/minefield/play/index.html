@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minefield — Play — GameHub</title>
+  <meta name="description" content="Play Minefield on GameHub: clear the minefield with pure logic across three difficulties.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Minefield</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">Mines</span><span class="hud-value" id="mineCount">10</span></div>
+        <div class="hud-item"><span class="hud-label">Time</span><span class="hud-value" id="timer">0</span></div>
+        <button class="hud-btn" id="flagBtn" type="button" aria-pressed="false">Flag: off</button>
+        <button class="hud-btn" id="newBtn" type="button">New</button>
+      </div>
+      <div class="mode-row" id="modeRow" role="group" aria-label="Difficulty">
+        <button type="button" data-diff="easy" aria-pressed="true">Easy 9×9</button>
+        <button type="button" data-diff="medium" aria-pressed="false">Medium 12×12</button>
+        <button type="button" data-diff="hard" aria-pressed="false">Hard 16×16</button>
+      </div>
+      <div class="stage">
+        <div class="board" id="board" role="grid" aria-label="Minefield board"></div>
+        <div class="overlay" id="overlay" hidden>
+          <h2 id="overlayTitle">Minefield</h2>
+          <p id="overlayText"></p>
+          <button class="primary-btn" id="primaryBtn" type="button">Play again</button>
+        </div>
+      </div>
+      <p class="hint">Tap to reveal · right-click or Flag mode to flag · first click is always safe</p>
+    </main>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>

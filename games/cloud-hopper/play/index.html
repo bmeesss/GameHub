@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cloud Hopper — Play — GameHub</title>
+  <meta name="description" content="Play Cloud Hopper on GameHub: bounce across sky islands, grab coins and dodge spikes.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Cloud Hopper</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">Coins</span><span class="hud-value" id="coins">0</span></div>
+        <div class="hud-item"><span class="hud-label">Lives</span><span class="hud-value" id="lives">3</span></div>
+        <div class="hud-item"><span class="hud-label">Level</span><span class="hud-value" id="level">1/3</span></div>
+        <button class="hud-btn" id="pauseBtn" type="button">Pause</button>
+      </div>
+      <div class="stage">
+        <canvas id="game" width="640" height="384" aria-label="Cloud Hopper level"></canvas>
+        <div class="overlay" id="overlay">
+          <h2 id="overlayTitle">Cloud Hopper</h2>
+          <p id="overlayText">Hop across the sky islands, grab every coin and reach the flag. Watch for spikes and grumblers!</p>
+          <button class="primary-btn" id="primaryBtn" type="button">Start hopping</button>
+        </div>
+      </div>
+      <div class="touch-controls" id="touchControls">
+        <button type="button" data-act="left" aria-label="Move left">◀</button>
+        <button type="button" data-act="right" aria-label="Move right">▶</button>
+        <button type="button" data-act="jump" aria-label="Jump">Jump</button>
+      </div>
+      <p class="hint">Arrows / A,D to move · Space / W to jump · stomp grumblers from above</p>
+    </main>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>

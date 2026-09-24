@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Labyrinth Dash — Play — GameHub</title>
+  <meta name="description" content="Play Labyrinth Dash on GameHub: race procedurally built mazes and beat the clock.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Labyrinth Dash</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">Level</span><span class="hud-value" id="level">1</span></div>
+        <div class="hud-item"><span class="hud-label">Time</span><span class="hud-value" id="timeLeft">30</span></div>
+        <div class="hud-item"><span class="hud-label">Best lvl</span><span class="hud-value" id="best">0</span></div>
+        <button class="hud-btn" id="pauseBtn" type="button">Pause</button>
+      </div>
+      <div class="stage">
+        <canvas id="game" width="480" height="480" aria-label="Labyrinth Dash maze board"></canvas>
+        <div class="overlay" id="overlay">
+          <h2 id="overlayTitle">Labyrinth Dash</h2>
+          <p id="overlayText">Reach the golden exit before time runs out. Green shards add +3 seconds!</p>
+          <button class="primary-btn" id="primaryBtn" type="button">Enter maze</button>
+        </div>
+      </div>
+      <div class="touch-controls" id="touchControls">
+        <span></span>
+        <button type="button" data-act="up" aria-label="Move up">▲</button>
+        <span></span>
+        <button type="button" data-act="left" aria-label="Move left">◀</button>
+        <button type="button" data-act="down" aria-label="Move down">▼</button>
+        <button type="button" data-act="right" aria-label="Move right">▶</button>
+      </div>
+      <p class="hint">Arrows / WASD / swipe / pad to move · P to pause</p>
+    </main>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>

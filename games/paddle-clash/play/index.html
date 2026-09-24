@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paddle Clash — Play — GameHub</title>
+  <meta name="description" content="Play Paddle Clash on GameHub: a classic paddle duel against the AI or a friend.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Paddle Clash</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">You / P1</span><span class="hud-value" id="scoreLeft">0</span></div>
+        <div class="hud-item"><span class="hud-label">First to</span><span class="hud-value">7</span></div>
+        <div class="hud-item"><span class="hud-label">CPU / P2</span><span class="hud-value" id="scoreRight">0</span></div>
+        <button class="hud-btn" id="pauseBtn" type="button">Pause</button>
+      </div>
+      <div class="stage">
+        <canvas id="game" width="640" height="400" aria-label="Paddle Clash game board"></canvas>
+        <div class="overlay" id="overlay">
+          <h2 id="overlayTitle">Paddle Clash</h2>
+          <p id="overlayText">Pick a mode. First to 7 points wins the match.</p>
+          <div class="mode-row" id="modeRow">
+            <button class="mode-btn" type="button" data-mode="easy">Easy AI</button>
+            <button class="mode-btn" type="button" data-mode="normal">Normal AI</button>
+            <button class="mode-btn" type="button" data-mode="hard">Hard AI</button>
+            <button class="mode-btn" type="button" data-mode="versus">2 Players</button>
+          </div>
+          <button class="primary-btn" id="primaryBtn" type="button" hidden>Play again</button>
+        </div>
+      </div>
+      <p class="hint">AI mode: mouse / touch / W+S · 2P: P1 uses W+S, P2 uses arrows · P to pause</p>
+    </main>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tower Tactics — Play — GameHub</title>
+  <meta name="description" content="Play Tower Tactics on GameHub: build arrow, cannon and frost towers and hold the line.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Tower Tactics</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">Gold</span><span class="hud-value" id="gold">120</span></div>
+        <div class="hud-item"><span class="hud-label">Lives</span><span class="hud-value" id="lives">20</span></div>
+        <div class="hud-item"><span class="hud-label">Wave</span><span class="hud-value" id="wave">0</span></div>
+        <button class="hud-btn" id="pauseBtn" type="button">Pause</button>
+      </div>
+      <div class="stage">
+        <canvas id="game" width="640" height="480" aria-label="Tower Tactics battlefield"></canvas>
+        <div class="overlay" id="overlay">
+          <h2 id="overlayTitle">Tower Tactics</h2>
+          <p id="overlayText">Enemies march the glowing road. Build towers on the grass — how many sieges can you hold?</p>
+          <button class="primary-btn" id="primaryBtn" type="button">Start defending</button>
+        </div>
+      </div>
+      <div class="build-bar" id="buildBar" role="group" aria-label="Build and manage towers">
+        <button type="button" data-build="arrow" aria-pressed="false">Arrow 50g</button>
+        <button type="button" data-build="cannon" aria-pressed="false">Cannon 100g</button>
+        <button type="button" data-build="frost" aria-pressed="false">Frost 75g</button>
+        <button type="button" id="waveBtn">Send wave</button>
+      </div>
+      <div class="manage-bar" id="manageBar" hidden>
+        <span id="towerInfo">Tower</span>
+        <button type="button" id="upgradeBtn">Upgrade</button>
+        <button type="button" id="sellBtn">Sell</button>
+      </div>
+      <p class="hint">Pick a tower, tap grass to build · tap a tower to upgrade/sell · Space sends the wave</p>
+    </main>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>

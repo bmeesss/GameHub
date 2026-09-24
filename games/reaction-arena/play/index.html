@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reaction Arena — Play — GameHub</title>
+  <meta name="description" content="Play Reaction Arena on GameHub: test your reflexes across five rapid-fire rounds.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Reaction Arena</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">Round</span><span class="hud-value" id="round">–/5</span></div>
+        <div class="hud-item"><span class="hud-label">Last</span><span class="hud-value" id="last">–</span></div>
+        <div class="hud-item"><span class="hud-label">Best avg</span><span class="hud-value" id="best">–</span></div>
+        <button class="hud-btn" id="newBtn" type="button">Restart</button>
+      </div>
+      <div class="stage">
+        <button class="arena" id="arena" type="button">
+          <span class="arena-title" id="arenaTitle">Reaction Arena</span>
+          <span class="arena-text" id="arenaText">Press start, wait for green, then strike as fast as you can.</span>
+        </button>
+        <div class="overlay" id="overlay">
+          <h2 id="overlayTitle">Reaction Arena</h2>
+          <p id="overlayText">Five rounds. Wait for green — striking early restarts the round.</p>
+          <button class="primary-btn" id="primaryBtn" type="button">Start test</button>
+        </div>
+      </div>
+      <p class="hint">Click / tap the arena the instant it turns green</p>
+    </main>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>

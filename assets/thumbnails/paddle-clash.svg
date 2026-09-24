@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Paddle Clash artwork</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#14102a"/>
+      <stop offset="1" stop-color="#0b0f1a"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <circle cx="320" cy="180" r="170" fill="#7c5cff" opacity=".12"/>
+  <line x1="320" y1="20" x2="320" y2="340" stroke="#9faccd" stroke-width="5" stroke-dasharray="18 16" opacity=".55"/>
+  <rect x="56" y="120" width="20" height="120" rx="10" fill="#22d3ee"/>
+  <rect x="564" y="120" width="20" height="120" rx="10" fill="#fb7185"/>
+  <path d="M180 250 Q 280 200 380 150" fill="none" stroke="#fff" stroke-width="4" stroke-dasharray="4 14" stroke-linecap="round" opacity=".5"/>
+  <circle cx="400" cy="140" r="15" fill="#fff"/>
+  <circle cx="400" cy="140" r="26" fill="#22d3ee" opacity=".35"/>
+  <circle cx="150" cy="290" r="46" fill="none" stroke="#22d3ee" stroke-width="3" opacity=".4"/>
+  <circle cx="490" cy="70" r="46" fill="none" stroke="#fb7185" stroke-width="3" opacity=".4"/>
+</svg>

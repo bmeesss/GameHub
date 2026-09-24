@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Four in a Row — Play — GameHub</title>
+  <meta name="description" content="Play Four in a Row on GameHub: drop discs and connect four before the AI or a friend.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Four in a Row</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">You / P1</span><span class="hud-value" id="scoreA">0</span></div>
+        <div class="hud-item"><span class="hud-label">Draws</span><span class="hud-value" id="scoreD">0</span></div>
+        <div class="hud-item"><span class="hud-label">CPU / P2</span><span class="hud-value" id="scoreB">0</span></div>
+        <button class="hud-btn" id="newBtn" type="button">New</button>
+      </div>
+      <div class="mode-row" id="modeRow" role="group" aria-label="Opponent">
+        <button type="button" data-mode="easy" aria-pressed="false">Easy AI</button>
+        <button type="button" data-mode="normal" aria-pressed="true">Normal AI</button>
+        <button type="button" data-mode="versus" aria-pressed="false">2 Players</button>
+      </div>
+      <div class="stage">
+        <p class="status" id="status">Your move</p>
+        <div class="board" id="board" role="grid" aria-label="Four in a row board"></div>
+        <div class="overlay" id="overlay" hidden>
+          <h2 id="overlayTitle">Four in a Row</h2>
+          <p id="overlayText"></p>
+          <button class="primary-btn" id="primaryBtn" type="button">Next round</button>
+        </div>
+      </div>
+      <p class="hint">Tap a column to drop your disc · connect four to win</p>
+    </main>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>

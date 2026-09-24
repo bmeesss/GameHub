@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Asteroid Dodge — Play — GameHub</title>
+  <meta name="description" content="Play Asteroid Dodge on GameHub: weave through an endless asteroid storm and survive.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Asteroid Dodge</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">Score</span><span class="hud-value" id="score">0</span></div>
+        <div class="hud-item"><span class="hud-label">Best</span><span class="hud-value" id="best">0</span></div>
+        <div class="hud-item"><span class="hud-label">Hull</span><span class="hud-value" id="lives">3</span></div>
+        <button class="hud-btn" id="pauseBtn" type="button">Pause</button>
+      </div>
+      <div class="stage">
+        <canvas id="game" width="480" height="640" aria-label="Asteroid Dodge game board"></canvas>
+        <div class="overlay" id="overlay">
+          <h2 id="overlayTitle">Asteroid Dodge</h2>
+          <p id="overlayText">Steer your ship through the storm. Grab green cells to repair your hull.</p>
+          <button class="primary-btn" id="primaryBtn" type="button">Start dodging</button>
+        </div>
+      </div>
+      <p class="hint">Arrows / WASD / drag to steer · P to pause</p>
+    </main>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>

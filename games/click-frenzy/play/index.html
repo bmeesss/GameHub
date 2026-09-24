@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Click Frenzy — Play — GameHub</title>
+  <meta name="description" content="Play Click Frenzy on GameHub: ten seconds on the clock, pure clicking speed on the board.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Click Frenzy</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">Clicks</span><span class="hud-value" id="clicks">0</span></div>
+        <div class="hud-item"><span class="hud-label">Time left</span><span class="hud-value" id="timeLeft">10.0</span></div>
+        <div class="hud-item"><span class="hud-label">Best CPS</span><span class="hud-value" id="best">–</span></div>
+        <button class="hud-btn" id="newBtn" type="button">Restart</button>
+      </div>
+      <div class="stage">
+        <button class="pad" id="pad" type="button">
+          <span class="pad-big" id="padBig">CLICK!</span>
+          <span class="pad-sub" id="padSub">Press start, then click as fast as you can.</span>
+        </button>
+        <div class="overlay" id="overlay">
+          <h2 id="overlayTitle">Click Frenzy</h2>
+          <p id="overlayText">You get 10 seconds. Warm up those fingers!</p>
+          <button class="primary-btn" id="primaryBtn" type="button">Start</button>
+        </div>
+      </div>
+      <p class="hint">Click or tap the pad · Space works too</p>
+    </main>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>

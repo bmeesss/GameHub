@@ -105,7 +105,7 @@ else:
 REQUIRED = ["id", "title", "slug", "description", "category", "thumbnail",
             "featured", "popular", "status", "type", "version", "playUrl", "embed", "tags"]
 TYPES = {"html5", "iframe", "external", "webgl", "wasm"}
-STATUSES = {"playable", "coming-soon"}
+STATUSES = {"available", "coming-soon"}
 catalog = []
 
 for entry in ENTRIES:
@@ -267,6 +267,43 @@ for token in ['"html5"', '"iframe"', '"external"', '"webgl"', '"wasm"', "resolve
         fail(f"launcher.js: missing {token}")
 if "node_modules" in os.listdir(".") or os.path.exists("package.json"):
     fail("site must stay dependency-free (no node_modules/package.json)")
+ok()
+
+
+# ---- 9. Available games are launchable + self-contained ---------------------
+ids = [g["id"] for g in catalog]
+if len(set(ids)) != len(ids):
+    fail("catalog: duplicate ids")
+available = [g for g in catalog if g["status"] == "available"]
+print(f"available entries: {len(available)}")
+for game in available:
+    slug = game["slug"]
+    url = game["playUrl"]
+    if not url:
+        fail(f"catalog {slug}: available game must declare playUrl")
+        continue
+    if url.startswith("http"):
+        continue  # external URLs are verified at Play time, not here
+    full = os.path.normpath(url)
+    if not os.path.exists(full):
+        fail(f"catalog {slug}: available playUrl missing: {url}")
+    if game["type"] == "html5":
+        for leaf in ("game.js", "style.css"):
+            sibling = os.path.join(os.path.dirname(full), leaf)
+            if not os.path.exists(sibling):
+                fail(f"catalog {slug}: available html5 game missing {sibling}")
+# Play bundles must be self-contained (no remote fetches or embeds).
+for game in catalog:
+    play_dir = os.path.join("games", game["slug"] or "?", "play")
+    if not os.path.isdir(play_dir):
+        continue
+    for name in sorted(os.listdir(play_dir)):
+        bundle = os.path.join(play_dir, name)
+        if not os.path.isfile(bundle) or not name.endswith((".html", ".css", ".js", ".svg")):
+            continue
+        body = open(bundle, encoding="utf-8").read()
+        if re.search(r"https?://|url\(\s*//|src\s*=\s*\"//|href\s*=\s*\"//", body):
+            fail(f"{bundle}: remote URL in play bundle (games must be self-contained)")
 ok()
 
 print(f"\n{checks} check groups passed, {len(site_files)} site files scanned")

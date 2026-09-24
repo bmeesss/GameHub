@@ -126,26 +126,28 @@ const minecraftHtml = sel("#minecraft-grid").innerHTML;
 const newHtml = sel("#new-grid").innerHTML;
 const gridHtml = sel("#games-grid").innerHTML;
 
-t("catalog holds 13 games", api.GAMES.length === 13);
-t("catalog holds 7 categories", api.getCategories().length === 7);
-t("featured renders 4 cards", count(featuredHtml, "<article") === 4);
-t("popular renders 6 cards", count(popularHtml, "<article") === 6);
+t("catalog holds 26 games", api.GAMES.length === 26);
+t("catalog holds 8 categories", api.getCategories().length === 8);
+t("featured renders 5 cards", count(featuredHtml, "<article") === 5);
+t("popular renders 8 cards", count(popularHtml, "<article") === 8);
 t("minecraft rail renders 3 cards", count(minecraftHtml, "<article") === 3);
 t("new rail renders 6 cards", count(newHtml, "<article") === 6);
-t("new rail leads with latest entry", newHtml.indexOf("Eaglercraft 1.12.2") !== -1 && newHtml.indexOf("Eaglercraft 1.12.2") < newHtml.indexOf("Arena Clash"));
-t("all games renders 13 cards", count(gridHtml, "<article") === 13);
-t("cards carry generated type labels", gridHtml.includes("type-badge") && gridHtml.includes("WebGL") && gridHtml.includes("WASM"));
+t("new rail leads with latest entry", newHtml.indexOf("Asteroid Dodge") !== -1 && newHtml.indexOf("Asteroid Dodge") < newHtml.indexOf("Neon Runner"));
+t("all games renders 26 cards", count(gridHtml, "<article") === 26);
+t("cards carry generated type labels", gridHtml.includes("type-badge") && gridHtml.includes("HTML5") && gridHtml.includes("WebGL") && gridHtml.includes("WASM"));
 t("play links use relative games/ paths", gridHtml.includes('href="games/eaglercraft-1-8/index.html"'));
 t("no absolute paths in output", !/"\/(assets|games|index)/.test(gridHtml + featuredHtml));
-t("stats rendered", sel("#stat-games").textContent === "13" && sel("#stat-categories").textContent === "7");
+t("stats rendered", sel("#stat-games").textContent === "26" && sel("#stat-categories").textContent === "8");
 
 const REQUIRED_FIELDS = ["id", "title", "slug", "description", "category", "thumbnail", "featured", "popular", "status", "type", "version", "playUrl", "embed", "tags"];
 t("every entry supports all catalog fields", api.GAMES.every((g) => REQUIRED_FIELDS.every((f) => f in g)));
 t("types are known values", api.GAMES.every((g) => ["html5", "iframe", "external", "webgl", "wasm"].includes(g.type)));
-t("statuses are known values", api.GAMES.every((g) => ["playable", "coming-soon"].includes(g.status)));
+t("statuses are known values", api.GAMES.every((g) => ["available", "coming-soon"].includes(g.status)));
+t("21 games are available", api.GAMES.filter((g) => g.status === "available").length === 21);
+t("available html5 entries link play pages", api.GAMES.filter((g) => g.status === "available" && g.type === "html5").every((g) => g.playUrl === `games/${g.slug}/play/index.html`));
 t("slugs are unique", new Set(api.GAMES.map((g) => g.slug)).size === api.GAMES.length);
 t("minecraft entries declare client playUrls", api.GAMES.filter((g) => g.category === "Minecraft").every((g) => g.playUrl === `games/${g.slug}/client/index.html`));
-t("type chips generated with counts", JSON.stringify(api.getTypes().map((x) => x.label)) === JSON.stringify(["HTML5", "Iframe", "WebGL", "WASM"]));
+t("type chips generated with counts", JSON.stringify(api.getTypes().map((x) => x.label)) === JSON.stringify(["HTML5", "WebGL", "WASM"]));
 
 api.state.query = "sandbox"; api.state.category = "All"; api.state.type = null; api.applyFilters();
 t("search matches tags ('sandbox' -> 3)", count(sel("#games-grid").innerHTML, "<article") === 3);
@@ -170,7 +172,7 @@ t("bogus type ignored", api.state.type === null);
 home.location.search = "?category=Bogus"; api.state.category = "All"; api.hydrateFromUrl();
 t("bogus category ignored", api.state.category === "All");
 
-const fallback = api.cardTemplate({ id: "x", title: "X", slug: "x", description: "d", category: "Arcade", thumbnail: null, type: "html5", status: "playable" });
+const fallback = api.cardTemplate({ id: "x", title: "X", slug: "x", description: "d", category: "Arcade", thumbnail: null, type: "html5", status: "available" });
 t("null thumbnail renders media-art", fallback.includes("media-art") && !fallback.includes("<img"));
 
 /* ---------------- launcher.js: planner ---------------- */

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Click Frenzy artwork</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a1533"/>
+      <stop offset="1" stop-color="#0b0f1a"/>
+    </linearGradient>
+    <radialGradient id="burst" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#e879f9"/>
+      <stop offset="1" stop-color="#e879f9" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <circle cx="320" cy="180" r="150" fill="url(#burst)" opacity=".35"/>
+  <circle cx="320" cy="180" r="60" fill="none" stroke="#e879f9" stroke-width="6"/>
+  <circle cx="320" cy="180" r="95" fill="none" stroke="#e879f9" stroke-width="4" opacity=".6"/>
+  <circle cx="320" cy="180" r="130" fill="none" stroke="#e879f9" stroke-width="3" opacity=".35"/>
+  <circle cx="180" cy="90" r="10" fill="#22d3ee"/>
+  <circle cx="470" cy="110" r="14" fill="#fbbf24"/>
+  <circle cx="150" cy="270" r="12" fill="#4ade80"/>
+  <circle cx="490" cy="270" r="9" fill="#fb7185"/>
+  <path d="M330 120 L330 190 L352 170 L364 198 L378 192 L366 164 L388 164 Z" fill="#fff" stroke="#0b0f1a" stroke-width="5" stroke-linejoin="round"/>
+</svg>

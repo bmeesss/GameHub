@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feather Flight — Play — GameHub</title>
+  <meta name="description" content="Play Feather Flight on GameHub: flap through endless gates in this snappy one-button flyer.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Feather Flight</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">Score</span><span class="hud-value" id="score">0</span></div>
+        <div class="hud-item"><span class="hud-label">Best</span><span class="hud-value" id="best">0</span></div>
+        <button class="hud-btn" id="pauseBtn" type="button">Pause</button>
+      </div>
+      <div class="stage">
+        <canvas id="game" width="400" height="560" aria-label="Feather Flight game board"></canvas>
+        <div class="overlay" id="overlay">
+          <h2 id="overlayTitle">Feather Flight</h2>
+          <p id="overlayText">Tap, click or press Space to flap. Thread every gate!</p>
+          <button class="primary-btn" id="primaryBtn" type="button">Start flying</button>
+        </div>
+      </div>
+      <p class="hint">Space / click / tap to flap · P to pause</p>
+    </main>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>

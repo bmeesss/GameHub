@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Tic-Tac-Toe artwork</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#171233"/>
+      <stop offset="1" stop-color="#0b0f1a"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <circle cx="120" cy="70" r="120" fill="#22d3ee" opacity=".10"/>
+  <circle cx="530" cy="300" r="140" fill="#fb7185" opacity=".10"/>
+  <g transform="translate(200,45)" stroke-linecap="round">
+    <rect x="0" y="0" width="240" height="270" rx="20" fill="#232c50"/>
+    <line x1="80" y1="18" x2="80" y2="252" stroke="#9faccd" stroke-width="8" opacity=".5"/>
+    <line x1="160" y1="18" x2="160" y2="252" stroke="#9faccd" stroke-width="8" opacity=".5"/>
+    <line x1="18" y1="90" x2="222" y2="90" stroke="#9faccd" stroke-width="8" opacity=".5"/>
+    <line x1="18" y1="180" x2="222" y2="180" stroke="#9faccd" stroke-width="8" opacity=".5"/>
+    <path d="M38 48 L72 82 M72 48 L38 82" stroke="#22d3ee" stroke-width="13"/>
+    <circle cx="120" cy="65" r="20" fill="none" stroke="#fb7185" stroke-width="13"/>
+    <circle cx="200" cy="65" r="20" fill="none" stroke="#fb7185" stroke-width="13"/>
+    <path d="M103 138 L137 172 M137 138 L103 172" stroke="#22d3ee" stroke-width="13"/>
+    <path d="M183 138 L217 172 M217 138 L183 172" stroke="#22d3ee" stroke-width="13"/>
+    <line x1="28" y1="225" x2="212" y2="225" stroke="#4ade80" stroke-width="10"/>
+    <path d="M38 208 L72 242 M72 208 L38 242" stroke="#22d3ee" stroke-width="13"/>
+    <path d="M103 208 L137 242 M137 208 L103 242" stroke="#22d3ee" stroke-width="13"/>
+    <path d="M168 208 L202 242 M202 208 L168 242" stroke="#22d3ee" stroke-width="13"/>
+  </g>
+</svg>

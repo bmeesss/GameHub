@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tic-Tac-Toe — Play — GameHub</title>
+  <meta name="description" content="Play Tic-Tac-Toe on GameHub: noughts and crosses against the AI or a friend.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Tic-Tac-Toe</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">X wins</span><span class="hud-value" id="scoreX">0</span></div>
+        <div class="hud-item"><span class="hud-label">Draws</span><span class="hud-value" id="scoreD">0</span></div>
+        <div class="hud-item"><span class="hud-label">O wins</span><span class="hud-value" id="scoreO">0</span></div>
+        <button class="hud-btn" id="newBtn" type="button">New</button>
+      </div>
+      <div class="mode-row" id="modeRow" role="group" aria-label="Opponent">
+        <button type="button" data-mode="easy" aria-pressed="false">Easy AI</button>
+        <button type="button" data-mode="hard" aria-pressed="true">Hard AI</button>
+        <button type="button" data-mode="versus" aria-pressed="false">2 Players</button>
+      </div>
+      <div class="stage">
+        <p class="status" id="status">Your move (X)</p>
+        <div class="board" id="board" role="grid" aria-label="Tic-tac-toe board"></div>
+        <div class="overlay" id="overlay" hidden>
+          <h2 id="overlayTitle">Tic-Tac-Toe</h2>
+          <p id="overlayText"></p>
+          <button class="primary-btn" id="primaryBtn" type="button">Next round</button>
+        </div>
+      </div>
+      <p class="hint">Get three in a row · you play X against the AI</p>
+    </main>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>

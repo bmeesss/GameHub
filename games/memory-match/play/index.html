@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Memory Match — Play — GameHub</title>
+  <meta name="description" content="Play Memory Match on GameHub: flip cards and match every pair in this brain-training classic.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Memory Match</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">Moves</span><span class="hud-value" id="moves">0</span></div>
+        <div class="hud-item"><span class="hud-label">Pairs</span><span class="hud-value" id="pairs">0/8</span></div>
+        <div class="hud-item"><span class="hud-label">Time</span><span class="hud-value" id="timer">0</span></div>
+        <button class="hud-btn" id="newBtn" type="button">New</button>
+      </div>
+      <div class="mode-row" id="modeRow" role="group" aria-label="Board size">
+        <button type="button" data-size="4" aria-pressed="true">4 × 4</button>
+        <button type="button" data-size="6" aria-pressed="false">6 × 6</button>
+      </div>
+      <div class="stage">
+        <div class="board" id="board" role="grid" aria-label="Memory board"></div>
+        <div class="overlay" id="overlay" hidden>
+          <h2 id="overlayTitle">Memory Match</h2>
+          <p id="overlayText"></p>
+          <button class="primary-btn" id="primaryBtn" type="button">Play again</button>
+        </div>
+      </div>
+      <p class="hint">Flip two cards per turn · match every pair in as few moves as you can</p>
+    </main>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>

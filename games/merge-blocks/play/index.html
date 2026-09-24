@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Merge Blocks — Play — GameHub</title>
+  <meta name="description" content="Play Merge Blocks on GameHub: slide and merge matching tiles all the way to 2048.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Merge Blocks</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">Score</span><span class="hud-value" id="score">0</span></div>
+        <div class="hud-item"><span class="hud-label">Best</span><span class="hud-value" id="best">0</span></div>
+        <button class="hud-btn" id="newBtn" type="button">New game</button>
+      </div>
+      <div class="stage">
+        <div class="board" id="board" role="grid" aria-label="Merge Blocks board"></div>
+        <div class="overlay" id="overlay" hidden>
+          <h2 id="overlayTitle">Merge Blocks</h2>
+          <p id="overlayText">Join the tiles to reach 2048!</p>
+          <button class="primary-btn" id="primaryBtn" type="button">Play again</button>
+          <button class="ghost-btn" id="continueBtn" type="button" hidden>Keep going</button>
+        </div>
+      </div>
+      <p class="hint">Arrows / WASD / swipe to slide · merge matching tiles</p>
+    </main>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>

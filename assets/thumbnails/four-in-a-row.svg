@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Four in a Row artwork</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#101a33"/>
+      <stop offset="1" stop-color="#0b0f1a"/>
+    </linearGradient>
+    <radialGradient id="cyan" cx=".35" cy=".3" r=".9">
+      <stop offset="0" stop-color="#67e8f9"/>
+      <stop offset="1" stop-color="#0e7490"/>
+    </radialGradient>
+    <radialGradient id="rose" cx=".35" cy=".3" r=".9">
+      <stop offset="0" stop-color="#fda4af"/>
+      <stop offset="1" stop-color="#be123c"/>
+    </radialGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <circle cx="540" cy="290" r="130" fill="#22d3ee" opacity=".10"/>
+  <g transform="translate(155,30)">
+    <rect x="0" y="0" width="330" height="300" rx="20" fill="#1e2a5e"/>
+    <g fill="#05070f">
+      <circle cx="30" cy="30" r="19"/>
+      <circle cx="82" cy="30" r="19"/>
+      <circle cx="134" cy="30" r="19"/>
+      <circle cx="186" cy="30" r="19"/>
+      <circle cx="238" cy="30" r="19"/>
+      <circle cx="290" cy="30" r="19"/>
+      <circle cx="30" cy="82" r="19"/>
+      <circle cx="82" cy="82" r="19"/>
+      <circle cx="134" cy="82" r="19"/>
+      <circle cx="186" cy="82" r="19"/>
+      <circle cx="238" cy="82" r="19"/>
+      <circle cx="290" cy="82" r="19"/>
+      <circle cx="30" cy="134" r="19"/>
+      <circle cx="82" cy="134" r="19"/>
+      <circle cx="134" cy="134" r="19"/>
+      <circle cx="186" cy="134" r="19"/>
+      <circle cx="238" cy="134" r="19"/>
+      <circle cx="290" cy="134" r="19"/>
+      <circle cx="30" cy="186" r="19"/>
+      <circle cx="82" cy="186" r="19"/>
+      <circle cx="134" cy="186" r="19"/>
+      <circle cx="186" cy="186" r="19"/>
+      <circle cx="238" cy="186" r="19"/>
+      <circle cx="290" cy="186" r="19"/>
+      <circle cx="30" cy="238" r="19"/>
+      <circle cx="82" cy="238" r="19"/>
+      <circle cx="134" cy="238" r="19"/>
+      <circle cx="186" cy="238" r="19"/>
+      <circle cx="238" cy="238" r="19"/>
+      <circle cx="290" cy="238" r="19"/>
+    </g>
+    <circle cx="30" cy="238" r="19" fill="url(#rose)"/>
+    <circle cx="82" cy="238" r="19" fill="url(#cyan)"/>
+    <circle cx="134" cy="238" r="19" fill="url(#cyan)"/>
+    <circle cx="186" cy="238" r="19" fill="url(#cyan)"/>
+    <circle cx="238" cy="238" r="19" fill="url(#cyan)"/>
+    <circle cx="290" cy="238" r="19" fill="url(#rose)"/>
+    <circle cx="134" cy="186" r="19" fill="url(#rose)"/>
+    <circle cx="186" cy="186" r="19" fill="url(#rose)"/>
+    <circle cx="82" cy="134" r="19" fill="none" stroke="#4ade80" stroke-width="4" stroke-dasharray="8 6"/>
+    <circle cx="134" cy="134" r="19" fill="none" stroke="#4ade80" stroke-width="4" stroke-dasharray="8 6"/>
+    <circle cx="186" cy="134" r="19" fill="none" stroke="#4ade80" stroke-width="4" stroke-dasharray="8 6"/>
+    <circle cx="238" cy="134" r="19" fill="none" stroke="#4ade80" stroke-width="4" stroke-dasharray="8 6"/>
+  </g>
+</svg>

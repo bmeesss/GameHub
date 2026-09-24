@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Sudoku artwork</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#171233"/>
+      <stop offset="1" stop-color="#0b0f1a"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <circle cx="110" cy="290" r="130" fill="#7c5cff" opacity=".14"/>
+  <circle cx="540" cy="70" r="120" fill="#22d3ee" opacity=".12"/>
+  <g transform="translate(185,30)">
+    <rect x="0" y="0" width="270" height="300" rx="14" fill="#1a2340"/>
+    <rect x="60" y="120" width="60" height="60" fill="#7c5cff" opacity=".45"/>
+    <g stroke="#2a3560" stroke-width="2">
+      <line x1="0" y1="60" x2="270" y2="60"/>
+      <line x1="0" y1="120" x2="270" y2="120"/>
+      <line x1="0" y1="180" x2="270" y2="180"/>
+      <line x1="0" y1="240" x2="270" y2="240"/>
+      <line x1="30" y1="0" x2="30" y2="300"/>
+      <line x1="60" y1="0" x2="60" y2="300"/>
+      <line x1="90" y1="0" x2="90" y2="300"/>
+      <line x1="120" y1="0" x2="120" y2="300"/>
+      <line x1="150" y1="0" x2="150" y2="300"/>
+      <line x1="180" y1="0" x2="180" y2="300"/>
+      <line x1="210" y1="0" x2="210" y2="300"/>
+      <line x1="240" y1="0" x2="240" y2="300"/>
+    </g>
+    <g stroke="#4f5da8" stroke-width="4">
+      <line x1="90" y1="0" x2="90" y2="300"/>
+      <line x1="180" y1="0" x2="180" y2="300"/>
+      <line x1="0" y1="100" x2="270" y2="100"/>
+      <line x1="0" y1="200" x2="270" y2="200"/>
+    </g>
+    <g font-family="sans-serif" font-weight="800" font-size="26" text-anchor="middle" fill="#f2f5ff">
+      <text x="15" y="42">5</text>
+      <text x="75" y="42">3</text>
+      <text x="165" y="42">7</text>
+      <text x="45" y="82">6</text>
+      <text x="135" y="82">9</text>
+      <text x="225" y="82">8</text>
+      <text x="15" y="142">8</text>
+      <text x="105" y="142">6</text>
+      <text x="195" y="142">3</text>
+    </g>
+    <text x="90" y="162" font-family="sans-serif" font-weight="800" font-size="30" text-anchor="middle" fill="#22d3ee">4</text>
+  </g>
+</svg>

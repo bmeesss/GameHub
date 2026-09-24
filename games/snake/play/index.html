@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snake — Play — GameHub</title>
+  <meta name="description" content="Play Snake on GameHub: eat, grow and survive the walls in this original arcade classic.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Snake</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">Score</span><span class="hud-value" id="score">0</span></div>
+        <div class="hud-item"><span class="hud-label">Best</span><span class="hud-value" id="best">0</span></div>
+        <button class="hud-btn" id="pauseBtn" type="button">Pause</button>
+      </div>
+      <div class="stage">
+        <canvas id="game" width="400" height="400" aria-label="Snake game board"></canvas>
+        <div class="overlay" id="overlay">
+          <h2 id="overlayTitle">Snake</h2>
+          <p id="overlayText">Eat the glowing orbs to grow. Avoid the walls and your own tail.</p>
+          <button class="primary-btn" id="primaryBtn" type="button">Start game</button>
+        </div>
+      </div>
+      <p class="hint">Arrows / WASD to steer · P to pause · swipe on touch screens</p>
+    </main>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>

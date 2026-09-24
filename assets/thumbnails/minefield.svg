@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Minefield artwork</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#101a33"/>
+      <stop offset="1" stop-color="#0b0f1a"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <circle cx="540" cy="70" r="140" fill="#fb7185" opacity=".12"/>
+  <g font-family="sans-serif" font-weight="800" font-size="34" text-anchor="middle">
+    <rect x="150" y="60" width="240" height="240" rx="14" fill="#1a2340"/>
+    <rect x="160" y="70" width="68" height="68" rx="8" fill="#232c50"/>
+    <rect x="236" y="70" width="68" height="68" rx="8" fill="#10162e"/>
+    <rect x="312" y="70" width="68" height="68" rx="8" fill="#10162e"/>
+    <rect x="160" y="146" width="68" height="68" rx="8" fill="#10162e"/>
+    <rect x="236" y="146" width="68" height="68" rx="8" fill="#232c50"/>
+    <rect x="312" y="146" width="68" height="68" rx="8" fill="#10162e"/>
+    <rect x="160" y="222" width="68" height="68" rx="8" fill="#10162e"/>
+    <rect x="236" y="222" width="68" height="68" rx="8" fill="#10162e"/>
+    <rect x="312" y="222" width="68" height="68" rx="8" fill="#232c50"/>
+    <text x="270" y="118" fill="#22d3ee">1</text>
+    <text x="346" y="118" fill="#4ade80">2</text>
+    <text x="194" y="194" fill="#22d3ee">1</text>
+    <text x="346" y="194" fill="#fbbf24">3</text>
+    <text x="194" y="270" fill="#9faccd">·</text>
+    <text x="270" y="270" fill="#22d3ee">1</text>
+  </g>
+  <line x1="194" y1="80" x2="194" y2="128" stroke="#94a3b8" stroke-width="6" stroke-linecap="round"/>
+  <path d="M194 80 L224 90 L194 102 Z" fill="#fb7185"/>
+  <circle cx="346" cy="256" r="16" fill="#0b0f1a" stroke="#e2e8f0" stroke-width="4"/>
+  <circle cx="341" cy="251" r="4" fill="#fff"/>
+  <path d="M346 232 L346 240 M346 272 L346 280 M322 256 L330 256 M362 256 L370 256" stroke="#e2e8f0" stroke-width="4" stroke-linecap="round"/>
+</svg>

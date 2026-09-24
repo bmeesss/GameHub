@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pixel Puzzles — Play — GameHub</title>
+  <meta name="description" content="Play Pixel Puzzles on GameHub: stack falling blocks into perfect lines in this original puzzler.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Pixel Puzzles</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">Score</span><span class="hud-value" id="score">0</span></div>
+        <div class="hud-item"><span class="hud-label">Lines</span><span class="hud-value" id="lines">0</span></div>
+        <div class="hud-item"><span class="hud-label">Level</span><span class="hud-value" id="level">1</span></div>
+        <button class="hud-btn" id="pauseBtn" type="button">Pause</button>
+      </div>
+      <div class="stage">
+        <canvas id="game" width="300" height="600" aria-label="Pixel Puzzles game board"></canvas>
+        <div class="overlay" id="overlay">
+          <h2 id="overlayTitle">Pixel Puzzles</h2>
+          <p id="overlayText">Guide the falling blocks, complete lines to clear them. Four lines at once scores big!</p>
+          <button class="primary-btn" id="primaryBtn" type="button">Start stacking</button>
+        </div>
+      </div>
+      <div class="touch-controls" id="touchControls">
+        <button type="button" data-act="left" aria-label="Move left">◀</button>
+        <button type="button" data-act="rotate" aria-label="Rotate">⟳</button>
+        <button type="button" data-act="right" aria-label="Move right">▶</button>
+        <button type="button" data-act="down" aria-label="Soft drop">▼</button>
+        <button type="button" data-act="drop" aria-label="Hard drop">⤓</button>
+      </div>
+      <p class="hint">Arrows to move · Up/X rotate · Space hard drop · P pause</p>
+    </main>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>

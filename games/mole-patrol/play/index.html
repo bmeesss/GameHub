@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mole Patrol — Play — GameHub</title>
+  <meta name="description" content="Play Mole Patrol on GameHub: bonk garden moles in this 30-second reflex rush.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Mole Patrol</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">Score</span><span class="hud-value" id="score">0</span></div>
+        <div class="hud-item"><span class="hud-label">Time</span><span class="hud-value" id="timeLeft">30</span></div>
+        <div class="hud-item"><span class="hud-label">Best</span><span class="hud-value" id="best">0</span></div>
+        <button class="hud-btn" id="newBtn" type="button">Restart</button>
+      </div>
+      <div class="stage">
+        <div class="lawn" id="lawn" role="grid" aria-label="Mole lawn"></div>
+        <div class="overlay" id="overlay">
+          <h2 id="overlayTitle">Mole Patrol</h2>
+          <p id="overlayText">Moles pop up for 30 seconds. Bonk each one before it hides!</p>
+          <button class="primary-btn" id="primaryBtn" type="button">Start patrol</button>
+        </div>
+      </div>
+      <p class="hint">Click / tap moles to bonk them · golden moles are worth 3 points</p>
+    </main>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neon Breakout — GameHub</title>
+  <meta name="description" content="Smash through glowing brick waves with a light-charged paddle and chain massive combos.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
+  <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="../../index.html" aria-label="GameHub home">
+        <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#7c5cff"></stop>
+              <stop offset="1" stop-color="#22d3ee"></stop>
+            </linearGradient>
+          </defs>
+          <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#logoGrad)"></rect>
+          <path d="M12.5 11.5v9M8 16h9" stroke="#fff" stroke-width="2.6" stroke-linecap="round"></path>
+          <circle cx="21.5" cy="13.8" r="1.9" fill="#fff"></circle>
+          <circle cx="21.5" cy="18.6" r="1.9" fill="#fff" opacity="0.75"></circle>
+        </svg>
+        Game<span>Hub</span>
+      </a>
+
+      <nav class="site-nav" aria-label="Primary">
+        <a href="../../index.html#home">Home</a>
+        <a href="../../index.html#games">Games</a>
+        <a href="../../index.html#categories">Categories</a>
+      </nav>
+
+      <form class="header-search" role="search" action="../../index.html" method="get">
+        <div class="search-field">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="M20 20l-3.5-3.5"></path>
+          </svg>
+          <label class="sr-only" for="search-input">Search games</label>
+          <input type="search" id="search-input" name="q" placeholder="Search games&hellip;" autocomplete="off" maxlength="80">
+        </div>
+      </form>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="container">
+      <a class="breadcrumb" href="../../index.html#games">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>
+        Back to all games
+      </a>
+
+      <div class="game-hero">
+        <div class="game-cover">
+          <img src="../../assets/thumbnails/neon-breakout.svg" alt="Neon Breakout artwork" width="640" height="360" data-art="N">
+        </div>
+        <div class="game-info">
+          <span class="pill">Arcade</span>
+          <h1>Neon Breakout</h1>
+          <p class="lede">Smash through glowing brick waves with a light-charged paddle and chain massive combos.</p>
+          <div class="notice" role="status">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v4M12 16h.01"></path></svg>
+            <span><strong>Coming soon.</strong> This is a placeholder entry while the playable game is being built.</span>
+          </div>
+          <dl class="game-meta">
+            <div><dt>Category</dt><dd>Arcade</dd></div>
+            <div><dt>Status</dt><dd>Coming soon</dd></div>
+            <div><dt>Format</dt><dd>Browser</dd></div>
+          </dl>
+          <div class="game-actions">
+            <a class="btn btn-primary" href="../../index.html#games">Browse games</a>
+            <a class="btn btn-ghost" href="../../index.html#categories">Categories</a>
+          </div>
+        </div>
+      </div>
+
+      <section class="game-about" aria-labelledby="about-title">
+        <h2 id="about-title">About this game</h2>
+        <p>Smash through glowing brick waves with a light-charged paddle and chain massive combos.</p>
+        <p>Neon Breakout is part of the GameHub catalog. Check back soon — new playable games are added regularly.</p>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="brand" href="../../index.html" aria-label="GameHub home">
+            <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+              <rect x="1" y="1" width="30" height="30" rx="9" fill="#2a3560"></rect>
+              <path d="M12.5 11.5v9M8 16h9" stroke="#22d3ee" stroke-width="2.6" stroke-linecap="round"></path>
+              <circle cx="21.5" cy="13.8" r="1.9" fill="#22d3ee"></circle>
+              <circle cx="21.5" cy="18.6" r="1.9" fill="#22d3ee" opacity="0.75"></circle>
+            </svg>
+            Game<span>Hub</span>
+          </a>
+          <p>A free, static browser game hub. Fast by design — no accounts, no tracking, just games.</p>
+        </div>
+        <nav aria-label="Footer">
+          <h2 class="footer-heading">Explore</h2>
+          <ul class="footer-links">
+            <li><a href="../../index.html#home">Home</a></li>
+            <li><a href="../../index.html#games">All games</a></li>
+            <li><a href="../../index.html#categories">Categories</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; <span id="year">2026</span> GameHub. All placeholder artwork is original and made for this project.</p>
+        <p>Static site &middot; Works offline from any static host</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var y = document.getElementById("year");
+      if (y) y.textContent = new Date().getFullYear();
+      document.addEventListener("error", function (event) {
+        var img = event.target;
+        if (!(img instanceof HTMLImageElement)) return;
+        var cover = img.closest(".game-cover");
+        if (!cover) return;
+        var art = document.createElement("span");
+        art.className = "media-art";
+        art.textContent = img.getAttribute("data-art") || "G";
+        img.remove();
+        cover.prepend(art);
+      }, true);
+    })();
+  </script>
+</body>
+</html>

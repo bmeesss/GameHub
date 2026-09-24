@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Neon Breakout artwork</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#171233"/>
+      <stop offset="1" stop-color="#0b0f1a"/>
+    </linearGradient>
+    <linearGradient id="paddle" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#7c5cff"/>
+      <stop offset="1" stop-color="#22d3ee"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <circle cx="520" cy="70" r="150" fill="#7c5cff" opacity=".18"/>
+  <circle cx="110" cy="300" r="120" fill="#22d3ee" opacity=".12"/>
+  <g opacity=".9">
+    <rect x="70" y="52" width="110" height="30" rx="7" fill="#fb7185"/>
+    <rect x="192" y="52" width="110" height="30" rx="7" fill="#fbbf24"/>
+    <rect x="314" y="52" width="110" height="30" rx="7" fill="#34d399"/>
+    <rect x="436" y="52" width="110" height="30" rx="7" fill="#22d3ee"/>
+    <rect x="131" y="94" width="110" height="30" rx="7" fill="#a78bfa"/>
+    <rect x="253" y="94" width="110" height="30" rx="7" fill="#fb7185" opacity=".8"/>
+    <rect x="375" y="94" width="110" height="30" rx="7" fill="#fbbf24" opacity=".85"/>
+  </g>
+  <circle cx="320" cy="205" r="13" fill="#fff"/>
+  <circle cx="320" cy="205" r="22" fill="#22d3ee" opacity=".35"/>
+  <rect x="230" y="288" width="180" height="22" rx="11" fill="url(#paddle)"/>
+  <rect x="230" y="288" width="180" height="22" rx="11" fill="#fff" opacity=".12"/>
+</svg>

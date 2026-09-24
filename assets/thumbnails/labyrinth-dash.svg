@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Labyrinth Dash artwork</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0f2b26"/>
+      <stop offset="1" stop-color="#0b0f1a"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <circle cx="560" cy="80" r="130" fill="#34d399" opacity=".12"/>
+  <g fill="none" stroke="#34d399" stroke-width="10" stroke-linecap="round" opacity=".55">
+    <path d="M120 90h200v70H190v50h150v60H230"/>
+    <path d="M420 90h100v180H360"/>
+    <path d="M120 300h120"/>
+  </g>
+  <g fill="none" stroke="#a7f3d0" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity=".9">
+    <path d="M150 320V240h120V180h90V120h110" stroke-dasharray="2 14"/>
+  </g>
+  <circle cx="150" cy="320" r="12" fill="#22d3ee"/>
+  <circle cx="150" cy="320" r="20" fill="#22d3ee" opacity=".3"/>
+  <rect x="452" y="92" width="56" height="56" rx="12" fill="#fbbf24"/>
+  <path d="M480 108v24M468 120l12 12 12-12" stroke="#0b0f1a" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page not found — GameHub</title>
+  <meta name="description" content="This page does not exist on GameHub.">
+  <meta name="theme-color" content="#0b0f1a">
+  <style>
+    :root {
+      --bg: #0b0f1a;
+      --surface: #141c33;
+      --border: rgba(148, 163, 216, 0.16);
+      --text: #f2f5ff;
+      --muted: #9faccd;
+      --accent: #7c5cff;
+      --accent-2: #22d3ee;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: radial-gradient(700px 380px at 50% -100px, rgba(124, 92, 255, 0.2), transparent 60%), var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .card {
+      text-align: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 56px 40px;
+      max-width: 480px;
+      width: 100%;
+    }
+    .code {
+      font-size: 4.5rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    h1 { font-size: 1.4rem; margin: 12px 0 8px; }
+    p { color: var(--muted); margin-bottom: 28px; }
+    .actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    a, button {
+      font: inherit;
+      font-weight: 700;
+      font-size: 0.95rem;
+      border-radius: 12px;
+      padding: 12px 22px;
+      cursor: pointer;
+      text-decoration: none;
+      border: 1px solid transparent;
+    }
+    .primary { background: linear-gradient(135deg, var(--accent), #4f7cff 55%, var(--accent-2)); color: #fff; }
+    .ghost { background: transparent; border-color: var(--border); color: var(--text); }
+    a:focus-visible, button:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 3px; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="code" aria-hidden="true">404</div>
+    <h1>Page not found</h1>
+    <p>This game level doesn't exist. The page may have moved or the link is broken.</p>
+    <div class="actions">
+      <a class="primary" id="home-link" href="./">Back to GameHub</a>
+      <button class="ghost" id="back-btn" type="button">Go back</button>
+    </div>
+  </main>
+  <script>
+    (function () {
+      var back = document.getElementById("back-btn");
+      if (back) back.addEventListener("click", function () { history.back(); });
+      /* GitHub Pages serves this file from the missing URL's depth, so
+         resolve the project root for hosts like <user>.github.io/<repo>/. */
+      var link = document.getElementById("home-link");
+      if (!link) return;
+      try {
+        var parts = location.pathname.split("/");
+        if (/\.github\.io$/.test(location.hostname) && parts.length > 2 && parts[1]) {
+          link.setAttribute("href", "/" + parts[1] + "/");
+        }
+      } catch (e) { /* keep default relative link */ }
+    })();
+  </script>
+</body>
+</html>

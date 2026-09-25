@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Eaglercraft 1.12.2 — GameHub</title>
-  <meta name="description" content="A newer-generation 1.12 voxel client. Supply your own legally distributable client to play.">
+  <meta name="description" content="A newer-generation 1.12 voxel client: more blocks, more mobs and richer worlds in your browser.">
   <meta property="og:title" content="Eaglercraft 1.12.2 — GameHub">
-  <meta property="og:description" content="A newer-generation 1.12 voxel client. Supply your own legally distributable client to play.">
+  <meta property="og:description" content="A newer-generation 1.12 voxel client: more blocks, more mobs and richer worlds in your browser.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="../../assets/thumbnails/eaglercraft-1-12.svg">
   <meta name="theme-color" content="#0b0f1a">
@@ -68,20 +68,20 @@
         <div class="game-info">
           <div class="pill-row"><span class="pill">Minecraft</span><span class="type-badge">WebGL</span></div>
           <h1>Eaglercraft 1.12.2</h1>
-          <p class="lede">A newer-generation 1.12 voxel client. Supply your own legally distributable client to play.</p>
-          <div class="notice" role="status">
+          <p class="lede">A newer-generation 1.12 voxel client: more blocks, more mobs and richer worlds in your browser.</p>
+          <div class="notice" data-client-notice role="status">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v4M12 16h.01"></path></svg>
-            <span><strong>Launcher ready — client not supplied.</strong> Place a legally distributable client at <code style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85em">games/eaglercraft-1-12/client/</code> (see README), then press Play.</span>
+            <span><strong>Launcher ready — client not supplied.</strong> GameHub ships no Minecraft files. Place a legally distributable client at <code style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85em">games/eaglercraft-1-12/client/</code> or configure your HTTPS client in <code style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85em">client-config.js</code>.</span>
           </div>
           <dl class="game-meta">
             <div><dt>Category</dt><dd>Minecraft</dd></div>
             <div><dt>Type</dt><dd>WebGL</dd></div>
             <div><dt>Version</dt><dd>1.12.2</dd></div>
-            <div><dt>Status</dt><dd>Coming soon</dd></div>
+            <div><dt>Status</dt><dd data-status-value>Coming soon</dd></div>
           </dl>
           <div class="game-actions">
             <a class="btn btn-primary" href="#launcher">Play now</a>
-            <a class="btn btn-ghost" href="../../index.html#games">Browse games</a>
+            <a class="btn btn-ghost" href="../../index.html?category=Minecraft#games">More Minecraft games</a>
           </div>
         </div>
       </div>
@@ -95,13 +95,14 @@
         data-play-url="client/index.html">
         <div class="launcher-head">
           <div>
-            <p class="eyebrow">Game launcher</p>
+            <p class="eyebrow eyebrow--green">Game launcher</p>
             <h2 id="launcher-title">Play Eaglercraft 1.12.2</h2>
           </div>
           <div class="launcher-meta">
             <span class="type-badge">WebGL</span>
             <span class="tag">v1.12.2</span>
             <span class="tag">minecraft</span>
+            <span class="tag">multiplayer</span>
             <span class="tag">sandbox</span>
             <span class="tag">voxel</span>
           </div>
@@ -115,23 +116,25 @@
             Fullscreen
           </button>
           <button class="btn btn-ghost btn-sm launcher-close" type="button">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
             Close game
           </button>
+          <span class="launcher-status" role="status" aria-live="polite"></span>
           <span class="spacer"></span>
           <a class="launcher-back" href="../../index.html#games">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>
             Back to catalog
           </a>
         </div>
-        <p class="launcher-hint">Host your own client build at <code>games/eaglercraft-1-12/client/index.html</code> — GameHub does not ship Minecraft itself. See the README for details.</p>
+        <p class="launcher-hint">Ship a client locally at <code>games/eaglercraft-1-12/client/index.html</code> or point <code>client-config.js</code> at your own HTTPS-hosted build — GameHub never bundles Minecraft itself. See the README for the full guide.</p>
 
       </section>
 
       <section class="game-about" aria-labelledby="about-title">
         <h2 id="about-title">About this game</h2>
-        <p>A newer-generation 1.12 voxel client. Supply your own legally distributable client to play.</p>
-        <p>Eaglercraft 1.12.2 is part of the GameHub catalog. Check back soon — new playable games are added regularly.</p>
+        <p>A newer-generation 1.12 voxel client: more blocks, more mobs and richer worlds in your browser.</p>
+        <p>Eaglercraft 1.12.2 brings the newer 1.12 generation of the voxel sandbox to the browser: a bigger block palette, more mobs and richer generated worlds, all powered by WebGL. The classic mine, craft and build loop with modern-world features.</p>
+        <p>This slot launches the client inside the GameHub viewport with fullscreen, restart and close controls. Favorites, recently played and per-game stats keep working — everything is stored in your own browser.</p>
       </section>
     </div>
   </main>
@@ -171,6 +174,7 @@
   <script src="../../catalog.js" defer></script>
   <script src="../../player.js" defer></script>
   <script src="../../cards.js" defer></script>
+  <script src="../../client-config.js" defer></script>
   <script src="../../launcher.js" defer></script>
 </body>
 </html>

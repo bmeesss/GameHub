@@ -54,6 +54,42 @@ var GameHubCards = (function () {
     return Boolean(game && game.id && game.title && game.slug && game.category);
   }
 
+  /* Minecraft-style client slots (webgl/wasm) flip from "Coming
+     soon" to playable as soon as a client is genuinely available:
+     either shipped locally (marked after an existence check by the
+     launcher/homepage) or configured centrally over HTTPS in
+     client-config.js. Cards never claim playability without one. */
+  var availableClients = typeof Set === "function" ? new Set() : null;
+
+  function clientConfig() {
+    if (typeof GameHubClients !== "undefined" && GameHubClients) return GameHubClients;
+    if (typeof window !== "undefined" && window && window.GameHubClients) return window.GameHubClients;
+    return null;
+  }
+
+  function isClientGame(game) {
+    return Boolean(game) && (game.type === "webgl" || game.type === "wasm");
+  }
+
+  function httpsClientUrl(game) {
+    var config = clientConfig();
+    var entry = config && config.clients ? config.clients[game.slug] : null;
+    var url = entry && typeof entry === "object" ? String(entry.url || "").trim() : "";
+    return /^https:\/\/[^/]/i.test(url) ? url : "";
+  }
+
+  function clientReady(game) {
+    if (!isClientGame(game) || game.status !== "coming-soon") return false;
+    if (availableClients && availableClients.has(game.id)) return true;
+    return Boolean(httpsClientUrl(game));
+  }
+
+  function markClientAvailable(id) {
+    var clean = String(id == null ? "" : id).trim();
+    if (!clean || !availableClients) return;
+    availableClients.add(clean);
+  }
+
   function isFavorite(id) {
     var store = player();
     return Boolean(store && typeof store.isFavorite === "function" && store.isFavorite(id));
@@ -105,7 +141,8 @@ var GameHubCards = (function () {
     var showFav = opts.fav !== false;
     var url = gameUrl(game, prefix);
     var title = escapeHtml(game.title);
-    var comingSoon = game.status === "coming-soon";
+    var comingSoon = game.status === "coming-soon" && !clientReady(game);
+    var minecraft = game.category === "Minecraft";
     var label = typeLabel(game.type);
     var badge = comingSoon ? "<span class=\"card-status\">Coming soon</span>" : "";
     var typeBadge = label ? "<span class=\"type-badge\">" + escapeHtml(label) + "</span>" : "";
@@ -114,7 +151,7 @@ var GameHubCards = (function () {
       ? "<a class=\"btn btn-ghost btn-sm\" href=\"" + url + "\" aria-label=\"" + title + " details\">Details " + ARROW_SVG + "</a>"
       : "<a class=\"btn btn-primary btn-sm\" href=\"" + url + "\" aria-label=\"Play " + title + "\">Play " + ARROW_SVG + "</a>";
     return (
-      "<article class=\"card" + (comingSoon ? " card--soon" : "") + "\" data-game-id=\"" + escapeHtml(game.id) + "\">" +
+      "<article class=\"card" + (comingSoon ? " card--soon" : "") + (minecraft ? " card--minecraft" : "") + "\" data-game-id=\"" + escapeHtml(game.id) + "\">" +
         "<a class=\"card-media\" href=\"" + url + "\" tabindex=\"-1\" aria-hidden=\"true\">" + mediaInner(game, prefix) + badge + "</a>" +
         (showFav ? favButton(game) : "") +
         "<div class=\"card-body\">" +
@@ -199,7 +236,10 @@ var GameHubCards = (function () {
     favButton: favButton,
     syncFavButtons: syncFavButtons,
     paintFavButton: paintFavButton,
-    wireFavorites: wireFavorites
+    wireFavorites: wireFavorites,
+    isClientGame: isClientGame,
+    clientReady: clientReady,
+    markClientAvailable: markClientAvailable
   };
 })();
 

@@ -7,15 +7,21 @@
      webgl    -> verify local client, embed in a large viewport
      wasm     -> verify local client, embed in a large viewport
      external -> navigate to the configured https URL
+   Minecraft-style clients (webgl/wasm) resolve in this order:
+     1. a local client at games/<slug>/client/index.html
+     2. a centrally configured HTTPS client (client-config.js)
+     3. a friendly error — never a fake loading screen
    Nothing is preloaded: clients only load after the user
    presses Play. Missing files always fail gracefully — a game is
    never presented as playable when its files are absent.
    The launcher also enhances game pages from the shared
    catalog/player/cards modules: favorite toggle, personal stats,
-   controls, difficulty and catalog-driven related games.
+   controls, difficulty and catalog-driven related games. When a
+   valid client is present (local or configured), the page status
+   upgrades from "Coming soon" to "Available" at runtime.
    Load order on game pages: catalog.js -> player.js -> cards.js
-   -> launcher.js. Every enhancement degrades gracefully when a
-   module failed to load.
+   -> client-config.js -> launcher.js. Every enhancement degrades
+   gracefully when a module failed to load.
    Run tests with: node tests/smoke.mjs && python3 tests/check.py
    ============================================================ */
 "use strict";
@@ -60,19 +66,55 @@ const isHttpsUrl = (url) => /^https:\/\/[^/]/i.test(String(url || "").trim());
 /* Conventional client location for WebGL/WASM games missing files. */
 const clientHint = (slug) => `games/${slug}/client/index.html`;
 
+/* ---------------- Central client configuration ----------------
+   client-config.js may define window.GameHubClients:
+     { clients: { "<slug>": { url: "https://host/path/index.html" } } }
+   A local client (the page's data-play-url) always wins; the
+   configured HTTPS client is the fallback when no local client is
+   present. GameHub bundles no client files itself — the URL must
+   point at a build the operator is allowed to serve. */
+const readClientConfig = () => {
+  if (typeof GameHubClients !== "undefined" && GameHubClients) return GameHubClients;
+  if (typeof window !== "undefined" && window && window.GameHubClients) return window.GameHubClients;
+  return null;
+};
+
+const configuredClientUrl = (slug, fallback = "") => {
+  let url = "";
+  const config = readClientConfig();
+  const entry = config && config.clients ? config.clients[slug] : null;
+  if (entry && typeof entry === "object") url = String(entry.url || "").trim();
+  if (!url) url = String(fallback || "").trim();
+  return url;
+};
+
+/* Types whose play target is a heavyweight client bundle. */
+const CLIENT_TYPES = ["webgl", "wasm"];
+const isClientType = (type) => CLIENT_TYPES.includes(type);
+
+
 /* Decide what Play should do. Never touches the network or DOM,
    so it is cheap to unit test and safe to call speculatively.
-   config: { slug, type, playUrl } — all strings, playUrl may be "". */
+   config: { slug, type, playUrl, clientUrl } — all strings,
+   playUrl/clientUrl may be "". For webgl/wasm the local client
+   (playUrl) wins; a valid HTTPS clientUrl is the fallback. */
 const resolveLaunch = (config) => {
   const slug = String((config && config.slug) || "").trim();
   const type = String((config && config.type) || "").trim().toLowerCase();
   const playUrl = String((config && config.playUrl) || "").trim();
+  const clientUrl = String((config && config.clientUrl) || "").trim();
 
   if (!LAUNCH_TYPES.includes(type)) {
     return { action: "error", reason: "This game uses an unsupported game type." };
   }
   if (!playUrl) {
-    if (type === "webgl" || type === "wasm") {
+    if (isClientType(type)) {
+      if (clientUrl) {
+        if (!isHttpsUrl(clientUrl)) {
+          return { action: "error", reason: "The configured client URL must use HTTPS.", detail: "Update client-config.js — HTTP clients are refused." };
+        }
+        return { action: "embed", url: clientUrl, probe: false, remote: true };
+      }
       return {
         action: "error",
         reason: "Client files have not been added yet.",
@@ -198,9 +240,42 @@ const readConfig = (section) => {
     status: String(data.status || "").trim().toLowerCase(),
     type: String(data.type || "").trim().toLowerCase(),
     playUrl: String(data.playUrl || "").trim(),
+    clientUrl: String(data.clientUrl || "").trim(),
     sandbox: String(data.embedSandbox || "").trim(),
     allow: String(data.embedAllow || DEFAULT_IFRAME_ALLOW).trim() || DEFAULT_IFRAME_ALLOW
   };
+};
+
+/* Merge the central client configuration into a page config:
+   client-config.js wins over the page's data-client-url. */
+const withClientConfig = (config) => {
+  if (!isClientType(config.type)) return { ...config, clientUrl: "" };
+  return { ...config, clientUrl: configuredClientUrl(config.slug, config.clientUrl) };
+};
+
+/* Status read-out shown in the launcher toolbar. */
+const STATUS_TEXT = {
+  ready: "Ready to play",
+  loading: "Loading client…",
+  running: "Running",
+  blocked: "Client not loading — it may block embedding"
+};
+
+const setStatus = (launcher, key, url = "") => {
+  const node = $(".launcher-status", launcher);
+  if (!node) return;
+  node.setAttribute("data-state", key);
+  node.textContent = STATUS_TEXT[key] || "";
+  if (key === "blocked" && url && isHttpsUrl(url)) {
+    node.appendChild(document.createTextNode(" · "));
+    const link = document.createElement("a");
+    link.className = "launcher-status-link";
+    link.setAttribute("href", url);
+    link.setAttribute("target", "_blank");
+    link.setAttribute("rel", "noopener");
+    link.textContent = "Open the client in a new tab";
+    node.appendChild(link);
+  }
 };
 
 const clearStage = (stage) => {
@@ -221,15 +296,17 @@ const renderCover = (launcher, stage, config) => {
   cover.appendChild(note);
   stage.appendChild(cover);
   setToolbar(launcher, { playing: false });
+  setStatus(launcher, "ready");
 };
 
-const renderLoading = (stage, config) => {
+const renderLoading = (launcher, stage, config) => {
   clearStage(stage);
   const loading = el("div", "launcher-loading");
   loading.setAttribute("role", "status");
   loading.appendChild(el("span", "spinner", `<span class="sr-only">Loading</span>`));
   loading.appendChild(el("p", "", `Loading <strong>${escapeHtml(config.title)}</strong>…`));
   stage.appendChild(loading);
+  setStatus(launcher, "loading");
 };
 
 const renderError = (launcher, stage, config, reason, detail) => {
@@ -250,6 +327,7 @@ const renderError = (launcher, stage, config, reason, detail) => {
   error.appendChild(actions);
   stage.appendChild(error);
   setToolbar(launcher, { playing: false });
+  setStatus(launcher, "");
 };
 
 const setToolbar = (launcher, { playing }) => {
@@ -283,7 +361,14 @@ const ensureRestartButton = (launcher, stage, config) => {
   toolbar.appendChild(restart);
 };
 
-const embedGame = (launcher, stage, config, url) => {
+/* Embed a verified client. For remote (unprobed) HTTPS clients a
+   load watchdog watches for hosts that refuse framing: instead of
+   silently showing a blank viewport, the status area explains the
+   problem and offers a new-tab escape hatch. The iframe itself is
+   never destroyed, so a slow-but-working client keeps loading. */
+const REMOTE_LOAD_TIMEOUT_MS = 15000;
+
+const embedGame = (launcher, stage, config, url, remote = false) => {
   clearStage(stage);
   const frame = document.createElement("iframe");
   frame.className = "launcher-frame";
@@ -293,11 +378,29 @@ const embedGame = (launcher, stage, config, url) => {
   frame.setAttribute("allowfullscreen", "");
   if (config.sandbox) frame.setAttribute("sandbox", config.sandbox);
   frame.setAttribute("loading", "eager");
+  let settled = false;
   frame.addEventListener("error", () => {
+    settled = true;
     renderError(launcher, stage, config, "The game failed to load in its viewport.", "");
+  });
+  frame.addEventListener("load", () => {
+    settled = true;
+    setStatus(launcher, "running");
   });
   stage.appendChild(frame);
   setToolbar(launcher, { playing: true });
+  setStatus(launcher, remote ? "loading" : "running");
+  if (remote && typeof setTimeout === "function") {
+    setTimeout(() => {
+      if (settled) return;
+      try {
+        if (typeof stage.contains === "function" && !stage.contains(frame)) return;
+      } catch {
+        return;
+      }
+      setStatus(launcher, "blocked", url);
+    }, REMOTE_LOAD_TIMEOUT_MS);
+  }
 };
 
 const closeGame = (launcher, stage, config) => {
@@ -318,28 +421,45 @@ const toggleFullscreen = (stage) => {
   }
 };
 
-const startLaunch = (launcher, stage, config) => {
+const startLaunch = (launcher, stage, baseConfig) => {
+  /* Merge the central client configuration on every attempt so
+     operators can point a slot at an HTTPS client at any time. */
+  const config = withClientConfig(baseConfig);
   const plan = resolveLaunch(config);
   if (plan.action === "error") {
     renderError(launcher, stage, config, plan.reason, plan.detail || "");
     return;
   }
   if (plan.action === "external") {
-    renderLoading(stage, config);
+    renderLoading(launcher, stage, config);
     recordLaunch(config.slug);
     location.assign(plan.url);
     return;
   }
   if (!plan.probe) {
-    renderLoading(stage, config);
+    renderLoading(launcher, stage, config);
     recordLaunch(config.slug);
-    embedGame(launcher, stage, config, plan.url);
+    embedGame(launcher, stage, config, plan.url, Boolean(plan.remote));
     return;
   }
-  renderLoading(stage, config);
+  renderLoading(launcher, stage, config);
   probeUrl(plan.url).then((result) => {
     if (!result.ok) {
-      const detail = config.type === "webgl" || config.type === "wasm"
+      /* Local target missing: client-type games fall back to the
+         centrally configured HTTPS client before giving up. */
+      if (isClientType(config.type)) {
+        const remote = configuredClientUrl(config.slug, config.clientUrl);
+        if (remote && isHttpsUrl(remote)) {
+          recordLaunch(config.slug);
+          embedGame(launcher, stage, config, remote, true);
+          return;
+        }
+        if (remote) {
+          renderError(launcher, stage, config, "The configured client URL must use HTTPS.", "Update client-config.js — HTTP clients are refused.");
+          return;
+        }
+      }
+      const detail = isClientType(config.type)
         ? `Client files have not been added yet.${config.slug ? ` Expected at ${clientHint(config.slug)}.` : ""}`
         : `Could not load the game files${result.status ? ` (HTTP ${result.status})` : ""}.`;
       renderError(launcher, stage, config, "The game files could not be found.", detail);
@@ -351,7 +471,38 @@ const startLaunch = (launcher, stage, config) => {
       return;
     }
     recordLaunch(config.slug);
-    embedGame(launcher, stage, config, plan.url);
+    embedGame(launcher, stage, config, plan.url, false);
+  });
+};
+
+/* ---------------- Client status on game pages ----------------
+   Minecraft-style slots ship as "Coming soon" until a client is
+   present. A HEAD request (existence only — no client assets are
+   downloaded) or a valid central configuration upgrades the
+   visible status to "Available" and retires the notice, so the
+   page never claims "Coming soon" once a client is genuinely
+   configured. The catalog stays the static source of truth; this
+   is a runtime display upgrade only. */
+const clientAvailability = (config) => {
+  const clientUrl = withClientConfig(config).clientUrl;
+  if (clientUrl) {
+    return Promise.resolve(isHttpsUrl(clientUrl) ? { available: true, source: "remote" } : { available: false, source: "" });
+  }
+  if (!config.playUrl) return Promise.resolve({ available: false, source: "" });
+  return probeUrl(config.playUrl).then((result) =>
+    result.ok && !result.skipped ? { available: true, source: "local" } : { available: false, source: "" }
+  );
+};
+
+const enhanceClientStatus = (config) => {
+  if (!isClientType(config.type)) return;
+  clientAvailability(config).then((result) => {
+    if (!result.available) return;
+    const statusValue = $("[data-status-value]");
+    if (statusValue) statusValue.textContent = "Available";
+    const notice = $("[data-client-notice]");
+    if (notice) notice.hidden = true;
+    if (Cards && typeof Cards.markClientAvailable === "function") Cards.markClientAvailable(config.slug);
   });
 };
 
@@ -360,7 +511,7 @@ const initLauncher = () => {
   if (!launcher) return;
   const stage = $("#launcher-stage", launcher);
   if (!stage) return;
-  const config = readConfig(launcher);
+  const config = withClientConfig(readConfig(launcher));
   initLauncher.config = config;
   renderCover(launcher, stage, config);
   ensureRestartButton(launcher, stage, config);
@@ -371,6 +522,7 @@ const initLauncher = () => {
     const button = $(".launcher-fullscreen", launcher);
     if (button) button.classList.toggle("is-active", isFullscreen());
   });
+  enhanceClientStatus(config);
 };
 
 /* ---------------- Shared page niceties ---------------- */

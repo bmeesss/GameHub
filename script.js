@@ -357,6 +357,48 @@ const hideRecentSearches = () => {
   }
 };
 
+/* ---------------- Local client refresh ----------------
+   Minecraft client slots that ship no files render as "Coming
+   soon". A lightweight HEAD request per client slot (existence
+   only — the client itself never loads on the homepage) upgrades
+   any slot whose local client is present; centrally configured
+   HTTPS clients are already handled by cards.js. Affected rails
+   simply re-render with the honest new state. */
+const CLIENT_TYPES = ["webgl", "wasm"];
+const isRemoteUrl = (url) => /^https?:\/\//i.test(String(url || ""));
+
+const refreshClientStatus = () => {
+  if (typeof fetch !== "function" || !Cards) return;
+  try {
+    if (location.protocol === "file:") return;
+  } catch {
+    return;
+  }
+  const candidates = allGames().filter((game) =>
+    CLIENT_TYPES.includes(game.type) &&
+    game.status === "coming-soon" &&
+    game.playUrl && !isRemoteUrl(game.playUrl) &&
+    !Cards.clientReady(game)
+  );
+  if (!candidates.length) return;
+  const check = (game) =>
+    fetch(game.playUrl, { method: "HEAD", cache: "no-store" })
+      .then((response) => (response && response.ok ? game : null))
+      .catch(() => null);
+  Promise.all(candidates.map(check)).then((found) => {
+    const hits = found.filter(Boolean);
+    if (!hits.length) return;
+    for (const game of hits) Cards.markClientAvailable(game.id);
+    renderMinecraft();
+    renderFeatured();
+    renderPopular();
+    renderNew();
+    renderFavoritesShelf();
+    renderRecent();
+    applyFilters();
+  });
+};
+
 /* ---------------- Navigation highlight ---------------- */
 const initScrollSpy = () => {
   const links = [...document.querySelectorAll(".site-nav a[href^='#']")];
@@ -529,3 +571,4 @@ renderYear();
 applyFilters();
 initEvents();
 initScrollSpy();
+refreshClientStatus();

@@ -225,7 +225,9 @@ const GAMES = [
     version: "1.8",
     playUrl: "games/eaglercraft-1-8/client/index.html",
     embed: null,
-    tags: ["minecraft", "multiplayer", "sandbox", "voxel"]
+    tags: ["minecraft", "multiplayer", "sandbox", "voxel"],
+    controls: "WASD to move, mouse to look, left click to mine, right click to place, E for the inventory, Esc for the menu.",
+    difficulty: "Medium"
   },
   {
     id: "eaglercraftx-1-8",
@@ -241,7 +243,9 @@ const GAMES = [
     version: "1.8",
     playUrl: "games/eaglercraftx-1-8/client/index.html",
     embed: null,
-    tags: ["minecraft", "multiplayer", "sandbox", "voxel"]
+    tags: ["minecraft", "multiplayer", "sandbox", "voxel"],
+    controls: "WASD to move, mouse to look, left click to mine, right click to place, E for the inventory, Esc for the menu.",
+    difficulty: "Medium"
   },
   {
     id: "eaglercraft-1-12",
@@ -257,7 +261,9 @@ const GAMES = [
     version: "1.12.2",
     playUrl: "games/eaglercraft-1-12/client/index.html",
     embed: null,
-    tags: ["minecraft", "sandbox", "voxel"]
+    tags: ["minecraft", "multiplayer", "sandbox", "voxel"],
+    controls: "WASD to move, mouse to look, left click to mine, right click to place, E for the inventory, Esc for the menu.",
+    difficulty: "Medium"
   },
   {
     id: "snake",

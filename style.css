@@ -990,6 +990,43 @@ p { color: var(--muted); }
 .launcher-back:hover { color: var(--accent-2); }
 .launcher-back svg { width: 16px; height: 16px; }
 
+/* Launcher status read-out (toolbar status/error area). */
+.launcher-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--muted-soft);
+  background: rgba(148, 163, 216, 0.07);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 5px 13px;
+  max-width: 100%;
+}
+
+.launcher-status::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--muted-soft);
+  flex: none;
+}
+
+.launcher-status[data-state=""] { display: none; }
+.launcher-status[data-state="running"] { color: #bbf7d0; border-color: rgba(74, 222, 128, 0.35); }
+.launcher-status[data-state="running"]::before { background: #4ade80; box-shadow: 0 0 10px rgba(74, 222, 128, 0.9); }
+.launcher-status[data-state="loading"] { color: #fde68a; border-color: rgba(251, 191, 36, 0.35); }
+.launcher-status[data-state="loading"]::before { background: #fbbf24; animation: status-pulse 1s ease-in-out infinite; }
+.launcher-status[data-state="blocked"] { color: #fcd34d; border-color: rgba(251, 191, 36, 0.45); }
+.launcher-status[data-state="blocked"]::before { background: #f59e0b; animation: status-pulse 1.4s ease-in-out infinite; }
+
+.launcher-status-link { color: #fcd34d; font-weight: 700; text-decoration: underline; white-space: nowrap; }
+.launcher-status-link:hover { color: #fde047; }
+
+@keyframes status-pulse { 50% { opacity: 0.35; } }
+
 .launcher-hint { font-size: 0.86rem; margin-top: 14px; }
 
 /* ---------- 16. Responsive ---------- */
@@ -1008,6 +1045,11 @@ p { color: var(--muted); }
   .hero-stats > div + div { border-left: none; border-top: 1px solid var(--border); }
   .section { padding-block: 48px; }
   .section-head--split { flex-direction: column; align-items: flex-start; }
+  .launcher { padding: 18px 14px; }
+  .launcher-head { margin-bottom: 14px; }
+  .launcher-stage { min-height: 240px; aspect-ratio: 4 / 3; }
+  .launcher-toolbar { gap: 8px; }
+  .launcher-status { font-size: 0.76rem; padding: 4px 10px; }
   .results-count { padding-bottom: 0; }
 }
 
@@ -1126,6 +1168,18 @@ p { color: var(--muted); }
 }
 
 .card--soon .card-media img { filter: saturate(0.7); }
+
+/* Minecraft cards: unmistakable voxel-green accent. */
+.card--minecraft { border-color: rgba(74, 222, 128, 0.3); }
+.card--minecraft:hover {
+  border-color: rgba(74, 222, 128, 0.65);
+  box-shadow: var(--shadow), 0 0 0 1px rgba(74, 222, 128, 0.3), 0 14px 40px -14px rgba(74, 222, 128, 0.45);
+}
+.card--minecraft .pill {
+  color: #86efac;
+  background: rgba(74, 222, 128, 0.14);
+  border-color: rgba(74, 222, 128, 0.35);
+}
 
 /* Catalog toolbar */
 .catalog-toolbar {

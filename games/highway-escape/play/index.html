@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Highway Escape — Play — GameHub</title>
+  <meta name="description" content="Play Highway Escape on GameHub: weave through traffic and escape the endless chase.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Highway Escape</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">Distance</span><span class="hud-value" id="score">0 m</span></div>
+        <div class="hud-item"><span class="hud-label">Best</span><span class="hud-value" id="best">0 m</span></div>
+        <button class="hud-btn" id="pauseBtn" type="button">Pause</button>
+      </div>
+      <div class="stage">
+        <canvas id="game" width="400" height="500" aria-label="Highway Escape game board"></canvas>
+        <div class="overlay" id="overlay">
+          <h2 id="overlayTitle">Highway Escape</h2>
+          <p id="overlayText">Dodge traffic, grab fuel and see how far down the highway you get.</p>
+          <button class="primary-btn" id="primaryBtn" type="button">Start game</button>
+        </div>
+      </div>
+      <p class="hint">← → to change lanes · P to pause · tap the screen sides on touch</p>
+    </main>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>

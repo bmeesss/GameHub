@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mini Golf — Play — GameHub</title>
+  <meta name="description" content="Play Mini Golf on GameHub: putt through 6 tricky holes with hazards.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Mini Golf</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">Hole</span><span class="hud-value" id="hole">1/6</span></div>
+        <div class="hud-item"><span class="hud-label">Strokes</span><span class="hud-value" id="strokes">0</span></div>
+        <button class="hud-btn" id="pauseBtn" type="button">Pause</button>
+      </div>
+      <div class="stage">
+        <canvas id="game" width="400" height="400" aria-label="Mini Golf game board"></canvas>
+        <div class="overlay" id="overlay">
+          <h2 id="overlayTitle">Mini Golf</h2>
+          <p id="overlayText">Putt through 6 holes. Fewest total strokes wins — mind the sand and movers.</p>
+          <button class="primary-btn" id="primaryBtn" type="button">Start game</button>
+        </div>
+      </div>
+      <p class="hint">Drag from the ball to aim · release to putt · R restarts the hole</p>
+    </main>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>

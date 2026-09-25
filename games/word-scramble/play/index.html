@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Word Scramble — Play — GameHub</title>
+  <meta name="description" content="Play Word Scramble on GameHub: unscramble as many words as you can in 60 seconds.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Word Scramble</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">Words</span><span class="hud-value" id="score">0</span></div>
+        <div class="hud-item"><span class="hud-label">Time</span><span class="hud-value" id="time">60</span></div>
+        <div class="hud-item"><span class="hud-label">Best</span><span class="hud-value" id="best">0</span></div>
+        <button class="hud-btn" id="pauseBtn" type="button">Pause</button>
+      </div>
+      <div class="word-panel">
+        <p class="scrambled" id="scrambled" aria-live="polite">????</p>
+        <div class="guess-row">
+          <label class="sr" for="guess">Your guess</label>
+          <input id="guess" type="text" maxlength="12" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Type the word">
+          <button class="hud-btn" id="submitBtn" type="button">Go</button>
+        </div>
+        <p class="word-msg" id="wordMsg" aria-live="polite"></p>
+      </div>
+      <div class="stage">
+        <div class="board-pad" id="boardPad"><p>Streak: <strong id="streak">0</strong> · Skips left: <strong id="skips">3</strong></p><button class="hud-btn" id="skipBtn" type="button">Skip word</button></div>
+        <div class="overlay" id="overlay">
+          <h2 id="overlayTitle">Word Scramble</h2>
+          <p id="overlayText">Unscramble the letters before the 60-second clock runs out.</p>
+          <button class="primary-btn" id="primaryBtn" type="button">Start game</button>
+        </div>
+      </div>
+      <p class="hint">Type the word, press Enter · R reshuffles · P pauses</p>
+    </main>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>

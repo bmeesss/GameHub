@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Knife Dodge — Play — GameHub</title>
+  <meta name="description" content="Play Knife Dodge on GameHub: dash through a rain of circus knives for 60 seconds.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Knife Dodge</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">Time</span><span class="hud-value" id="score">0s</span></div>
+        <div class="hud-item"><span class="hud-label">Best</span><span class="hud-value" id="best">0s</span></div>
+        <button class="hud-btn" id="pauseBtn" type="button">Pause</button>
+      </div>
+      <div class="stage">
+        <canvas id="game" width="400" height="500" aria-label="Knife Dodge game board"></canvas>
+        <div class="overlay" id="overlay">
+          <h2 id="overlayTitle">Knife Dodge</h2>
+          <p id="overlayText">The knives are falling! Dash left and right and survive the full 60 seconds.</p>
+          <button class="primary-btn" id="primaryBtn" type="button">Start game</button>
+        </div>
+      </div>
+      <p class="hint">← → or A/D to dash · survive 60 seconds · P to pause</p>
+    </main>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>

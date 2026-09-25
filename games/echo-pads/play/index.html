@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Echo Pads — Play — GameHub</title>
+  <meta name="description" content="Play Echo Pads on GameHub: watch the glowing pattern and echo it back.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Echo Pads</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">Round</span><span class="hud-value" id="round">1</span></div>
+        <div class="hud-item"><span class="hud-label">Best</span><span class="hud-value" id="best">0</span></div>
+        <button class="hud-btn" id="pauseBtn" type="button">Pause</button>
+      </div>
+      <div class="stage">
+        <div class="pads" id="pads" role="group" aria-label="Echo pads">
+          <button type="button" data-pad="0" aria-label="Pad 1">1</button>
+          <button type="button" data-pad="1" aria-label="Pad 2">2</button>
+          <button type="button" data-pad="2" aria-label="Pad 3">3</button>
+          <button type="button" data-pad="3" aria-label="Pad 4">4</button>
+        </div>
+        <p class="pad-status" id="padStatus" aria-live="polite">Press Start and watch…</p>
+        <div class="overlay" id="overlay">
+          <h2 id="overlayTitle">Echo Pads</h2>
+          <p id="overlayText">Watch the pattern, then echo it back pad by pad.</p>
+          <button class="primary-btn" id="primaryBtn" type="button">Start game</button>
+        </div>
+      </div>
+      <p class="hint">Watch, then repeat · click pads or press 1–4 · P to pause</p>
+    </main>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>

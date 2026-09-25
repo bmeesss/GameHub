@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Highway Escape artwork</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0a1a10"/>
+      <stop offset="1" stop-color="#05070f"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <circle cx="80" cy="60" r="46" fill="#fbbf24" opacity=".8"/>
+  <circle cx="80" cy="60" r="70" fill="#fbbf24" opacity=".15"/>
+  <path d="M220 0 L420 0 L520 360 L120 360 Z" fill="#1c2333"/>
+  <path d="M220 0 L120 360" stroke="#4ade80" stroke-width="8"/>
+  <path d="M420 0 L520 360" stroke="#4ade80" stroke-width="8"/>
+  <g stroke="#f2f5ff" stroke-width="6" stroke-dasharray="22 20" opacity=".7">
+    <path d="M300 0 L270 360"/>
+    <path d="M340 0 L370 360"/>
+  </g>
+  <g>
+    <rect x="252" y="60" width="44" height="70" rx="8" fill="#fb7185"/>
+    <rect x="257" y="74" width="34" height="18" rx="3" fill="#0b0f1a"/>
+    <rect x="348" y="150" width="44" height="70" rx="8" fill="#a78bfa"/>
+    <rect x="353" y="164" width="34" height="18" rx="3" fill="#0b0f1a"/>
+    <rect x="286" y="250" width="56" height="84" rx="10" fill="#22d3ee"/>
+    <rect x="292" y="268" width="44" height="22" rx="4" fill="#083344"/>
+    <rect x="292" y="318" width="12" height="8" fill="#fbbf24"/>
+    <rect x="318" y="318" width="12" height="8" fill="#fbbf24"/>
+  </g>
+  <rect x="440" y="40" width="34" height="44" rx="4" fill="#052e16"/>
+  <rect x="444" y="44" width="26" height="36" rx="3" fill="#4ade80"/>
+</svg>

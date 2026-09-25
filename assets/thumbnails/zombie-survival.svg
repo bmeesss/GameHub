@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Zombie Survival artwork</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0c1a10"/>
+      <stop offset="1" stop-color="#05070f"/>
+    </linearGradient>
+    <radialGradient id="arena" cx=".5" cy=".5" r=".55">
+      <stop offset="0" stop-color="#4ade80" stop-opacity=".16"/>
+      <stop offset="1" stop-color="#4ade80" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <rect width="640" height="360" fill="url(#arena)"/>
+  <g>
+    <circle cx="120" cy="90" r="34" fill="#4ade80"/>
+    <circle cx="108" cy="82" r="6" fill="#052e16"/>
+    <circle cx="132" cy="82" r="6" fill="#052e16"/>
+    <circle cx="520" cy="70" r="30" fill="#15803d"/>
+    <circle cx="510" cy="63" r="5" fill="#052e16"/>
+    <circle cx="530" cy="63" r="5" fill="#052e16"/>
+    <circle cx="100" cy="280" r="30" fill="#15803d"/>
+    <circle cx="90" cy="273" r="5" fill="#052e16"/>
+    <circle cx="110" cy="273" r="5" fill="#052e16"/>
+    <circle cx="540" cy="280" r="34" fill="#4ade80"/>
+    <circle cx="528" cy="272" r="6" fill="#052e16"/>
+    <circle cx="552" cy="272" r="6" fill="#052e16"/>
+  </g>
+  <g fill="#fbbf24">
+    <circle cx="270" cy="150" r="6"/>
+    <circle cx="300" cy="130" r="6"/>
+    <circle cx="380" cy="220" r="6"/>
+    <circle cx="350" cy="245" r="6"/>
+  </g>
+  <circle cx="320" cy="185" r="46" fill="#22d3ee" opacity=".2"/>
+  <circle cx="320" cy="185" r="26" fill="#22d3ee"/>
+  <circle cx="311" cy="178" r="5" fill="#fff"/>
+  <circle cx="329" cy="178" r="5" fill="#fff"/>
+</svg>

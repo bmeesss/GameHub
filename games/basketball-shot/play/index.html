@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Basketball Shot — Play — GameHub</title>
+  <meta name="description" content="Play Basketball Shot on GameHub: flick shots and sink baskets as the hoop moves.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Basketball Shot</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">Baskets</span><span class="hud-value" id="score">0</span></div>
+        <div class="hud-item"><span class="hud-label">Best</span><span class="hud-value" id="best">0</span></div>
+        <button class="hud-btn" id="pauseBtn" type="button">Pause</button>
+      </div>
+      <div class="stage">
+        <canvas id="game" width="400" height="500" aria-label="Basketball Shot game board"></canvas>
+        <div class="overlay" id="overlay">
+          <h2 id="overlayTitle">Basketball Shot</h2>
+          <p id="overlayText">Flick the ball into the hoop. It starts moving — streaks earn bonus shots.</p>
+          <button class="primary-btn" id="primaryBtn" type="button">Start game</button>
+        </div>
+      </div>
+      <p class="hint">Drag down to set arc · release to shoot · ← → nudge aim</p>
+    </main>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>

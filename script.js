@@ -135,6 +135,37 @@ const renderSpotlight = () => {
 };
 
 /* ---------------- Player shelves ---------------- */
+/* Continue Playing reuses the same recent-play data as Play again
+   (no second tracking system): newest first, deduplicated, capped
+   at six cards and hidden entirely when the visitor has no history. */
+const CONTINUE_SIZE = 6;
+
+const continuePlayingGames = () => {
+  if (!Player || typeof Player.getPlayedGames !== "function") {
+    const ids = Player && typeof Player.getRecentlyPlayed === "function" ? Player.getRecentlyPlayed() : [];
+    return ids.map(findGame).filter(Boolean).slice(0, CONTINUE_SIZE);
+  }
+  const seen = new Set();
+  const games = [];
+  for (const row of Player.getPlayedGames()) {
+    const game = findGame(row.id);
+    if (!game || seen.has(game.id)) continue;
+    seen.add(game.id);
+    games.push(game);
+    if (games.length >= CONTINUE_SIZE) break;
+  }
+  return games;
+};
+
+const renderContinue = () => {
+  const section = $("#continue");
+  const grid = $("#continue-grid");
+  if (!section || !grid) return;
+  const games = continuePlayingGames();
+  section.hidden = games.length === 0;
+  renderInto(grid, games);
+};
+
 const renderRecent = () => {
   const section = $("#recent");
   const grid = $("#recent-grid");
@@ -193,14 +224,17 @@ const renderNew = () => {
   renderInto($("#new-grid"), listNew());
 };
 
+/* Category cards link to the real landing pages; the hash stays so
+   the in-page filter keeps working for keyboard and no-JS users. */
 const renderCategories = () => {
   const grid = $("#categories-grid");
   if (!grid) return;
   grid.innerHTML = listCategories()
     .map(({ name, count }) => {
       const label = count === 1 ? "1 game" : `${count} games`;
+      const href = `categories/${encodeURIComponent(String(name).toLowerCase())}/index.html`;
       return (
-        `<a class="category-card" href="#games" data-category="${escapeHtml(name)}">` +
+        `<a class="category-card" href="${escapeHtml(href)}" data-category="${escapeHtml(name)}">` +
           `<span class="category-dot" style="--dot:${catColor(name)}" aria-hidden="true">${escapeHtml(name.charAt(0))}</span>` +
           `<span><h3>${escapeHtml(name)}</h3><p>${escapeHtml(label)}</p></span>` +
           `<span class="category-arrow" aria-hidden="true">` +
@@ -576,12 +610,21 @@ const initEvents = () => {
       Cards.syncFavButtons(document);
       if (state.favoritesOnly) applyFilters();
     });
+    if (typeof Cards.wireCardTools === "function") {
+      Cards.wireCardTools(document, () => {
+        renderFavoritesShelf();
+        renderChips();
+        syncChips();
+        if (state.favoritesOnly) applyFilters();
+      });
+    }
   }
 };
 
 /* ---------------- Init ---------------- */
 hydrateFromUrl();
 renderSpotlight();
+renderContinue();
 renderRecent();
 renderFavoritesShelf();
 renderFeatured();

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Helicopter Run artwork — original cave flight</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#12203a"/>
+      <stop offset="1" stop-color="#0b0f1a"/>
+    </linearGradient>
+    <linearGradient id="rock" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2b3a63"/>
+      <stop offset="1" stop-color="#1a2444"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <path d="M0 0 H640 V74 C 560 96 520 46 430 72 C 350 96 300 44 210 74 C 140 96 70 56 0 78 Z" fill="url(#rock)"/>
+  <path d="M0 360 H640 V288 C 566 266 512 314 430 290 C 352 266 296 316 214 288 C 142 264 66 306 0 284 Z" fill="url(#rock)"/>
+  <circle cx="540" cy="150" r="90" fill="#22d3ee" opacity=".1"/>
+  <rect x="230" y="166" width="130" height="42" rx="16" fill="#dbe4ff"/>
+  <rect x="346" y="176" width="92" height="20" rx="9" fill="#a9b6dd"/>
+  <rect x="196" y="150" width="120" height="12" rx="6" fill="#94a3b8"/>
+  <path d="M262 162 L262 150 M212 156 L316 156" stroke="#cbd5f5" stroke-width="8" stroke-linecap="round"/>
+  <path d="M262 165 L150 141" stroke="#e2e8f0" stroke-width="5" stroke-linecap="round" opacity=".8"/>
+  <path d="M262 165 L372 190" stroke="#e2e8f0" stroke-width="5" stroke-linecap="round" opacity=".55"/>
+  <path d="M228 208 L236 232 M318 208 L310 232" stroke="#8fa0cc" stroke-width="7" stroke-linecap="round"/>
+  <path d="M196 216 H360" stroke="#8fa0cc" stroke-width="7" stroke-linecap="round"/>
+  <g stroke="#1a2444" stroke-width="5" opacity=".9">
+    <path d="M60 120 V160"/>
+    <path d="M600 200 V240"/>
+    <path d="M440 30 V64"/>
+  </g>
+</svg>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Helicopter Run — Play — GameHub</title>
+  <meta name="description" content="Play Helicopter Run on GameHub: thread a narrowing cave with one-button helicopter control.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Helicopter Run</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">Distance</span><span class="hud-value" id="score">0</span></div>
+        <div class="hud-item"><span class="hud-label">Speed</span><span class="hud-value" id="speed">1.0x</span></div>
+        <div class="hud-item"><span class="hud-label">Best</span><span class="hud-value" id="best">0</span></div>
+        <button class="hud-btn" id="pauseBtn" type="button">Pause</button>
+      </div>
+      <div class="stage">
+        <canvas id="game" width="640" height="420" aria-label="Cave flight"></canvas>
+        <div class="overlay" id="overlay">
+          <h2 id="overlayTitle">Helicopter Run</h2>
+          <p id="overlayText">Hold to climb, release to dive. The cave narrows and the rotor spins up the longer you survive.</p>
+          <button class="primary-btn" id="primaryBtn" type="button">Take off</button>
+        </div>
+      </div>
+      <p class="hint">Hold Space, click or tap to rise · release to descend · P pauses</p>
+    </main>
+  </div>
+  <script src="../../../session.js" data-game="helicopter-run"></script>
+  <script src="game.js"></script>
+</body>
+</html>

@@ -27,6 +27,44 @@ var GameHubCards = (function () {
     return null;
   }
 
+  /* profile.js owns collections, ratings and notes. Cards degrade to
+     "no personal data" when it failed to load. */
+  function profile() {
+    if (typeof GameHubProfile !== "undefined" && GameHubProfile) return GameHubProfile;
+    if (typeof window !== "undefined" && window && window.GameHubProfile) return window.GameHubProfile;
+    return null;
+  }
+
+  function inCollection(kind, id) {
+    var store = profile();
+    return Boolean(store && typeof store.inCollection === "function" && store.inCollection(kind, id));
+  }
+
+  function toggleCollection(kind, id) {
+    var store = profile();
+    if (!store || typeof store.toggleCollection !== "function") return false;
+    return store.toggleCollection(kind, id);
+  }
+
+  function ratingOf(id) {
+    var store = profile();
+    if (!store || typeof store.getRating !== "function") return 0;
+    return store.getRating(id) || 0;
+  }
+
+  /* Re-evaluating achievements after a data change keeps them
+     honest without every caller having to remember. */
+  function refreshAchievements() {
+    var engine = null;
+    if (typeof GameHubAchievements !== "undefined" && GameHubAchievements) engine = GameHubAchievements;
+    else if (typeof window !== "undefined" && window && window.GameHubAchievements) engine = window.GameHubAchievements;
+    if (engine && typeof engine.sync === "function") {
+      try {
+        engine.sync();
+      } catch (err) { /* achievements must never break a card */ }
+    }
+  }
+
   function escapeHtml(value) {
     return String(value == null ? "" : value)
       .replace(/&/g, "&amp;")
@@ -116,6 +154,14 @@ var GameHubCards = (function () {
   }
 
   var HEART_SVG = "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 20.7C6.4 17.2 3 13.6 3 9.9 3 7.2 5.1 5 7.8 5c1.7 0 3.2.9 4.2 2.3C13 5.9 14.5 5 16.2 5 18.9 5 21 7.2 21 9.9c0 3.7-3.4 7.3-9 10.8z\"></path></svg>";
+  var BOOKMARK_SVG = "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M7 3h10a1 1 0 0 1 1 1v17l-6-4-6 4V4a1 1 0 0 1 1-1z\"></path></svg>";
+  var CHECK_SVG = "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"9\"></circle><path d=\"M8 12.5l2.6 2.6L16 9.5\"></path></svg>";
+  var STAR_SVG = "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 3.6l2.6 5.4 5.9.8-4.3 4.1 1.1 5.9L12 17l-5.3 2.8 1.1-5.9L3.5 9.8l5.9-.8z\"></path></svg>";
+
+  var COLLECTION_META = {
+    playlater: { label: "Play Later", active: "In Play Later", icon: BOOKMARK_SVG },
+    completed: { label: "Completed", active: "Completed", icon: CHECK_SVG }
+  };
   var ARROW_SVG = "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14M13 6l6 6-6 6\"></path></svg>";
 
   function favButton(game) {
@@ -130,6 +176,44 @@ var GameHubCards = (function () {
       HEART_SVG +
       "</button>"
     );
+  }
+
+  function collectionButton(kind, game) {
+    var meta = COLLECTION_META[kind];
+    if (!meta || !game || !game.id) return "";
+    var active = inCollection(kind, game.id);
+    var title = escapeHtml(game.title || "this game");
+    var label = active ? meta.active : meta.label;
+    return (
+      "<button class=\"icon-toggle" + (active ? " is-active" : "") + "\" type=\"button\"" +
+      " data-collection=\"" + escapeHtml(kind) + "\" data-game=\"" + escapeHtml(game.id) + "\"" +
+      " aria-pressed=\"" + (active ? "true" : "false") + "\"" +
+      " aria-label=\"" + escapeHtml((active ? "Remove " + (game.title || "this game") + " from " : "Add " + (game.title || "this game") + " to ") + meta.label) + "\"" +
+      " title=\"" + title + " — " + meta.label + "\">" +
+      meta.icon +
+      "<span>" + escapeHtml(label) + "</span>" +
+      "</button>"
+    );
+  }
+
+  /* The visitor's own star rating, shown on cards as a reminder.
+     It is never presented as a global rating. */
+  function ratingBadge(game) {
+    var value = ratingOf(game && game.id);
+    if (!value) return "";
+    var stars = "";
+    for (var i = 1; i <= 5; i++) stars += i <= value ? "★" : "☆";
+    return (
+      "<span class=\"mine-badge mine-badge--rating\" title=\"Your rating (stored in this browser)\">" +
+      stars + " My rating</span>"
+    );
+  }
+
+  function cardTools(game) {
+    if (!profile()) return "";
+    var parts = [collectionButton("playlater", game), collectionButton("completed", game), ratingBadge(game)];
+    var html = parts.filter(Boolean).join("");
+    return html ? "<div class=\"card-tools\">" + html + "</div>" : "";
   }
 
   /* options: { prefix, fav } — prefix is "" on the homepage and
@@ -162,6 +246,7 @@ var GameHubCards = (function () {
           "<div class=\"pill-row\"><span class=\"pill\">" + escapeHtml(game.category) + "</span>" + typeBadge + versionBadge + providerBadge + "</div>" +
           "<h3 class=\"card-title\">" + title + "</h3>" +
           "<p class=\"card-desc\">" + escapeHtml(game.description) + "</p>" +
+          (opts.tools === false ? "" : cardTools(game)) +
           "<div class=\"card-foot\">" + action + "</div>" +
         "</div>" +
       "</article>"
@@ -223,12 +308,71 @@ var GameHubCards = (function () {
       var id = button.getAttribute("data-fav");
       var active = store.toggleFavorite(id);
       paintFavButton(button, store);
+      refreshAchievements();
       if (typeof onToggle === "function") {
         try {
           onToggle(id, active);
         } catch (err) { /* listener errors must not break the toggle */ }
       }
     });
+  }
+
+  /* Play Later / Completed toggles: same delegated pattern as the
+     favorite toggle, again without a single inline handler. */
+  function paintCollectionButton(button, store) {
+    var kind = button.getAttribute("data-collection");
+    var gameId = button.getAttribute("data-game");
+    var meta = COLLECTION_META[kind];
+    if (!meta) return;
+    var active = Boolean(store && typeof store.inCollection === "function" && store.inCollection(kind, gameId));
+    var cat = catalog();
+    var game = cat && typeof cat.gameById === "function" ? cat.gameById(gameId) : null;
+    var gameTitle = game && game.title ? game.title : "this game";
+    if (button.classList) button.classList.toggle("is-active", active);
+    button.setAttribute("aria-pressed", active ? "true" : "false");
+    button.setAttribute("aria-label", (active ? "Remove " + gameTitle + " from " : "Add " + gameTitle + " to ") + meta.label);
+    var label = button.querySelector ? button.querySelector("span") : null;
+    if (label) label.textContent = active ? meta.active : meta.label;
+  }
+
+  function syncCollectionButtons(root) {
+    var scope = root || (typeof document !== "undefined" ? document : null);
+    if (!scope || typeof scope.querySelectorAll !== "function") return;
+    var store = profile();
+    var buttons = scope.querySelectorAll("[data-collection]");
+    for (var i = 0; i < buttons.length; i++) paintCollectionButton(buttons[i], store);
+  }
+
+  function wireCollections(root, onToggle) {
+    if (!root || typeof root.addEventListener !== "function") return;
+    if (root.__ghCollectionsWired) return;
+    root.__ghCollectionsWired = true;
+    root.addEventListener("click", function (event) {
+      var button = event.target && event.target.closest ? event.target.closest("[data-collection]") : null;
+      if (!button) return;
+      if (typeof root.contains === "function" && !root.contains(button)) return;
+      event.preventDefault();
+      event.stopPropagation();
+      var store = profile();
+      if (!store || typeof store.toggleCollection !== "function") return;
+      var kind = button.getAttribute("data-collection");
+      var id = button.getAttribute("data-game");
+      var active = store.toggleCollection(kind, id);
+      paintCollectionButton(button, store);
+      refreshAchievements();
+      if (typeof onToggle === "function") {
+        try {
+          onToggle(kind, id, active);
+        } catch (err) { /* listener errors must not break the toggle */ }
+      }
+    });
+  }
+
+  /* One call mounts both delegated listeners plus the favorite
+     repaint; used by every page that renders cards. */
+  function wireCardTools(root, onFav, onCollection) {
+    wireFavorites(root, onFav);
+    wireCollections(root, onCollection);
   }
 
   return {
@@ -241,9 +385,16 @@ var GameHubCards = (function () {
     syncFavButtons: syncFavButtons,
     paintFavButton: paintFavButton,
     wireFavorites: wireFavorites,
+    wireCollections: wireCollections,
+    wireCardTools: wireCardTools,
+    syncCollectionButtons: syncCollectionButtons,
+    paintCollectionButton: paintCollectionButton,
+    collectionButton: collectionButton,
+    ratingBadge: ratingBadge,
     isClientGame: isClientGame,
     clientReady: clientReady,
-    markClientAvailable: markClientAvailable
+    markClientAvailable: markClientAvailable,
+    refreshAchievements: refreshAchievements
   };
 })();
 

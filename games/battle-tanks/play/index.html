@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Battle Tanks — Play — GameHub</title>
+  <meta name="description" content="Play Battle Tanks on GameHub: two tanks, destructible crates and one keyboard — local duel with optional AI.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Battle Tanks</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">Rounds</span><span class="hud-value" id="rounds">0 - 0</span></div>
+        <div class="hud-item"><span class="hud-label">Tank 1</span><span class="hud-value" id="health-a">3</span></div>
+        <div class="hud-item"><span class="hud-label">Tank 2</span><span class="hud-value" id="health-b">3</span></div>
+        <div class="hud-item"><span class="hud-label">Best round</span><span class="hud-value" id="best">0</span></div>
+        <button class="hud-btn" id="modeBtn" type="button">Mode: 2 players</button>
+        <button class="hud-btn" id="pauseBtn" type="button">Pause</button>
+      </div>
+      <div class="stage">
+        <canvas id="game" width="700" height="470" aria-label="Tank arena"></canvas>
+        <div class="overlay" id="overlay">
+          <h2 id="overlayTitle">Battle Tanks</h2>
+          <p id="overlayText">Two tanks, destructible crates and bouncing shells. Player 1 steers with WASD and fires with F, player 2 uses the arrow keys and Enter — or let the AI take tank two.</p>
+          <button class="primary-btn" id="primaryBtn" type="button">Start round</button>
+        </div>
+      </div>
+      <p class="hint">P1: W/A/S/D + F · P2: arrows + Enter · M switches to AI · P pauses</p>
+    </main>
+  </div>
+  <script src="../../../session.js" data-game="battle-tanks"></script>
+  <script src="game.js"></script>
+</body>
+</html>

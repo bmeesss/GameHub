@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Snowboard Rush artwork — original downhill run</title>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1c2c4d"/>
+      <stop offset="1" stop-color="#0b0f1a"/>
+    </linearGradient>
+    <linearGradient id="piste" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e8f1ff"/>
+      <stop offset="1" stop-color="#a9c4ee"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#sky)"/>
+  <path d="M0 96 L120 46 L210 106 L330 40 L440 110 L560 52 L640 92 V360 H0 Z" fill="#243b66" opacity=".85"/>
+  <path d="M0 130 L130 88 L250 140 L370 84 L500 142 L640 96 V360 H0 Z" fill="url(#piste)"/>
+  <g opacity=".35" fill="#7f9cd6">
+    <path d="M60 200 H96 V236 H60 Z"/>
+    <path d="M420 230 H452 V266 H420 Z"/>
+    <path d="M240 300 H276 V336 H240 Z"/>
+  </g>
+  <g fill="#166534">
+    <path d="M120 210 L146 258 L94 258 Z"/>
+    <path d="M480 170 L506 218 L454 218 Z"/>
+    <path d="M560 288 L584 330 L536 330 Z"/>
+  </g>
+  <g fill="#78350f">
+    <rect x="115" y="252" width="10" height="18"/>
+    <rect x="475" y="212" width="10" height="18"/>
+    <rect x="555" y="326" width="10" height="16"/>
+  </g>
+  <g transform="translate(300 286)">
+    <rect x="-34" y="8" width="68" height="12" rx="6" fill="#1e293b"/>
+    <rect x="-16" y="-28" width="32" height="40" rx="8" fill="#7c5cff"/>
+    <circle cx="0" cy="-34" r="13" fill="#f8fafc"/>
+    <path d="M-16 -12 L-40 -4" stroke="#e2e8f0" stroke-width="6" stroke-linecap="round"/>
+    <path d="M16 -12 L40 -4" stroke="#e2e8f0" stroke-width="6" stroke-linecap="round"/>
+  </g>
+  <g fill="#f97316">
+    <rect x="380" y="200" width="12" height="34" rx="4"/>
+    <rect x="470" y="200" width="12" height="34" rx="4"/>
+    <rect x="380" y="212" width="102" height="12" rx="4" opacity=".7"/>
+  </g>
+</svg>

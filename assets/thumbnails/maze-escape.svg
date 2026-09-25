@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Maze Escape artwork — original generated maze</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d2018"/>
+      <stop offset="1" stop-color="#0b0f1a"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <circle cx="120" cy="70" r="120" fill="#22c55e" opacity=".13"/>
+  <circle cx="540" cy="300" r="130" fill="#22d3ee" opacity=".12"/>
+  <g transform="translate(170 30)" stroke="#4f5d8c" stroke-width="4" fill="none" stroke-linecap="square">
+    <rect x="0" y="0" width="300" height="300" rx="8"/>
+    <path d="M0 60 H180 M240 60 H300"/>
+    <path d="M60 60 V120 M180 0 V120 M120 120 H300"/>
+    <path d="M0 180 H60 M120 180 V240 M180 120 V240 M240 180 H300"/>
+    <path d="M60 240 H180 M240 240 V300"/>
+    <path d="M120 180 V180"/>
+  </g>
+  <circle cx="205" cy="95" r="11" fill="#fbbf24"/>
+  <circle cx="205" cy="95" r="20" fill="#fbbf24" opacity=".28"/>
+  <circle cx="325" cy="215" r="11" fill="#fbbf24"/>
+  <circle cx="325" cy="215" r="20" fill="#fbbf24" opacity=".28"/>
+  <circle cx="205" cy="95" r="0"/>
+  <circle cx="390" cy="95" r="17" fill="#22d3ee"/>
+  <path d="M390 95 L470 95" stroke="#22d3ee" stroke-width="4" stroke-dasharray="8 10" opacity=".6"/>
+  <rect x="430" y="290" width="40" height="40" rx="8" fill="#34d399" opacity=".85"/>
+  <path d="M440 310 H460 M450 300 V320" stroke="#04180c" stroke-width="5" stroke-linecap="round"/>
+</svg>

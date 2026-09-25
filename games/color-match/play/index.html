@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Color Match — Play — GameHub</title>
+  <meta name="description" content="Play Color Match on GameHub: pick the ink colour, not the word, and keep your streak alive.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Color Match</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">Score</span><span class="hud-value" id="score">0</span></div>
+        <div class="hud-item"><span class="hud-label">Streak</span><span class="hud-value" id="streak">0</span></div>
+        <div class="hud-item"><span class="hud-label">Time</span><span class="hud-value" id="time">30</span></div>
+        <div class="hud-item"><span class="hud-label">Best streak</span><span class="hud-value" id="best">0</span></div>
+        <button class="hud-btn" id="pauseBtn" type="button">Pause</button>
+      </div>
+      <div class="stage">
+        <canvas id="game" width="560" height="440" aria-label="Colour matching board"></canvas>
+        <div class="overlay" id="overlay">
+          <h2 id="overlayTitle">Color Match</h2>
+          <p id="overlayText">A colour name appears in a different colour. Tap the ink colour — never the word. Each correct answer buys you a little more time.</p>
+          <button class="primary-btn" id="primaryBtn" type="button">Start run</button>
+        </div>
+      </div>
+      <p class="hint">Click or tap the swatch that matches the ink · 1-4 for keyboard play · P pauses</p>
+    </main>
+  </div>
+  <script src="../../../session.js" data-game="color-match"></script>
+  <script src="game.js"></script>
+</body>
+</html>

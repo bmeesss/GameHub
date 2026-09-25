@@ -164,21 +164,21 @@ const newHtml = sel("#new-grid").innerHTML;
 const gridHtml = sel("#games-grid").innerHTML;
 const GAMES = Catalog.games;
 
-t("catalog holds 58 games", GAMES.length === 58);
+t("catalog holds 73 games", GAMES.length === 73);
 t("catalog holds 10 categories", Catalog.getCategories().length === 10);
 t("featured renders 7 cards", count(featuredHtml, "<article") === 7);
 t("featured honors featuredOrder (Snake first)", featuredHtml.indexOf("Snake") !== -1 && featuredHtml.indexOf("Snake") < featuredHtml.indexOf("Star Voyager"));
-t("popular renders 12 cards", count(popularHtml, "<article") === 12);
+t("popular renders 14 cards", count(popularHtml, "<article") === 14);
 t("minecraft rail renders 3 cards", count(minecraftHtml, "<article") === 3);
 t("new rail renders 6 cards", count(newHtml, "<article") === 6);
-t("new rail leads with latest entries", newHtml.indexOf("Stickman Hook") !== -1 && newHtml.indexOf("Stickman Hook") < newHtml.indexOf("Sort the Court!") && newHtml.indexOf("Sort the Court!") < newHtml.indexOf("Stellar Bastion") && newHtml.includes("Moto X3M Dead Ahead"));
-t("all games renders 58 cards", count(gridHtml, "<article") === 58);
+t("new rail leads with latest entries", newHtml.indexOf("Typing Sprint") !== -1 && newHtml.indexOf("Typing Sprint") < newHtml.indexOf("Battle Tanks") && newHtml.indexOf("Battle Tanks") < newHtml.indexOf("Color Match") && newHtml.includes("Farm Defender"));
+t("all games renders 73 cards", count(gridHtml, "<article") === 73);
 t("cards carry generated type labels", gridHtml.includes("type-badge") && gridHtml.includes("HTML5") && gridHtml.includes("WebGL") && gridHtml.includes("WASM"));
 t("cards carry version badges", gridHtml.includes("version-badge") && gridHtml.includes("v1.0.0"));
-t("cards carry favorite toggles", count(gridHtml, "data-fav=") === 58 && gridHtml.includes("aria-pressed"));
+t("cards carry favorite toggles", count(gridHtml, "data-fav=") === 73 && gridHtml.includes("aria-pressed"));
 t("play links use relative games/ paths", gridHtml.includes('href="games/eaglercraft-1-8/index.html"'));
 t("no absolute paths in output", !/"\/(assets|games|index)/.test(gridHtml + featuredHtml));
-t("stats rendered", sel("#stat-games").textContent === "58" && sel("#stat-categories").textContent === "10");
+t("stats rendered", sel("#stat-games").textContent === "73" && sel("#stat-categories").textContent === "10");
 t("spotlight picks first featured available (Snake)", api.pickSpotlight() && api.pickSpotlight().slug === "snake");
 t("spotlight renders into mount", sel("#spotlight").querySelector(".spotlight-inner").innerHTML.includes("Snake"));
 t("empty shelves stay hidden", sel("#recent").hidden === true && sel("#favorites").hidden === true);
@@ -187,12 +187,12 @@ const REQUIRED_FIELDS = ["id", "title", "slug", "description", "category", "thum
 t("every entry supports all catalog fields", GAMES.every((g) => REQUIRED_FIELDS.every((f) => f in g)));
 t("types are known values", GAMES.every((g) => ["html5", "iframe", "external", "webgl", "wasm"].includes(g.type)));
 t("statuses are known values", GAMES.every((g) => ["available", "coming-soon"].includes(g.status)));
-t("53 games are available", GAMES.filter((g) => g.status === "available").length === 53);
+t("68 games are available", GAMES.filter((g) => g.status === "available").length === 68);
 t("available html5 entries link play pages", GAMES.filter((g) => g.status === "available" && g.type === "html5").every((g) => g.playUrl === `games/${g.slug}/play/index.html`));
 t("slugs are unique", new Set(GAMES.map((g) => g.slug)).size === GAMES.length);
 t("minecraft entries declare client playUrls", GAMES.filter((g) => g.category === "Minecraft").every((g) => g.playUrl === `games/${g.slug}/client/index.html`));
 t("type chips generated with counts", JSON.stringify(Catalog.getTypes().map((x) => x.label)) === JSON.stringify(["HTML5", "Iframe", "WebGL", "WASM", "External"]));
-t("optional fields tolerated when missing", Catalog.getNewGames().length === 6 && Catalog.getFeatured().length === 7 && Catalog.sortGames(GAMES, "newest").length === 58);
+t("optional fields tolerated when missing", Catalog.getNewGames().length === 6 && Catalog.getFeatured().length === 7 && Catalog.sortGames(GAMES, "newest").length === 73);
 t("related games derive from catalog", Catalog.getRelated(Catalog.gameBySlug("snake"), 3).length === 3 && !Catalog.getRelated(Catalog.gameBySlug("snake"), 3).some((g) => g.slug === "snake"));
 
 /* ---------------- Catalog integrity on disk ---------------- */
@@ -241,11 +241,11 @@ t("search matches tags ('sandbox' -> 3)", count(sel("#games-grid").innerHTML, "<
 api.state.query = "wasm"; api.applyFilters();
 t("search matches type label ('wasm' -> Steel Vanguard)", sel("#games-grid").innerHTML.includes("Steel Vanguard"));
 api.state.query = "physics"; api.applyFilters();
-t("search matches new tags ('physics' -> 2)", count(sel("#games-grid").innerHTML, "<article") === 2);
+t("search matches new tags ('physics' -> 4)", count(sel("#games-grid").innerHTML, "<article") === 4);
 api.state.query = ""; api.state.category = "Racing"; api.applyFilters();
-t("category filter Racing finds 5 games", count(sel("#games-grid").innerHTML, "<article") === 5);
+t("category filter Racing finds 6 games", count(sel("#games-grid").innerHTML, "<article") === 6);
 api.state.category = "Sports"; api.applyFilters();
-t("category filter Sports finds 4 games", count(sel("#games-grid").innerHTML, "<article") === 4);
+t("category filter Sports finds 5 games", count(sel("#games-grid").innerHTML, "<article") === 5);
 api.state.category = "All"; api.state.type = "webgl"; api.applyFilters();
 t("type filter webgl finds 3 clients", count(sel("#games-grid").innerHTML, "<article") === 3);
 api.state.query = "zzz-no-such-game"; api.state.type = null; api.applyFilters();

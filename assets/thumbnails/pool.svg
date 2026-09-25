@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Pool artwork — original billiards table</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1a2413"/>
+      <stop offset="1" stop-color="#0b0f1a"/>
+    </linearGradient>
+    <linearGradient id="felt" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#12855a"/>
+      <stop offset="1" stop-color="#0a5c3d"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <circle cx="110" cy="60" r="120" fill="#fbbf24" opacity=".12"/>
+  <rect x="70" y="60" width="500" height="240" rx="26" fill="#5b3a1d"/>
+  <rect x="90" y="78" width="460" height="204" rx="16" fill="url(#felt)"/>
+  <circle cx="108" cy="96" r="15" fill="#07110b"/>
+  <circle cx="532" cy="96" r="15" fill="#07110b"/>
+  <circle cx="108" cy="264" r="15" fill="#07110b"/>
+  <circle cx="532" cy="264" r="15" fill="#07110b"/>
+  <circle cx="320" cy="88" r="14" fill="#07110b"/>
+  <circle cx="320" cy="272" r="14" fill="#07110b"/>
+  <line x1="320" y1="140" x2="320" y2="220" stroke="#e2e8f0" stroke-width="2" opacity=".25"/>
+  <circle cx="400" cy="180" r="14" fill="#facc15"/>
+  <circle cx="428" cy="164" r="14" fill="#3b82f6"/>
+  <circle cx="428" cy="196" r="14" fill="#ef4444"/>
+  <circle cx="456" cy="180" r="14" fill="#111827"/>
+  <circle cx="456" cy="180" r="6" fill="#e2e8f0"/>
+  <circle cx="200" cy="180" r="14" fill="#f8fafc"/>
+  <path d="M120 180 L186 180" stroke="#f2f5ff" stroke-width="7" stroke-linecap="round" opacity=".85"/>
+  <path d="M120 180 L60 180" stroke="#c8a06a" stroke-width="6" stroke-linecap="round"/>
+</svg>

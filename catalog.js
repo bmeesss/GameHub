@@ -56,11 +56,13 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/neon-breakout/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["breakout", "single-player"],
     controls: "Move the paddle with the mouse or arrow keys. Bounce the ball to smash every brick.",
     difficulty: "Medium"
   },
   {
+
     id: "pixel-puzzles",
     title: "Pixel Puzzles",
     slug: "pixel-puzzles",
@@ -74,11 +76,13 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/pixel-puzzles/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["blocks", "casual"],
     controls: "Arrow keys to move falling blocks, Up or Space to rotate, Down to drop faster.",
     difficulty: "Medium"
   },
   {
+
     id: "star-voyager",
     title: "Star Voyager",
     slug: "star-voyager",
@@ -94,11 +98,13 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/star-voyager/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["shooter", "space"],
     controls: "Arrow keys or WASD to fly, Space to shoot. Dodge asteroids and raiders.",
     difficulty: "Medium"
   },
   {
+
     id: "labyrinth-dash",
     title: "Labyrinth Dash",
     slug: "labyrinth-dash",
@@ -113,11 +119,13 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/labyrinth-dash/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["maze", "time-attack"],
     controls: "Arrow keys or WASD to run the maze. Grab time shards and reach the exit before time ends.",
     difficulty: "Hard"
   },
   {
+
     id: "tower-tactics",
     title: "Tower Tactics",
     slug: "tower-tactics",
@@ -132,11 +140,13 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/tower-tactics/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["tower-defense", "single-player"],
     controls: "Click a tower, then click the grid to build. Spend gold wisely and survive every siege.",
     difficulty: "Medium"
   },
   {
+
     id: "reaction-arena",
     title: "Reaction Arena",
     slug: "reaction-arena",
@@ -150,11 +160,13 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/reaction-arena/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["reflex", "casual"],
     controls: "Click or tap as fast as you can when the target lights up. Keep your average low.",
     difficulty: "Medium"
   },
   {
+
     id: "turbo-drift",
     title: "Turbo Drift",
     slug: "turbo-drift",
@@ -169,11 +181,13 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/turbo-drift/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["racing", "drift", "single-player"],
     controls: "Arrow keys or WASD to steer and drift. Complete every lap as fast as you can.",
     difficulty: "Medium"
   },
   {
+
     id: "arena-clash",
     title: "Arena Clash",
     slug: "arena-clash",
@@ -187,9 +201,11 @@ const GAMES = [
     version: "1.0.0",
     playUrl: null,
     embed: null,
+    multiplayer: false,
     tags: ["multiplayer", "pvp", "arena"]
   },
   {
+
     id: "steel-vanguard",
     title: "Steel Vanguard",
     slug: "steel-vanguard",
@@ -203,9 +219,11 @@ const GAMES = [
     version: "1.0.0",
     playUrl: null,
     embed: null,
+    multiplayer: false,
     tags: ["mech", "shooter", "single-player"]
   },
   {
+
     id: "cloud-hopper",
     title: "Cloud Hopper",
     slug: "cloud-hopper",
@@ -219,11 +237,13 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/cloud-hopper/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["platformer", "casual"],
     controls: "Arrow keys or Space to jump between sky islands. Do not fall.",
     difficulty: "Easy"
   },
   {
+
     id: "eaglercraft-1-8",
     title: "Eaglercraft 1.8",
     slug: "eaglercraft-1-8",
@@ -239,11 +259,13 @@ const GAMES = [
     version: "1.8",
     playUrl: "games/eaglercraft-1-8/client/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["minecraft", "multiplayer", "sandbox", "voxel"],
     controls: "WASD to move, mouse to look, left click to mine, right click to place, E for the inventory, Esc for the menu.",
     difficulty: "Medium"
   },
   {
+
     id: "eaglercraftx-1-8",
     title: "EaglercraftX 1.8",
     slug: "eaglercraftx-1-8",
@@ -257,11 +279,13 @@ const GAMES = [
     version: "1.8",
     playUrl: "games/eaglercraftx-1-8/client/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["minecraft", "multiplayer", "sandbox", "voxel"],
     controls: "WASD to move, mouse to look, left click to mine, right click to place, E for the inventory, Esc for the menu.",
     difficulty: "Medium"
   },
   {
+
     id: "eaglercraft-1-12",
     title: "Eaglercraft 1.12.2",
     slug: "eaglercraft-1-12",
@@ -275,11 +299,13 @@ const GAMES = [
     version: "1.12.2",
     playUrl: "games/eaglercraft-1-12/client/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["minecraft", "multiplayer", "sandbox", "voxel"],
     controls: "WASD to move, mouse to look, left click to mine, right click to place, E for the inventory, Esc for the menu.",
     difficulty: "Medium"
   },
   {
+
     id: "snake",
     title: "Snake",
     slug: "snake",
@@ -295,11 +321,13 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/snake/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["snake", "classic", "single-player"],
     controls: "Steer with the arrow keys or WASD, or swipe on touch screens. Eat orbs, avoid walls and your tail.",
     difficulty: "Medium"
   },
   {
+
     id: "paddle-clash",
     title: "Paddle Clash",
     slug: "paddle-clash",
@@ -313,11 +341,14 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/paddle-clash/play/index.html",
     embed: null,
+    multiplayer: true,
+    multiplayerMode: "local",
     tags: ["pong", "versus", "local-multiplayer"],
     controls: "Player 1: W and S. Player 2: Up and Down. First to 7 points wins.",
     difficulty: "Medium"
   },
   {
+
     id: "feather-flight",
     title: "Feather Flight",
     slug: "feather-flight",
@@ -331,11 +362,13 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/feather-flight/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["flappy", "one-button", "casual"],
     controls: "Press Space, click, or tap to flap. Thread every gate without touching it.",
     difficulty: "Easy"
   },
   {
+
     id: "memory-match",
     title: "Memory Match",
     slug: "memory-match",
@@ -349,11 +382,13 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/memory-match/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["memory", "matching", "casual"],
     controls: "Click or tap tiles to flip them. Match every pair in as few moves as you can.",
     difficulty: "Easy"
   },
   {
+
     id: "merge-blocks",
     title: "Merge Blocks",
     slug: "merge-blocks",
@@ -369,11 +404,13 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/merge-blocks/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["2048", "sliding", "numbers"],
     controls: "Arrow keys or swipe to slide tiles. Merge matching numbers to reach 2048.",
     difficulty: "Medium"
   },
   {
+
     id: "minefield",
     title: "Minefield",
     slug: "minefield",
@@ -387,11 +424,13 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/minefield/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["minesweeper", "logic", "classic"],
     controls: "Click to reveal a cell, right-click or long-press to flag a mine. Clear the board with logic.",
     difficulty: "Medium"
   },
   {
+
     id: "click-frenzy",
     title: "Click Frenzy",
     slug: "click-frenzy",
@@ -405,11 +444,13 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/click-frenzy/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["clicking", "speed", "casual"],
     controls: "Click or tap as fast as you can for 10 seconds. Beat your best clicks-per-second.",
     difficulty: "Easy"
   },
   {
+
     id: "mole-patrol",
     title: "Mole Patrol",
     slug: "mole-patrol",
@@ -423,11 +464,13 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/mole-patrol/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["whack-a-mole", "reflex", "casual"],
     controls: "Click or tap moles as they pop up. Golden moles are worth bonus points.",
     difficulty: "Easy"
   },
   {
+
     id: "sudoku",
     title: "Sudoku",
     slug: "sudoku",
@@ -442,11 +485,13 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/sudoku/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["sudoku", "numbers", "logic"],
     controls: "Click a cell, then type 1-9. Use notes and hints to solve the grid.",
     difficulty: "Medium"
   },
   {
+
     id: "four-in-a-row",
     title: "Four in a Row",
     slug: "four-in-a-row",
@@ -460,11 +505,14 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/four-in-a-row/play/index.html",
     embed: null,
+    multiplayer: true,
+    multiplayerMode: "local",
     tags: ["connect-four", "board", "versus"],
     controls: "Click a column to drop your disc. Connect four before the CPU does.",
     difficulty: "Medium"
   },
   {
+
     id: "tic-tac-toe",
     title: "Tic-Tac-Toe",
     slug: "tic-tac-toe",
@@ -478,11 +526,14 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/tic-tac-toe/play/index.html",
     embed: null,
+    multiplayer: true,
+    multiplayerMode: "local",
     tags: ["tic-tac-toe", "board", "versus"],
     controls: "Click a square to place your mark. Get three in a row to win.",
     difficulty: "Easy"
   },
   {
+
     id: "neon-runner",
     title: "Neon Runner",
     slug: "neon-runner",
@@ -496,11 +547,13 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/neon-runner/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["runner", "endless", "jumping"],
     controls: "Space or Up to jump and double-jump. Dodge spikes and drones, grab coins.",
     difficulty: "Medium"
   },
   {
+
     id: "asteroid-dodge",
     title: "Asteroid Dodge",
     slug: "asteroid-dodge",
@@ -514,12 +567,14 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/asteroid-dodge/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["dodger", "space", "survival"],
     controls: "Arrow keys or WASD to thread the storm. Grab repair cells to survive.",
     difficulty: "Medium"
   
   },
   {
+
     id: "brick-dodge",
     title: "Brick Dodge",
     slug: "brick-dodge",
@@ -533,12 +588,14 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/brick-dodge/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["dodger", "survival", "reflex"],
     releaseDate: "2026-09-25",
     controls: "Arrow keys or A and D to slide your ship. Dodge every falling brick.",
     difficulty: "Easy"
   },
   {
+
     id: "hue-switch",
     title: "Hue Switch",
     slug: "hue-switch",
@@ -552,12 +609,14 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/hue-switch/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["colors", "reflex", "timing"],
     releaseDate: "2026-09-25",
     controls: "Press Space or tap to cycle colors. Fly through gates that match your orb.",
     difficulty: "Medium"
   },
   {
+
     id: "box-push",
     title: "Box Push",
     slug: "box-push",
@@ -571,6 +630,7 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/box-push/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["sokoban", "logic", "crates"],
     releaseDate: "2026-09-25",
     controls: "Arrow keys or WASD to push crates. Press R to restart a level.",
@@ -578,6 +638,7 @@ const GAMES = [
     featuredOrder: 6
   },
   {
+
     id: "circuit-rush",
     title: "Circuit Rush",
     slug: "circuit-rush",
@@ -591,12 +652,14 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/circuit-rush/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["arena", "versus", "lights"],
     releaseDate: "2026-09-25",
     controls: "Arrow keys or WASD to steer. Trap the rival cycle without crashing.",
     difficulty: "Medium"
   },
   {
+
     id: "word-scramble",
     title: "Word Scramble",
     slug: "word-scramble",
@@ -610,12 +673,14 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/word-scramble/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["words", "spelling", "timed"],
     releaseDate: "2026-09-25",
     controls: "Type your guess and press Enter. Solve as many words as you can in 60 seconds.",
     difficulty: "Easy"
   },
   {
+
     id: "number-rush",
     title: "Number Rush",
     slug: "number-rush",
@@ -629,12 +694,14 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/number-rush/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["numbers", "speed", "focus"],
     releaseDate: "2026-09-25",
     controls: "Click or tap the numbers from 1 to 25 in order. Fewer mistakes, faster time.",
     difficulty: "Easy"
   },
   {
+
     id: "quick-math",
     title: "Quick Math",
     slug: "quick-math",
@@ -648,12 +715,14 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/quick-math/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["math", "numbers", "timed"],
     releaseDate: "2026-09-25",
     controls: "Click the correct answer, or press 1 to 4. Answer fast to build a streak.",
     difficulty: "Easy"
   },
   {
+
     id: "echo-pads",
     title: "Echo Pads",
     slug: "echo-pads",
@@ -667,12 +736,14 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/echo-pads/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["memory", "pattern", "simon"],
     releaseDate: "2026-09-25",
     controls: "Watch the sequence, then repeat it by clicking the pads in order.",
     difficulty: "Easy"
   },
   {
+
     id: "highway-escape",
     title: "Highway Escape",
     slug: "highway-escape",
@@ -686,6 +757,7 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/highway-escape/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["dodger", "cars", "endless"],
     releaseDate: "2026-09-25",
     controls: "Arrow keys or A and D to change lanes. Dodge traffic and grab fuel to keep going.",
@@ -693,6 +765,7 @@ const GAMES = [
     popularOrder: 9
   },
   {
+
     id: "zombie-survival",
     title: "Zombie Survival",
     slug: "zombie-survival",
@@ -706,6 +779,7 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/zombie-survival/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["zombies", "survival", "waves"],
     releaseDate: "2026-09-25",
     controls: "Move with WASD or the arrow keys. Your blaster auto-fires at the nearest zombie.",
@@ -714,6 +788,7 @@ const GAMES = [
     popularOrder: 8
   },
   {
+
     id: "mini-golf",
     title: "Mini Golf",
     slug: "mini-golf",
@@ -727,6 +802,7 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/mini-golf/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["golf", "physics", "precision"],
     releaseDate: "2026-09-25",
     controls: "Drag from the ball to aim and set power, then release to putt.",
@@ -734,6 +810,7 @@ const GAMES = [
     popularOrder: 10
   },
   {
+
     id: "basketball-shot",
     title: "Basketball Shot",
     slug: "basketball-shot",
@@ -747,12 +824,14 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/basketball-shot/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["basketball", "physics", "flick"],
     releaseDate: "2026-09-25",
     controls: "Drag down from the ball to set arc and power, then release to shoot.",
     difficulty: "Medium"
   },
   {
+
     id: "cast-and-catch",
     title: "Cast and Catch",
     slug: "cast-and-catch",
@@ -766,12 +845,14 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/cast-and-catch/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["catching", "reflex", "fishing"],
     releaseDate: "2026-09-25",
     controls: "Arrow keys or mouse to slide the net. Catch fish, dodge boots.",
     difficulty: "Easy"
   },
   {
+
     id: "dungeon-escape",
     title: "Dungeon Escape",
     slug: "dungeon-escape",
@@ -785,12 +866,14 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/dungeon-escape/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["stealth", "maze", "escape"],
     releaseDate: "2026-09-25",
     controls: "Arrow keys or WASD to move. Grab the key, then reach the exit without touching a guard.",
     difficulty: "Medium"
   },
   {
+
     id: "knife-dodge",
     title: "Knife Dodge",
     slug: "knife-dodge",
@@ -804,12 +887,14 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/knife-dodge/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["dodger", "survival", "circus"],
     releaseDate: "2026-09-25",
     controls: "Arrow keys or A and D to dash. Dodge every falling knife for 60 seconds.",
     difficulty: "Medium"
   },
   {
+
     id: "stack-tower",
     title: "Stack Tower",
     slug: "stack-tower",
@@ -823,12 +908,14 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/stack-tower/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["timing", "precision", "one-button"],
     releaseDate: "2026-09-25",
     controls: "Click, tap or press Space to drop each block. Land blocks squarely — overhang gets sliced off.",
     difficulty: "Medium"
   },
   {
+
     id: "sky-jump",
     title: "Sky Jump",
     slug: "sky-jump",
@@ -842,12 +929,14 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/sky-jump/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["platformer", "endless", "jumping"],
     releaseDate: "2026-09-25",
     controls: "Steer with the arrow keys or A and D; on touch screens, hold the on-screen buttons.",
     difficulty: "Easy"
   },
   {
+
     id: "stellar-siege",
     title: "Stellar Siege",
     slug: "stellar-siege",
@@ -861,12 +950,14 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/stellar-siege/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["shooter", "space", "waves"],
     releaseDate: "2026-09-25",
     controls: "Arrow keys or A and D to move, Space to fire. Clear each wave before the grid lands.",
     difficulty: "Medium"
   },
   {
+
     id: "slide-puzzle",
     title: "Slide Puzzle",
     slug: "slide-puzzle",
@@ -880,12 +971,14 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/slide-puzzle/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["sliding", "logic", "classic"],
     releaseDate: "2026-09-25",
     controls: "Arrow keys slide tiles into the gap; clicking a neighboring tile works too.",
     difficulty: "Easy"
   },
   {
+
     id: "glow-grid",
     title: "Glow Grid",
     slug: "glow-grid",
@@ -899,31 +992,36 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/glow-grid/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["lights-out", "logic", "levels"],
     releaseDate: "2026-09-25",
     controls: "Click or tap a pad to flip it and its four neighbors. Turn every light off to clear the level.",
     difficulty: "Medium"
   },
   {
+
     id: "air-hockey",
     title: "Air Hockey",
     slug: "air-hockey",
-    description: "Slam the puck past the AI — or a friend on one keyboard — in fast first-to-7 table duels.",
+    description: "Slam the puck past the AI — on Easy, Normal or Hard — or a friend on one keyboard in fast first-to-7 table duels.",
     category: "Sports",
     thumbnail: "assets/thumbnails/air-hockey.svg",
     featured: false,
     popular: false,
     status: "available",
     type: "html5",
-    version: "1.0.0",
+    version: "1.1.0",
     playUrl: "games/air-hockey/play/index.html",
     embed: null,
+    multiplayer: true,
+    multiplayerMode: "local",
     tags: ["hockey", "versus", "local-multiplayer"],
     releaseDate: "2026-09-25",
     controls: "Move your paddle with the mouse or arrow keys. First to 7 goals wins. Flip to 2-player mode for local duels.",
     difficulty: "Medium"
   },
   {
+
     id: "reversi",
     title: "Reversi",
     slug: "reversi",
@@ -937,12 +1035,15 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/reversi/play/index.html",
     embed: null,
+    multiplayer: true,
+    multiplayerMode: "local",
     tags: ["board", "othello", "versus"],
     releaseDate: "2026-09-25",
     controls: "Click a highlighted square to place a disc and flip the trapped line. Most discs when the board fills wins.",
     difficulty: "Medium"
   },
   {
+
     id: "idle-miner",
     title: "Idle Miner",
     slug: "idle-miner",
@@ -956,12 +1057,14 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/idle-miner/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["idle", "clicker", "upgrades"],
     releaseDate: "2026-09-25",
     controls: "Click the rock to mine gems, then spend them on upgrades. Progress saves automatically in your browser.",
     difficulty: "Easy"
   },
   {
+
     id: "road-rush",
     title: "Road Rush",
     slug: "road-rush",
@@ -975,12 +1078,14 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/road-rush/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["racing", "traffic", "endless"],
     releaseDate: "2026-09-25",
     controls: "Steer with the arrow keys or A and D, hold Up or W to accelerate. Crashing into traffic ends the run.",
     difficulty: "Medium"
   },
   {
+
     id: "ember-keep",
     title: "Ember Keep",
     slug: "ember-keep",
@@ -994,12 +1099,14 @@ const GAMES = [
     version: "1.0.0",
     playUrl: "games/ember-keep/play/index.html",
     embed: null,
+    multiplayer: false,
     tags: ["survival", "night", "resource-management"],
     releaseDate: "2026-09-25",
     controls: "Move with WASD or the arrow keys. Wood feeds the fire automatically when you carry it close.",
     difficulty: "Hard"
   },
   {
+
     id: "one-more-pass",
     title: "One More Pass",
     slug: "one-more-pass",
@@ -1013,6 +1120,7 @@ const GAMES = [
     version: "1.0",
     playUrl: "https://html5.gamedistribution.com/fc224956ee8d4720b4ab3dfdd01f56bf/?gd_sdk_referrer_url=https://bmeesss.github.io/GameHub/games/one-more-pass/index.html",
     embed: { allow: "autoplay; fullscreen; gamepad; pointer-lock" },
+    multiplayer: false,
     tags: ["soccer", "passing", "aim", "single-player"],
     releaseDate: "2026-09-25",
     controls: "Aim with the mouse and click to pass. Line up your shots and score before the defenders close in. Desktop mouse required.",
@@ -1021,6 +1129,7 @@ const GAMES = [
     externalUrl: "https://gamedistribution.com/games/One-More-Pass/"
   },
   {
+
     id: "tennis-masters-2026",
     title: "Tennis Masters 2026",
     slug: "tennis-masters-2026",
@@ -1034,6 +1143,8 @@ const GAMES = [
     version: "1.0",
     playUrl: "https://html5.gamedistribution.com/ab2f156d72894fd8a5dedb85b34a05e4/?gd_sdk_referrer_url=https://bmeesss.github.io/GameHub/games/tennis-masters-2026/index.html",
     embed: { allow: "autoplay; fullscreen; gamepad; pointer-lock" },
+    multiplayer: true,
+    multiplayerMode: "local",
     tags: ["tennis", "2-players", "local-multiplayer", "power-ups"],
     releaseDate: "2026-09-25",
     controls: "Player 1: arrow keys to move, X to hit, Z to smash. Player 2: W A S D to move, L to hit, K to smash.",
@@ -1042,6 +1153,7 @@ const GAMES = [
     externalUrl: "https://gamedistribution.com/games/tennis-masters-2026/"
   },
   {
+
     id: "racing-in-city",
     title: "Racing in City",
     slug: "racing-in-city",
@@ -1055,6 +1167,7 @@ const GAMES = [
     version: "1.0",
     playUrl: "https://html5.gamedistribution.com/670fce13db0d4edbb396fa155db80f11/?gd_sdk_referrer_url=https://bmeesss.github.io/GameHub/games/racing-in-city/index.html",
     embed: { allow: "autoplay; fullscreen; gamepad; pointer-lock" },
+    multiplayer: false,
     tags: ["traffic", "driving", "cars", "upgrades"],
     releaseDate: "2026-09-25",
     controls: "Steer with WASD or the arrow keys and hold Shift for slow motion through tight gaps. Desktop keyboard required.",
@@ -1063,6 +1176,7 @@ const GAMES = [
     externalUrl: "https://gamedistribution.com/games/racing-in-city/"
   },
   {
+
     id: "moto-x3m-dead-ahead",
     title: "Moto X3M Dead Ahead",
     slug: "moto-x3m-dead-ahead",
@@ -1076,6 +1190,7 @@ const GAMES = [
     version: "1.0",
     playUrl: "https://html5.gamedistribution.com/8593f8d7add14ad398d9cece72ee7283/?gd_sdk_referrer_url=https://bmeesss.github.io/GameHub/games/moto-x3m-dead-ahead/index.html",
     embed: { allow: "autoplay; fullscreen; gamepad; pointer-lock" },
+    multiplayer: false,
     tags: ["bike", "stunts", "levels", "time-trial"],
     releaseDate: "2026-09-25",
     controls: "Click or tap to accelerate, flip and shoot. Chain flips for time bonuses and finish each track in one piece.",
@@ -1085,6 +1200,7 @@ const GAMES = [
     popularOrder: 12
   },
   {
+
     id: "stellar-bastion",
     title: "Stellar Bastion",
     slug: "stellar-bastion",
@@ -1098,6 +1214,7 @@ const GAMES = [
     version: "1.0",
     playUrl: "https://html5.gamemonetize.com/l51v249mbmf7kim7x98m4epn7h6l7lr5/",
     embed: { allow: "autoplay; fullscreen; gamepad; pointer-lock" },
+    multiplayer: false,
     tags: ["shooter", "waves", "survival", "space"],
     releaseDate: "2026-09-25",
     controls: "Hold anywhere to walk toward your pointer — your gun fires automatically. WASD or arrow keys also move you, 1-4 switch weapons, Shift rolls.",
@@ -1106,6 +1223,7 @@ const GAMES = [
     externalUrl: "https://gamemonetize.com/stellar-bastion-game"
   },
   {
+
     id: "sort-the-court",
     title: "Sort the Court!",
     slug: "sort-the-court",
@@ -1119,6 +1237,7 @@ const GAMES = [
     version: "1.0",
     playUrl: "https://graebor.itch.io/sort-the-court",
     embed: null,
+    multiplayer: false,
     tags: ["kingdom", "decisions", "management", "single-player"],
     releaseDate: "2026-09-25",
     controls: "Click Yes or No to give your decree. Every answer changes your gold, population and happiness.",
@@ -1127,6 +1246,7 @@ const GAMES = [
     externalUrl: "https://graebor.itch.io/sort-the-court"
   },
   {
+
     id: "stickman-hook",
     title: "Stickman Hook",
     slug: "stickman-hook",
@@ -1140,12 +1260,320 @@ const GAMES = [
     version: "1.0",
     playUrl: "https://poki.com/en/g/stickman-hook",
     embed: null,
+    multiplayer: false,
     tags: ["swing", "grapple", "skill", "one-button"],
     releaseDate: "2026-09-25",
     controls: "Tap, click or press Space to attach your rope and release to let go. Rhythm is everything.",
     difficulty: "Medium",
     provider: "Poki",
     externalUrl: "https://poki.com/en/g/stickman-hook"
+  },
+  {
+    id: "chess",
+    title: "Chess",
+    slug: "chess",
+    description: "Play full chess with legal moves, castling, en passant and promotion — against the local AI or a friend on one device.",
+    category: "Strategy",
+    thumbnail: "assets/thumbnails/chess.svg",
+    featured: false,
+    popular: true,
+    popularOrder: 13,
+    status: "available",
+    type: "html5",
+    version: "1.0.0",
+    playUrl: "games/chess/play/index.html",
+    embed: null,
+    multiplayer: true,
+    multiplayerMode: "local",
+    tags: ["chess", "board", "ai", "2-players", "local-multiplayer", "strategy"],
+    releaseDate: "2026-09-26",
+    controls: "Click a piece, then a highlighted square to move. M toggles AI/local two-player mode, L cycles the AI level, P pauses.",
+    difficulty: "Hard"
+  },
+  {
+    id: "checkers",
+    title: "Checkers",
+    slug: "checkers",
+    description: "Classic draughts with mandatory captures, chained multi-jumps and kings — versus the AI or a friend.",
+    category: "Strategy",
+    thumbnail: "assets/thumbnails/checkers.svg",
+    featured: false,
+    popular: false,
+    status: "available",
+    type: "html5",
+    version: "1.0.0",
+    playUrl: "games/checkers/play/index.html",
+    embed: null,
+    multiplayer: true,
+    multiplayerMode: "local",
+    tags: ["checkers", "draughts", "board", "ai", "2-players", "local-multiplayer"],
+    releaseDate: "2026-09-26",
+    controls: "Click your piece, then a highlighted square. Captures are mandatory and chain automatically. M switches to two players, P pauses.",
+    difficulty: "Medium"
+  },
+  {
+    id: "pool",
+    title: "Pool",
+    slug: "pool",
+    description: "Simplified eight-ball on a single table: aim, charge and pot your group before finishing on the eight.",
+    category: "Sports",
+    thumbnail: "assets/thumbnails/pool.svg",
+    featured: false,
+    popular: false,
+    status: "available",
+    type: "html5",
+    version: "1.0.0",
+    playUrl: "games/pool/play/index.html",
+    embed: null,
+    multiplayer: true,
+    multiplayerMode: "local",
+    tags: ["pool", "billiards", "physics", "2-players", "local-multiplayer"],
+    releaseDate: "2026-09-26",
+    controls: "Move the mouse to aim, hold the mouse button to charge and release to shoot. Arrows fine-tune the angle, Space shoots, M switches to the computer.",
+    difficulty: "Medium"
+  },
+  {
+    id: "target-shooter",
+    title: "Target Shooter",
+    slug: "target-shooter",
+    description: "Aim-training range: hit every drifting target before it escapes and keep your accuracy up for bonus points.",
+    category: "Action",
+    thumbnail: "assets/thumbnails/target-shooter.svg",
+    featured: false,
+    popular: false,
+    status: "available",
+    type: "html5",
+    version: "1.0.0",
+    playUrl: "games/target-shooter/play/index.html",
+    embed: null,
+    multiplayer: false,
+    tags: ["shooting", "aim", "reflex", "score-attack"],
+    releaseDate: "2026-09-26",
+    controls: "Move the mouse to aim and click or tap to fire. R reloads between rounds, Space fires from the keyboard, P pauses.",
+    difficulty: "Medium"
+  },
+  {
+    id: "word-hunt",
+    title: "Word Hunt",
+    slug: "word-hunt",
+    description: "Find as many hidden words as you can on a generated 4x4 letter board before the ninety-second clock runs out.",
+    category: "Puzzle",
+    thumbnail: "assets/thumbnails/word-hunt.svg",
+    featured: false,
+    popular: false,
+    status: "available",
+    type: "html5",
+    version: "1.0.0",
+    playUrl: "games/word-hunt/play/index.html",
+    embed: null,
+    multiplayer: false,
+    tags: ["words", "word-search", "spelling", "timed", "puzzle"],
+    releaseDate: "2026-09-26",
+    controls: "Drag across neighbouring letters to spell a word, then release to submit. You can also type letters straight onto the board, Backspace clears, P pauses.",
+    difficulty: "Medium"
+  },
+  {
+    id: "maze-escape",
+    title: "Maze Escape",
+    slug: "maze-escape",
+    description: "Every maze is generated fresh: collect the glowing shards, then sprint to the exit before the clock beats you.",
+    category: "Puzzle",
+    thumbnail: "assets/thumbnails/maze-escape.svg",
+    featured: false,
+    popular: false,
+    status: "available",
+    type: "html5",
+    version: "1.0.0",
+    playUrl: "games/maze-escape/play/index.html",
+    embed: null,
+    multiplayer: false,
+    tags: ["maze", "escape", "time-attack", "levels"],
+    releaseDate: "2026-09-26",
+    controls: "Arrow keys or WASD run through the maze, swipe on touch screens. Collect every shard before the exit opens. P pauses.",
+    difficulty: "Medium"
+  },
+  {
+    id: "helicopter-run",
+    title: "Helicopter Run",
+    slug: "helicopter-run",
+    description: "Thread a narrowing cave with one-button helicopter control — hold to climb, release to dive, survive as long as you can.",
+    category: "Arcade",
+    thumbnail: "assets/thumbnails/helicopter-run.svg",
+    featured: false,
+    popular: false,
+    status: "available",
+    type: "html5",
+    version: "1.0.0",
+    playUrl: "games/helicopter-run/play/index.html",
+    embed: null,
+    multiplayer: false,
+    tags: ["helicopter", "one-button", "endless", "reflex"],
+    releaseDate: "2026-09-26",
+    controls: "Hold Space, the mouse button or your finger to climb and release to descend. P pauses mid-flight.",
+    difficulty: "Hard"
+  },
+  {
+    id: "rocket-landing",
+    title: "Rocket Landing",
+    slug: "rocket-landing",
+    description: "Guide a lander onto shrinking pads with limited fuel: upright, slow and on target, or it is another crater.",
+    category: "Arcade",
+    thumbnail: "assets/thumbnails/rocket-landing.svg",
+    featured: false,
+    popular: false,
+    status: "available",
+    type: "html5",
+    version: "1.0.0",
+    playUrl: "games/rocket-landing/play/index.html",
+    embed: null,
+    multiplayer: false,
+    tags: ["lander", "physics", "precision", "levels"],
+    releaseDate: "2026-09-26",
+    controls: "Arrow up thrusts, left and right rotate. Space also thrusts. Land upright and slowly on the glowing pad to advance. P pauses.",
+    difficulty: "Hard"
+  },
+  {
+    id: "survival-arena",
+    title: "Survival Arena",
+    slug: "survival-arena",
+    description: "Kite endless waves of drones in a top-down arena, keep firing and grab repair cores to stay alive.",
+    category: "Action",
+    thumbnail: "assets/thumbnails/survival-arena.svg",
+    featured: false,
+    popular: false,
+    status: "available",
+    type: "html5",
+    version: "1.0.0",
+    playUrl: "games/survival-arena/play/index.html",
+    embed: null,
+    multiplayer: false,
+    tags: ["arena", "survival", "shooter", "waves"],
+    releaseDate: "2026-09-26",
+    controls: "Move with WASD or the arrow keys, aim with the mouse and hold the button or Space to fire. Green cores repair you. P pauses.",
+    difficulty: "Medium"
+  },
+  {
+    id: "farm-defender",
+    title: "Farm Defender",
+    slug: "farm-defender",
+    description: "Buy turrets with coins and stop the critter march before it reaches the barn — every wave is heavier than the last.",
+    category: "Strategy",
+    thumbnail: "assets/thumbnails/farm-defender.svg",
+    featured: false,
+    popular: false,
+    status: "available",
+    type: "html5",
+    version: "1.0.0",
+    playUrl: "games/farm-defender/play/index.html",
+    embed: null,
+    multiplayer: false,
+    tags: ["tower-defense", "strategy", "waves", "farm"],
+    releaseDate: "2026-09-26",
+    controls: "Pick a turret with 1, 2 or 3, then click a grass tile to build it. Coins come from defeated critters; the barn has ten lives. P pauses.",
+    difficulty: "Medium"
+  },
+  {
+    id: "pirate-duel",
+    title: "Pirate Duel",
+    slug: "pirate-duel",
+    description: "Turn-based broadsides on the open sea: set the cannon angle and powder, account for the wind and sink the other ship.",
+    category: "Action",
+    thumbnail: "assets/thumbnails/pirate-duel.svg",
+    featured: false,
+    popular: false,
+    status: "available",
+    type: "html5",
+    version: "1.0.0",
+    playUrl: "games/pirate-duel/play/index.html",
+    embed: null,
+    multiplayer: true,
+    multiplayerMode: "local",
+    tags: ["artillery", "turn-based", "ships", "2-players", "local-multiplayer"],
+    releaseDate: "2026-09-26",
+    controls: "Arrow up and down set the cannon angle, left and right the powder. Space fires, clicking the sea aims that way, M switches between AI and two players.",
+    difficulty: "Medium"
+  },
+  {
+    id: "snowboard-rush",
+    title: "Snowboard Rush",
+    slug: "snowboard-rush",
+    description: "Carve down an endless slope, thread every gate for a speed boost and stay clear of the pines.",
+    category: "Racing",
+    thumbnail: "assets/thumbnails/snowboard-rush.svg",
+    featured: false,
+    popular: false,
+    status: "available",
+    type: "html5",
+    version: "1.0.0",
+    playUrl: "games/snowboard-rush/play/index.html",
+    embed: null,
+    multiplayer: false,
+    tags: ["snowboard", "downhill", "endless", "reflex"],
+    releaseDate: "2026-09-26",
+    controls: "Left and right arrows or A and D carve, dragging on touch steers toward your finger. Gates give a boost, trees end the run. P pauses.",
+    difficulty: "Medium"
+  },
+  {
+    id: "color-match",
+    title: "Color Match",
+    slug: "color-match",
+    description: "A colour name printed in the wrong ink: tap the ink colour, never the word, and keep the streak alive.",
+    category: "Casual",
+    thumbnail: "assets/thumbnails/color-match.svg",
+    featured: false,
+    popular: false,
+    status: "available",
+    type: "html5",
+    version: "1.0.0",
+    playUrl: "games/color-match/play/index.html",
+    embed: null,
+    multiplayer: false,
+    tags: ["colors", "reflex", "brain", "timed"],
+    releaseDate: "2026-09-26",
+    controls: "Click or tap the swatch that matches the ink colour, or press 1 to 4. Right answers add time, wrong answers cost it. P pauses.",
+    difficulty: "Easy"
+  },
+  {
+    id: "battle-tanks",
+    title: "Battle Tanks",
+    slug: "battle-tanks",
+    description: "Two tanks, destructible crates and bouncing shells — a local duel on one keyboard or a match against the AI.",
+    category: "Multiplayer",
+    thumbnail: "assets/thumbnails/battle-tanks.svg",
+    featured: false,
+    popular: true,
+    popularOrder: 14,
+    status: "available",
+    type: "html5",
+    version: "1.0.0",
+    playUrl: "games/battle-tanks/play/index.html",
+    embed: null,
+    multiplayer: true,
+    multiplayerMode: "local",
+    tags: ["tanks", "versus", "2-players", "local-multiplayer", "arena"],
+    releaseDate: "2026-09-26",
+    controls: "Player 1 drives with W, A, S, D and fires with F. Player 2 uses the arrow keys and Enter. M hands tank two to the AI, P pauses.",
+    difficulty: "Medium"
+  },
+  {
+    id: "typing-sprint",
+    title: "Typing Sprint",
+    slug: "typing-sprint",
+    description: "Sixty seconds of words: type each one exactly, watch your words per minute climb and keep your accuracy clean.",
+    category: "Casual",
+    thumbnail: "assets/thumbnails/typing-sprint.svg",
+    featured: false,
+    popular: false,
+    status: "available",
+    type: "html5",
+    version: "1.0.0",
+    playUrl: "games/typing-sprint/play/index.html",
+    embed: null,
+    multiplayer: false,
+    tags: ["typing", "words", "speed", "wpm"],
+    releaseDate: "2026-09-26",
+    controls: "Type the word and press Space or Enter to send it. Backspace fixes the current word. P pauses the clock.",
+    difficulty: "Easy"
   }
 ];
 
@@ -1161,6 +1589,27 @@ const CATEGORY_COLORS = {
   Sports: "#60a5fa",
   Strategy: "#34d399"
 };
+/* One description per category: the category landing pages render
+   these, so a category never needs hand-written duplicate content. */
+const CATEGORY_DESCRIPTIONS = {
+  Action: "Fast, loud and reflex-driven: shooters, arena fights and dodging games where the next second matters.",
+  Adventure: "Exploration, stealth and journey games — slower pace, more world to poke at.",
+  Arcade: "Timeless arcade design: one clear goal, tight controls and a score worth chasing.",
+  Casual: "Easy to pick up, hard to put down. Short rounds, simple rules, instant restarts.",
+  Minecraft: "Voxel worlds and Eaglercraft-style client slots. GameHub ships no Minecraft files — bring a client you are allowed to host.",
+  Multiplayer: "Games built for a second player — locally on one device, or against the computer.",
+  Puzzle: "Logic, words, mazes and brain-teasers. Think first, tap second.",
+  Racing: "Speed, drift and traffic. Endless runs and time trials with a throttle.",
+  Sports: "Ball games, tables and trick shots — physics you can feel through the keyboard.",
+  Strategy: "Plan, build, defend or outwit. Boards and battles that reward patience."
+};
+
+const MULTIPLAYER_MODES = ["local", "online"];
+const MULTIPLAYER_LABELS = {
+  local: "Local multiplayer",
+  online: "Online multiplayer"
+};
+
 const TYPE_LABELS = {
   html5: "HTML5",
   iframe: "Iframe",
@@ -1191,6 +1640,34 @@ const typeLabel = (type) => TYPE_LABELS[type] || "";
 
 const tagsOf = (game) => (game && Array.isArray(game.tags) ? game.tags : []);
 
+const categoryDescription = (category) =>
+  typeof CATEGORY_DESCRIPTIONS[category] === "string" ? CATEGORY_DESCRIPTIONS[category] : "";
+
+/* ---------------- Multiplayer metadata ----------------
+   multiplayer: true only when the game itself supports more than one
+   player, and multiplayerMode is "local" unless a real online
+   backend/protocol exists (GameHub ships none, so "online" is never
+   guessed). Everything else reports single player honestly. */
+const isMultiplayer = (game) => Boolean(game) && game.multiplayer === true;
+
+const multiplayerModeOf = (game) => {
+  if (!isMultiplayer(game)) return "";
+  const mode = String(game.multiplayerMode || "").trim().toLowerCase();
+  return MULTIPLAYER_MODES.indexOf(mode) === -1 ? "" : mode;
+};
+
+const multiplayerLabel = (game) => {
+  const mode = multiplayerModeOf(game);
+  if (mode) return MULTIPLAYER_LABELS[mode];
+  return isMultiplayer(game) ? "Multiplayer" : "Single player";
+};
+
+const getMultiplayerGames = () => validGames().filter(isMultiplayer);
+
+const getLocalMultiplayerGames = () => validGames().filter((game) => multiplayerModeOf(game) === "local");
+
+const getOnlineMultiplayerGames = () => validGames().filter((game) => multiplayerModeOf(game) === "online");
+
 /* Missing optional fields never break rendering: every access below
    treats them as absent rather than throwing. */
 const orderOf = (game, field) =>
@@ -1207,6 +1684,31 @@ const getCategories = () => {
     .map(([name, count]) => ({ name, count }))
     .sort((a, b) => a.name.localeCompare(b.name));
 };
+
+/* Full category record for the landing pages: name, count, colour
+   and description, always derived from the catalog itself. */
+const getCategoryInfo = (name) => {
+  const clean = String(name == null ? "" : name).trim();
+  if (clean === ALL_CATEGORIES) {
+    const total = validGames().length;
+    return {
+      name: ALL_CATEGORIES,
+      count: total,
+      color: DEFAULT_CATEGORY_COLOR,
+      description: "Everything GameHub has to offer: original HTML5 games, provider games and voxel client slots in one grid."
+    };
+  }
+  const found = getCategories().find((entry) => entry.name === clean);
+  if (!found) return null;
+  return {
+    name: found.name,
+    count: found.count,
+    color: categoryColor(found.name),
+    description: categoryDescription(found.name)
+  };
+};
+
+const getCategoryList = () => getCategories().map((entry) => getCategoryInfo(entry.name));
 
 const getTypes = () => {
   const counts = new Map();
@@ -1352,6 +1854,9 @@ const getProviders = () => {
 var GameHubCatalog = {
   games: GAMES,
   CATEGORY_COLORS,
+  CATEGORY_DESCRIPTIONS,
+  MULTIPLAYER_MODES,
+  MULTIPLAYER_LABELS,
   TYPE_LABELS,
   TYPE_ORDER,
   SORT_OPTIONS,
@@ -1363,6 +1868,15 @@ var GameHubCatalog = {
   gameById,
   gameBySlug,
   categoryColor,
+  categoryDescription,
+  getCategoryInfo,
+  getCategoryList,
+  isMultiplayer,
+  multiplayerModeOf,
+  multiplayerLabel,
+  getMultiplayerGames,
+  getLocalMultiplayerGames,
+  getOnlineMultiplayerGames,
   typeLabel,
   tagsOf,
   getCategories,

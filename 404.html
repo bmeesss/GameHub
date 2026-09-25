@@ -63,6 +63,19 @@
     .primary { background: linear-gradient(135deg, var(--accent), #4f7cff 55%, var(--accent-2)); color: #fff; }
     .ghost { background: transparent; border-color: var(--border); color: var(--text); }
     a:focus-visible, button:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 3px; }
+    /* Theme overrides mirror style.css tokens for the shared key. */
+    html[data-theme="midnight"] {
+      --bg: #05060f; --surface: #0c1122; --border: rgba(120, 140, 200, 0.22);
+      --text: #e9edff; --muted: #8f9cc0; --accent: #6366f1; --accent-2: #38bdf8;
+    }
+    html[data-theme="light"] {
+      --bg: #f4f6ff; --surface: #ffffff; --border: rgba(30, 41, 90, 0.12);
+      --text: #131a33; --muted: #55608a; --accent: #6d4dff; --accent-2: #0e8fb8;
+    }
+    html[data-theme="light"] body {
+      background: radial-gradient(700px 380px at 50% -100px, rgba(109, 77, 255, 0.12), transparent 60%), var(--bg);
+    }
+    html[data-theme="light"] .primary { color: #fff; }
   </style>
 </head>
 <body>
@@ -77,6 +90,14 @@
   </main>
   <script>
     (function () {
+      /* Same storage namespace and theme key as theme.js, so a visitor
+         who picked a theme on the main site sees it here too. */
+      try {
+        var stored = localStorage.getItem("gamehub:theme");
+        if (stored === "midnight" || stored === "light" || stored === "dark") {
+          document.documentElement.setAttribute("data-theme", stored);
+        }
+      } catch (e) { /* storage blocked: keep the default dark theme */ }
       var back = document.getElementById("back-btn");
       if (back) back.addEventListener("click", function () { history.back(); });
       /* GitHub Pages serves this file from the missing URL's depth, so

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minecraft Games — GameHub</title>
+  <meta name="description" content="Browse every Minecraft game on GameHub: descriptions, thumbnails and instant play, all generated from the same catalog as the rest of the site.">
+  <meta property="og:title" content="Minecraft Games — GameHub">
+  <meta property="og:description" content="Every Minecraft game on GameHub in one place.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="../../assets/thumbnails/snake.svg">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
+  <link rel="manifest" href="../../manifest.webmanifest">
+  <link rel="stylesheet" href="../../style.css">
+  <script src="../../theme.js"></script>
+</head>
+<body data-category-page="Minecraft">
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="../../index.html" aria-label="GameHub home">
+        <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#7c5cff"></stop>
+              <stop offset="1" stop-color="#22d3ee"></stop>
+            </linearGradient>
+          </defs>
+          <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#logoGrad)"></rect>
+          <path d="M12.5 11.5v9M8 16h9" stroke="#fff" stroke-width="2.6" stroke-linecap="round"></path>
+          <circle cx="21.5" cy="13.8" r="1.9" fill="#fff"></circle>
+          <circle cx="21.5" cy="18.6" r="1.9" fill="#fff" opacity="0.75"></circle>
+        </svg>
+        Game<span>Hub</span>
+      </a>
+
+      <nav class="site-nav" aria-label="Primary">
+        <a href="../../index.html#home">Home</a>
+        <a href="../../index.html#games">Games</a>
+        <a href="../../index.html#categories" aria-current="page">Categories</a>
+        <a href="../../index.html?category=Minecraft#games">Minecraft</a>
+        <a href="../../index.html?favorites=1#games">Favorites</a>
+        <a href="../../profile/index.html">Profile</a>
+      </nav>
+
+      <form class="header-search" role="search" action="../../index.html" method="get">
+        <div class="search-field">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="M20 20l-3.5-3.5"></path>
+          </svg>
+          <label class="sr-only" for="search-input">Search games</label>
+          <input type="search" id="search-input" name="q" placeholder="Search games&hellip;" autocomplete="off" maxlength="80">
+        </div>
+      </form>
+    </div>
+  </header>
+
+  <main id="main" data-category="Minecraft">
+    <div class="container">
+      <section class="category-hero" aria-labelledby="category-title">
+        <div>
+          <span class="category-hero-dot" data-category-dot aria-hidden="true">M</span>
+          <p class="eyebrow" data-category-lead>Minecraft games on GameHub</p>
+          <h1 id="category-title" data-category-title>Minecraft</h1>
+          <p class="lede" data-category-description>Loading the category description&hellip;</p>
+          <div class="chip-row" style="margin-top:16px">
+            <span class="pill" data-category-count>0 games</span>
+            <a class="chip-link" href="../../index.html?category=Minecraft#games">Filter on the homepage</a>
+          </div>
+        </div>
+        <dl class="profile-hero-stats" data-category-stats></dl>
+      </section>
+
+      <p class="empty-note" data-category-missing hidden>That category does not exist in the GameHub catalog. <a href="../../index.html#categories">Back to all categories</a>.</p>
+
+      <section class="section section--tight" id="category-featured" aria-labelledby="category-featured-title" hidden>
+        <div>
+          <div class="rail-head">
+            <div>
+              <p class="eyebrow">Hand-picked</p>
+              <h2 id="category-featured-title">Featured in Minecraft</h2>
+            </div>
+            <a class="section-link" href="../../index.html#featured">See all featured</a>
+          </div>
+          <div class="grid" id="category-featured-grid" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section class="section section--tight" id="category-popular" aria-labelledby="category-popular-title" hidden>
+        <div class="container">
+          <div class="rail-head">
+            <div>
+              <p class="eyebrow">Player favorites</p>
+              <h2 id="category-popular-title">Popular in Minecraft</h2>
+            </div>
+            <a class="section-link" href="../../index.html#popular">See all popular</a>
+          </div>
+          <div class="grid" id="category-popular-grid" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section class="section section--tight" id="category-recent" aria-labelledby="category-recent-title" hidden>
+        <div class="container">
+          <div class="rail-head">
+            <div>
+              <p class="eyebrow">Fresh additions</p>
+              <h2 id="category-recent-title">Recently added in Minecraft</h2>
+            </div>
+            <a class="section-link" href="../../index.html#new">See all new games</a>
+          </div>
+          <div class="grid" id="category-recent-grid" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section class="section section--tight" id="category-all" aria-labelledby="category-all-title">
+        <div>
+          <div class="rail-head">
+            <div>
+              <p class="eyebrow">Complete list</p>
+              <h2 id="category-all-title">All Minecraft games</h2>
+            </div>
+            <p class="results-count" data-category-count role="status"></p>
+          </div>
+          <div class="grid" id="category-all-grid" aria-live="polite"></div>
+          <p class="empty-note" data-category-empty hidden>No games in this category yet. <a href="../../index.html#games">Browse the full catalog</a>.</p>
+        </div>
+      </section>
+
+      <section class="section section--tight" aria-labelledby="category-browse-title">
+        <div>
+          <div class="rail-head">
+            <div>
+              <p class="eyebrow">Keep browsing</p>
+              <h2 id="category-browse-title">Other categories</h2>
+            </div>
+          </div>
+          <div class="chip-row" data-category-chips></div>
+          <p class="eyebrow" style="margin-top:18px">Popular tags here</p>
+          <div class="chip-row" data-category-related></div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="brand" href="../../index.html" aria-label="GameHub home">
+            <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+              <rect x="1" y="1" width="30" height="30" rx="9" fill="#2a3560"></rect>
+              <path d="M12.5 11.5v9M8 16h9" stroke="#22d3ee" stroke-width="2.6" stroke-linecap="round"></path>
+              <circle cx="21.5" cy="13.8" r="1.9" fill="#22d3ee"></circle>
+              <circle cx="21.5" cy="18.6" r="1.9" fill="#22d3ee" opacity="0.75"></circle>
+            </svg>
+            Game<span>Hub</span>
+          </a>
+          <p>A free, static browser game hub. Fast by design — no accounts, no tracking, just games.</p>
+        </div>
+        <nav aria-label="Footer">
+          <h2 class="footer-heading">Explore</h2>
+          <ul class="footer-links">
+            <li><a href="../../index.html#home">Home</a></li>
+            <li><a href="../../index.html#games">All games</a></li>
+            <li><a href="../../index.html#categories">Categories</a></li>
+            <li><a href="../../index.html?category=Minecraft#games">Minecraft</a></li>
+            <li><a href="../../index.html?favorites=1#games">Favorites</a></li>
+            <li><a href="../../profile/index.html">Profile</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; <span id="year">2026</span> GameHub. All placeholder artwork is original and made for this project.</p>
+        <p>Static site &middot; Works offline from any static host</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../catalog.js" defer></script>
+  <script src="../../player.js" defer></script>
+  <script src="../../profile.js" defer></script>
+  <script src="../../achievements.js" defer></script>
+  <script src="../../cards.js" defer></script>
+  <script src="../../search.js" defer></script>
+  <script src="../../category-page.js" defer></script>
+  <script src="../../pwa.js" defer></script>
+</body>
+</html>

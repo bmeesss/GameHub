@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Word Hunt artwork — original letter board</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1d1740"/>
+      <stop offset="1" stop-color="#0b0f1a"/>
+    </linearGradient>
+    <linearGradient id="tile" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a2352"/>
+      <stop offset="1" stop-color="#1a1636"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <circle cx="560" cy="70" r="120" fill="#a78bfa" opacity=".16"/>
+  <circle cx="80" cy="300" r="110" fill="#22d3ee" opacity=".12"/>
+  <g>
+    <rect x="140" y="52" width="88" height="88" rx="16" fill="url(#tile)" stroke="#a78bfa" stroke-width="2"/>
+    <rect x="248" y="52" width="88" height="88" rx="16" fill="url(#tile)" stroke="#22d3ee" stroke-width="3"/>
+    <rect x="356" y="52" width="88" height="88" rx="16" fill="url(#tile)" stroke="#3b4668" stroke-width="2"/>
+    <rect x="464" y="52" width="88" height="88" rx="16" fill="url(#tile)" stroke="#3b4668" stroke-width="2"/>
+    <rect x="140" y="160" width="88" height="88" rx="16" fill="url(#tile)" stroke="#3b4668" stroke-width="2"/>
+    <rect x="248" y="160" width="88" height="88" rx="16" fill="url(#tile)" stroke="#3b4668" stroke-width="2"/>
+    <rect x="356" y="160" width="88" height="88" rx="16" fill="url(#tile)" stroke="#3b4668" stroke-width="2"/>
+    <rect x="464" y="160" width="88" height="88" rx="16" fill="url(#tile)" stroke="#3b4668" stroke-width="2"/>
+    <rect x="140" y="268" width="88" height="48" rx="14" fill="#0a0f22" stroke="#22d3ee" stroke-width="2"/>
+  </g>
+  <g fill="#f2f5ff" font-family="sans-serif" font-size="46" font-weight="bold" text-anchor="middle">
+    <text x="184" y="114">W</text>
+    <text x="292" y="114">O</text>
+    <text x="400" y="114">R</text>
+    <text x="508" y="114">D</text>
+    <text x="184" y="222">H</text>
+    <text x="292" y="222">U</text>
+    <text x="400" y="222">N</text>
+    <text x="508" y="222">T</text>
+  </g>
+  <g fill="#22d3ee" font-family="sans-serif" font-size="26" font-weight="bold" text-anchor="middle">
+    <text x="184" y="302">O</text>
+    <text x="292" y="302" opacity=".45">R</text>
+  </g>
+  <path d="M292 96 L400 96" stroke="#22d3ee" stroke-width="4" stroke-linecap="round" opacity=".7"/>
+</svg>

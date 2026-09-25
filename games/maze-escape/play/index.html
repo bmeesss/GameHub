@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maze Escape — Play — GameHub</title>
+  <meta name="description" content="Play Maze Escape on GameHub: sprint through generated mazes, grab every shard and reach the exit in time.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Maze Escape</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">Level</span><span class="hud-value" id="level">1</span></div>
+        <div class="hud-item"><span class="hud-label">Shards</span><span class="hud-value" id="shards">0/1</span></div>
+        <div class="hud-item"><span class="hud-label">Time</span><span class="hud-value" id="time">30</span></div>
+        <div class="hud-item"><span class="hud-label">Best level</span><span class="hud-value" id="best">0</span></div>
+        <button class="hud-btn" id="pauseBtn" type="button">Pause</button>
+      </div>
+      <div class="stage">
+        <canvas id="game" width="560" height="560" aria-label="Maze"></canvas>
+        <div class="overlay" id="overlay">
+          <h2 id="overlayTitle">Maze Escape</h2>
+          <p id="overlayText">Every maze is generated fresh. Collect the glowing shards, then reach the green exit before the clock runs out — each level is bigger and tighter.</p>
+          <button class="primary-btn" id="primaryBtn" type="button">Enter maze</button>
+        </div>
+      </div>
+      <p class="hint">Arrow keys or WASD to run · swipe on touch · P pauses</p>
+    </main>
+  </div>
+  <script src="../../../session.js" data-game="maze-escape"></script>
+  <script src="game.js"></script>
+</body>
+</html>

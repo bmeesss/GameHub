@@ -2,8 +2,9 @@
    Run from the repo root:  node tests/smoke.mjs
    Executes the real catalog.js + player.js + cards.js + script.js /
    launcher.js in stubbed DOM contexts and asserts catalog, filtering,
-   sorting, URL hydration, player shelves, favorites and launching. */
-import { readFileSync } from "node:fs";
+   sorting, URL hydration, player shelves, favorites and launching,
+   plus Minecraft client resolution (local, HTTPS, missing, HTTP). */
+import { readFileSync, existsSync } from "node:fs";
 import vm from "node:vm";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -192,6 +193,47 @@ t("type chips generated with counts", JSON.stringify(Catalog.getTypes().map((x) 
 t("optional fields tolerated when missing", Catalog.getNewGames().length === 6 && Catalog.getFeatured().length === 7 && Catalog.sortGames(GAMES, "newest").length === 51);
 t("related games derive from catalog", Catalog.getRelated(Catalog.gameBySlug("snake"), 3).length === 3 && !Catalog.getRelated(Catalog.gameBySlug("snake"), 3).some((g) => g.slug === "snake"));
 
+/* ---------------- Catalog integrity on disk ---------------- */
+const MINECRAFT_SLUGS = ["eaglercraft-1-8", "eaglercraftx-1-8", "eaglercraft-1-12"];
+const NEW_GAMES = ["stack-tower", "sky-jump", "stellar-siege", "slide-puzzle", "glow-grid", "air-hockey", "reversi", "idle-miner", "road-rush", "ember-keep"];
+const inRepo = (rel) => existsSync(path.join(root, rel));
+
+const mcGames = MINECRAFT_SLUGS.map((slug) => Catalog.gameBySlug(slug));
+t("all three Minecraft clients are cataloged", mcGames.every(Boolean) && mcGames.length === 3);
+t("Minecraft entries carry full metadata", mcGames.every((g) => g && g.category === "Minecraft" && g.type === "webgl" && g.status === "coming-soon" && g.controls && g.difficulty && g.playUrl === `games/${g.slug}/client/index.html`));
+t("Minecraft entries use sandbox/voxel tags", mcGames.every((g) => g.tags.includes("minecraft") && g.tags.includes("sandbox") && g.tags.includes("voxel") && g.tags.every((tag) => tag === tag.toLowerCase())));
+t("Minecraft client dirs ship only placement docs", MINECRAFT_SLUGS.every((slug) => inRepo(`games/${slug}/client/README.md`) && !existsSync(path.join(root, "games", slug, "client", "index.html"))));
+
+t("all 10 new games are available", NEW_GAMES.every((slug) => { const g = Catalog.gameBySlug(slug); return g && g.status === "available" && g.type === "html5"; }));
+t("new games link play bundles", NEW_GAMES.every((slug) => Catalog.gameBySlug(slug).playUrl === `games/${slug}/play/index.html`));
+t("new games ship complete play bundles", NEW_GAMES.every((slug) => ["index.html", "style.css", "game.js"].every((f) => inRepo(`games/${slug}/play/${f}`))));
+t("new games declare controls + difficulty", NEW_GAMES.every((slug) => { const g = Catalog.gameBySlug(slug); return g.controls && ["Easy", "Medium", "Hard"].includes(g.difficulty); }));
+t("new games use lowercase tags", NEW_GAMES.every((slug) => Catalog.gameBySlug(slug).tags.every((tag) => tag === tag.toLowerCase())));
+
+t("every entry has a game page + thumbnail", Catalog.validGames().every((g) => inRepo(`games/${g.slug}/index.html`) && inRepo(g.thumbnail)));
+t("all local playUrls exist on disk", Catalog.validGames().filter((g) => g.playUrl && !/^https?:/i.test(g.playUrl) && g.status === "available").every((g) => inRepo(g.playUrl)));
+t("coming-soon client slots never fake availability", Catalog.validGames().filter((g) => (g.type === "webgl" || g.type === "wasm") && g.status === "coming-soon").every((g) => !existsSync(path.join(root, "games", g.slug, "play", "index.html"))));
+
+/* Client-aware cards: configured/verified clients flip to playable. */
+{
+  const sb = makeSandbox();
+  sb.GameHubClients = { clients: { "eaglercraft-1-8": { url: "https://cdn.example.com/e18/index.html" }, "eaglercraftx-1-8": { url: "http://misconfigured.example.com/" } } };
+  const api2 = runWithStubs([load("catalog.js"), load("cards.js")].join("\n"), sb, ["GameHubCards", "GameHubCatalog"]);
+  const C2 = api2.GameHubCards;
+  const cat2 = api2.GameHubCatalog;
+  const configured = C2.cardTemplate(cat2.gameBySlug("eaglercraft-1-8"), {});
+  t("configured https client renders a playable Minecraft card", configured.includes("Play ") && !configured.includes("Coming soon") && configured.includes("card--minecraft"));
+  const httpSlot = C2.cardTemplate(cat2.gameBySlug("eaglercraftx-1-8"), {});
+  t("http client config keeps the card honest", httpSlot.includes("Coming soon") && !httpSlot.includes(">Play "));
+  const steel = cat2.gameBySlug("steel-vanguard");
+  const before = C2.cardTemplate(steel, {});
+  C2.markClientAvailable("steel-vanguard");
+  const after = C2.cardTemplate(steel, {});
+  t("marked local clients flip cards to playable", before.includes("Coming soon") && !after.includes("Coming soon") && after.includes("Play "));
+  const eagle = cat2.gameBySlug("eaglercraft-1-12");
+  t("unconfigured slots stay coming-soon", C2.cardTemplate(eagle, {}).includes("Coming soon") && C2.clientReady(eagle) === false);
+}
+
 api.state.query = "sandbox"; api.state.category = "All"; api.state.type = null; api.state.sort = "featured"; api.state.favoritesOnly = false; api.applyFilters();
 t("search matches tags ('sandbox' -> 3)", count(sel("#games-grid").innerHTML, "<article") === 3);
 api.state.query = "wasm"; api.applyFilters();
@@ -373,6 +415,38 @@ r = plan("flash", "game.swf");
 t("unknown type -> graceful error", r.action === "error");
 t("URL helpers behave", launch.isHttpsUrl("https://a.b/c") && !launch.isHttpsUrl("http://a.b/c") && launch.isRemoteUrl("http://a.b/") && !launch.isRemoteUrl("client/index.html"));
 
+/* ---------------- Minecraft client resolution ---------------- */
+const planFull = (config) => launch.resolveLaunch(config);
+r = planFull({ slug: "eaglercraft-1-8", type: "webgl", playUrl: "", clientUrl: "https://cdn.example.com/e18/index.html" });
+t("webgl https clientUrl -> embed remote unprobed", r.action === "embed" && r.probe === false && r.remote === true && r.url === "https://cdn.example.com/e18/index.html");
+r = planFull({ slug: "eaglercraft-1-8", type: "webgl", playUrl: "", clientUrl: "http://insecure.example.com/e18/index.html" });
+t("webgl http clientUrl -> refused", r.action === "error" && /HTTPS/.test(r.reason));
+r = planFull({ slug: "eaglercraft-1-8", type: "webgl", playUrl: "client/index.html", clientUrl: "https://cdn.example.com/e18/index.html" });
+t("webgl local client wins over configured remote", r.action === "embed" && r.probe === true && r.url === "client/index.html");
+r = planFull({ slug: "eaglercraft-1-8", type: "wasm", playUrl: "", clientUrl: "https://cdn.example.com/w/index.html" });
+t("wasm https clientUrl -> embed remote unprobed", r.action === "embed" && r.remote === true);
+r = planFull({ slug: "eaglercraft-1-8", type: "html5", playUrl: "", clientUrl: "https://cdn.example.com/x/index.html" });
+t("clientUrl never overrides html5 navigation rules", r.action === "error");
+
+/* Central client configuration (client-config.js shape). */
+{
+  const sb = makeSandbox();
+  sb.__null.add("#launcher");
+  sb.GameHubClients = {
+    clients: {
+      "eaglercraft-1-8": { url: "https://cdn.example.com/e18/index.html" },
+      "eaglercraftx-1-8": null,
+      "eaglercraft-1-12": { url: "http://misconfigured.example.com/" }
+    }
+  };
+  const mods = runWithStubs(load("launcher.js"), sb, ["resolveLaunch", "configuredClientUrl", "readClientConfig"]);
+  t("central config resolves https client", mods.configuredClientUrl("eaglercraft-1-8") === "https://cdn.example.com/e18/index.html");
+  t("central config empty slot stays empty", mods.configuredClientUrl("eaglercraftx-1-8") === "");
+  t("central config surfaces http misconfiguration", mods.configuredClientUrl("eaglercraft-1-12") === "http://misconfigured.example.com/");
+  const merged = planFull({ slug: "eaglercraft-1-8", type: "webgl", playUrl: "", clientUrl: mods.configuredClientUrl("eaglercraft-1-8") });
+  t("configured https client plans a remote embed", merged.action === "embed" && merged.remote === true);
+}
+
 /* ---------------- launcher.js: UI behavior ---------------- */
 function buildLauncherPage(sandbox, dataset) {
   const doc = sandbox.document;
@@ -396,6 +470,11 @@ function buildLauncherPage(sandbox, dataset) {
 }
 
 const hasClass = (node, cls) => node.querySelector(`.${cls}`) !== null;
+const walkHtml = (node) => {
+  let out = node.innerHTML || "";
+  for (const child of node.children || []) out += ` ${walkHtml(child)}`;
+  return out;
+};
 const flush = () => new Promise((done) => setTimeout(done, 25));
 
 // Missing-client flow: cover -> Play -> friendly error, nothing embedded.
@@ -478,6 +557,84 @@ const flush = () => new Promise((done) => setTimeout(done, 25));
   await flush();
   const frame = stage.children.find((c) => c._tag === "iframe");
   t("embed sandbox is honored", Boolean(frame) && frame.getAttribute("sandbox") === "allow-scripts");
+}
+
+// Configured remote client (no local files): embeds the HTTPS client.
+{
+  const sb = makeSandbox();
+  sb.GameHubClients = { clients: { "eaglercraft-1-8": { url: "https://cdn.example.com/e18/index.html" } } };
+  sb.setTimeout = () => 0; /* no 15s embed watchdog keeping the process alive */
+  const { stage, toolbar } = buildLauncherPage(sb, { slug: "eaglercraft-1-8", title: "Eaglercraft 1.8", status: "coming-soon", type: "webgl", playUrl: "" });
+  const mods = runWithStubs(PAGE_STACK, sb, ["resolveLaunch", "GameHubPlayer"]);
+  stage.querySelector("#launcher-play").__click();
+  await flush();
+  const frame = stage.children.find((c) => c._tag === "iframe");
+  t("configured https client embeds in viewport", Boolean(frame) && frame.getAttribute("src") === "https://cdn.example.com/e18/index.html");
+  t("remote embed keeps the toolbar live", toolbar.hidden === false);
+  t("remote client launch records recent play", mods.GameHubPlayer.getRecentlyPlayed()[0] === "eaglercraft-1-8");
+}
+
+// Local client missing -> automatic fallback to the configured HTTPS client.
+{
+  const sb = makeSandbox();
+  sb.fetch = () => Promise.resolve({ ok: false, status: 404 });
+  sb.GameHubClients = { clients: { "eaglercraftx-1-8": { url: "https://cdn.example.com/ex/index.html" } } };
+  sb.setTimeout = () => 0; /* no 15s embed watchdog keeping the process alive */
+  const { stage } = buildLauncherPage(sb, { slug: "eaglercraftx-1-8", title: "EaglercraftX 1.8", status: "coming-soon", type: "webgl", playUrl: "client/index.html" });
+  const mods = runWithStubs(PAGE_STACK, sb, ["resolveLaunch", "GameHubPlayer"]);
+  stage.querySelector("#launcher-play").__click();
+  await flush();
+  const frame = stage.children.find((c) => c._tag === "iframe");
+  t("missing local client falls back to https client", Boolean(frame) && frame.getAttribute("src") === "https://cdn.example.com/ex/index.html");
+  t("fallback launch records recent play", mods.GameHubPlayer.getRecentlyPlayed()[0] === "eaglercraftx-1-8");
+}
+
+// Local client missing + HTTP-only configuration -> honest error, no embed.
+{
+  const sb = makeSandbox();
+  sb.fetch = () => Promise.resolve({ ok: false, status: 404 });
+  sb.GameHubClients = { clients: { "eaglercraft-1-12": { url: "http://misconfigured.example.com/" } } };
+  const { stage } = buildLauncherPage(sb, { slug: "eaglercraft-1-12", title: "Eaglercraft 1.12.2", status: "coming-soon", type: "webgl", playUrl: "client/index.html" });
+  const mods = runWithStubs(PAGE_STACK, sb, ["resolveLaunch", "GameHubPlayer"]);
+  stage.querySelector("#launcher-play").__click();
+  await flush();
+  t("http client config shows https error", hasClass(stage, "launcher-error") && walkHtml(stage).includes("HTTPS"));
+  t("http client config embeds nothing", stage.children.filter((c) => c._tag === "iframe").length === 0);
+  t("http client config records no recent play", mods.GameHubPlayer.getRecentlyPlayed().length === 0);
+}
+
+// Page status upgrades when a valid client is configured.
+{
+  const sb = makeSandbox();
+  const statusEl = makeElement("dd");
+  statusEl.textContent = "Coming soon";
+  const noticeEl = makeElement("div");
+  noticeEl.hidden = false;
+  sb.__cache.set("[data-status-value]", statusEl);
+  sb.__cache.set("[data-client-notice]", noticeEl);
+  sb.GameHubClients = { clients: { "eaglercraft-1-8": { url: "https://cdn.example.com/e18/index.html" } } };
+  buildLauncherPage(sb, { slug: "eaglercraft-1-8", title: "Eaglercraft 1.8", status: "coming-soon", type: "webgl", playUrl: "client/index.html" });
+  runWithStubs(PAGE_STACK, sb, ["resolveLaunch"]);
+  await flush();
+  t("status value upgrades to Available", statusEl.textContent === "Available");
+  t("client notice is retired", noticeEl.hidden === true);
+}
+
+// Unconfigured + unprobed slots stay honest ("Coming soon").
+{
+  const sb = makeSandbox();
+  const statusEl = makeElement("dd");
+  statusEl.textContent = "Coming soon";
+  const noticeEl = makeElement("div");
+  noticeEl.hidden = false;
+  sb.__cache.set("[data-status-value]", statusEl);
+  sb.__cache.set("[data-client-notice]", noticeEl);
+  sb.fetch = () => Promise.resolve({ ok: false, status: 404 });
+  buildLauncherPage(sb, { slug: "eaglercraft-1-12", title: "Eaglercraft 1.12.2", status: "coming-soon", type: "webgl", playUrl: "client/index.html" });
+  runWithStubs(PAGE_STACK, sb, ["resolveLaunch"]);
+  await flush();
+  t("missing client keeps Coming soon status", statusEl.textContent === "Coming soon");
+  t("missing client keeps the notice visible", noticeEl.hidden === false);
 }
 
 if (failures) {

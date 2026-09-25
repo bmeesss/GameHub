@@ -4,8 +4,8 @@ GameHub is a free browser gaming platform: a fast, fully static website
 where players browse HTML5, iframe, WebGL, WASM and external games —
 including a dedicated Minecraft section for Eaglercraft-style voxel
 clients — and launch them instantly. No backend, no database, no build
-step: just HTML, CSS and vanilla JavaScript. The catalog ships 41
-games: 36 original playable titles plus 5 coming-soon placeholders
+step: just HTML, CSS and vanilla JavaScript. The catalog ships 51
+games: 46 original playable titles plus 5 coming-soon placeholders
 (including the Minecraft client slots).
 
 Live project page (once Pages is enabled):
@@ -23,9 +23,11 @@ Live project page (once Pages is enabled):
 - Modern dark gaming interface, responsive from mobile to desktop
 - Homepage discovery: Spotlight, Play Again, Favorites, Featured,
   Popular, Minecraft, New Games, sortable All Games, Categories
-- 36 original playable games across Arcade, Puzzle, Casual, Action,
+- 46 original playable games across Arcade, Puzzle, Casual, Action,
   Racing, Sports, Adventure and Strategy — each self-contained under
-  `games/<slug>/play/` with keyboard + touch controls
+  `games/<slug>/play/` with keyboard + touch controls. Newest additions:
+  Stack Tower, Sky Jump, Stellar Siege, Slide Puzzle, Glow Grid,
+  Air Hockey, Reversi, Idle Miner, Road Rush and Ember Keep
 - Live search (titles, descriptions, categories, types, tags,
   versions) with recent searches, shareable URLs (`?q=...`,
   `?category=...`, `?type=...`, `?sort=...`, `?favorites=1`), result
@@ -37,10 +39,13 @@ Live project page (once Pages is enabled):
 - Player shelves with zero backend: favorites, recently played,
   per-game stats and recent searches, all in `localStorage`
 - Reusable per-game launcher (`launcher.js`) with cover, loading,
-  error and playing states, responsive viewport, fullscreen and
-  restart support — plus favorite toggle, personal stats, controls
-  and catalog-driven related games on every game page
-- Minecraft-ready: WebGL client slots, per-version pages, placement docs
+  error and playing states, a live status area, responsive viewport,
+  fullscreen, restart and close — plus favorite toggle, personal
+  stats, controls and catalog-driven related games on every game page
+- Minecraft-ready: WebGL client slots, per-version pages, placement
+  docs and a central client configuration (`client-config.js`) that
+  can point each slot at a legally obtained HTTPS-hosted client
+  without rebuilding anything
 - Original SVG artwork only — no copyrighted game assets or logos
 - Accessible: skip link, semantic landmarks, keyboard-friendly controls,
   visible focus states, `prefers-reduced-motion` support
@@ -52,14 +57,24 @@ Live project page (once Pages is enabled):
 | ---------- | ---------------------------------------------------------------------- |
 | `html5`    | Verifies the local game page exists, then navigates to it              |
 | `iframe`   | Embeds the game in a sandboxed, responsive viewport                    |
-| `webgl`    | Embeds a local WebGL client (e.g. Eaglercraft) in a large viewport     |
-| `wasm`     | Embeds a local WebAssembly client in a large viewport                  |
+| `webgl`    | Embeds a WebGL client (e.g. Eaglercraft) in a large viewport           |
+| `wasm`     | Embeds a WebAssembly client in a large viewport                        |
 | `external` | Navigates to a configured HTTPS URL (same tab, never embedded blindly) |
 
-Local targets are verified with a lightweight HEAD request **only after
-the user presses Play** — game clients are never preloaded on the
-homepage. Anything missing fails gracefully (`Game currently
-unavailable` + the exact reason) instead of pretending to work.
+WebGL/WASM clients resolve in a strict order:
+
+1. **Local client** — `games/<slug>/client/index.html` (verified with a
+   lightweight HEAD request, only after Play is pressed)
+2. **Configured HTTPS client** — the URL set for the slug in
+   `client-config.js` (used when no local client exists)
+3. **Honest error** — a friendly message naming the expected location.
+   Never a fake loading screen, never "Available" without a client.
+
+Anything missing fails gracefully (`Game currently unavailable` + the
+exact reason) instead of pretending to work. Game clients are never
+preloaded: the homepage and game pages only ever issue tiny HEAD
+requests, and the client itself loads exclusively inside the Play
+viewport.
 
 ## Project structure
 
@@ -68,6 +83,7 @@ GameHub/
 ├── index.html                  # Homepage (all rails render from catalog)
 ├── style.css                   # Design system (CSS variables, launcher UI)
 ├── catalog.js                  # Game catalog + filters/sorts (source of truth)
+├── client-config.js            # Central Minecraft/WebGL client URLs
 ├── player.js                   # Favorites/recent/stats/searches (localStorage)
 ├── cards.js                    # Shared game-card renderer + favorite toggles
 ├── script.js                   # Homepage controller (rails, search, sort)
@@ -83,6 +99,7 @@ GameHub/
 │       └── client/             # (optional) local WebGL/WASM client files
 ├── tests/
 │   ├── smoke.mjs               # Runtime tests: node tests/smoke.mjs
+│   ├── games.mjs               # Per-game harness: node tests/games.mjs
 │   └── check.py                # Static checks: python3 tests/check.py
 ├── 404.html                    # Self-contained not-found page
 ├── .nojekyll                   # Disables Jekyll on GitHub Pages
@@ -172,16 +189,23 @@ you host yourself or that explicitly permits framing. Use `embed` /
 2. Game page with `data-type="webgl"` and
    `data-play-url="client/index.html"`.
 3. Place the client build (its `index.html` plus JS/WASM/data files) in
-   `games/<slug>/client/`, all paths relative.
+   `games/<slug>/client/`, all paths relative — or configure a hosted
+   HTTPS client in `client-config.js` (see below).
 4. The launcher embeds it in a large responsive viewport with
-   fullscreen support — only after Play is pressed.
+   fullscreen support — only after Play is pressed. While the catalog
+   `status` stays `"coming-soon"`, the game page and cards flip to
+   "Available" automatically once a client is present (local file
+   verified, or a valid HTTPS URL configured).
 
 ## How to add an Eaglercraft client
 
 GameHub is **Eaglercraft-ready, not Eaglercraft-bundled**. Placeholder
 entries (`Eaglercraft 1.8`, `EaglercraftX 1.8`, `Eaglercraft 1.12.2`)
 already exist with working launcher pages that clearly state the client
-is missing. To make one playable:
+is missing. There are two ways to make one playable — no rebuild, no
+code changes either way:
+
+### Option A — ship the client locally
 
 1. Obtain a browser client build you are **legally allowed to
    redistribute**. Examples of legitimate sources, depending on your
@@ -206,14 +230,46 @@ is missing. To make one playable:
    Each `client/` folder has a README describing the expected layout.
 4. Keep every client-internal path relative so it works under the
    `/GameHub/` project URL.
-5. Set the catalog entry's `status` to `"playable"`.
-6. Run the test suites and press Play to verify.
+5. The launcher, game page and homepage cards detect the client
+   automatically (tiny HEAD check). Optionally flip the catalog
+   entry's `status` to `"available"` so the static HTML matches.
+
+### Option B — point at your own HTTPS-hosted client
+
+Edit `client-config.js` (one line per slot):
+
+```js
+clients: {
+  "eaglercraft-1-8": { url: "https://clients.example.com/e18/index.html" },
+  "eaglercraftx-1-8": null,   // keep null to rely on a local client
+  "eaglercraft-1-12": null
+}
+```
+
+Rules and behavior:
+
+- The URL **must be HTTPS** — HTTP is refused everywhere (no mixed
+  content, ever).
+- A local client in `games/<slug>/client/` always wins; the configured
+  URL is the automatic fallback when no local client exists.
+- `tests/check.py` fails the build if a configured URL is not HTTPS,
+  and every slot must keep an entry (use `null` for "local only").
+- The remote host must permit iframe embedding. If it sends
+  `X-Frame-Options: DENY` or a restrictive `Content-Security-Policy`
+  `frame-ancestors`, the client cannot render inside the GameHub
+  viewport — after 15 seconds the launcher status area explains this
+  and offers an "open the client in a new tab" escape hatch instead of
+  showing a blank frame. There is no way for GameHub to bypass such
+  headers; host the client somewhere that allows framing (your own
+  static host does by default).
+- Configure only clients you are legally allowed to serve. GameHub
+  never downloads, mirrors or bundles client files itself.
 
 To add a future version (e.g. 1.20.x): append a catalog entry, copy a
-game page to `games/eaglercraft-1-20/index.html`, add a thumbnail, and
+game page to `games/eaglercraft-1-20/index.html`, add a thumbnail,
 create `games/eaglercraft-1-20/client/README.md` following the existing
-ones. The Minecraft rail, nav filter and type chips pick it up
-automatically.
+ones and add a slot in `client-config.js`. The Minecraft rail, nav
+filter and type chips pick it up automatically.
 
 ## Local preview
 
@@ -232,9 +288,12 @@ python3 -m http.server 8080
 
 ```bash
 node tests/smoke.mjs     # catalog, search, filters, sorting, player data,
-                         # favorites, URL hydration, launcher flows
+                         # favorites, URL hydration, launcher flows,
+                         # Minecraft client resolution (local/HTTPS/
+                         # missing/HTTP) + on-disk catalog integrity
 node tests/games.mjs     # per-game runtime harness (every play bundle)
-python3 tests/check.py   # links, fragments, configs, artwork, Pages rules
+python3 tests/check.py   # links, fragments, configs, artwork, Pages
+                         # rules, client-config discipline
 ```
 
 All three are dependency-free (Node.js and Python 3 standard
@@ -258,11 +317,11 @@ Notes:
 ## Path rules
 
 - NEVER root-absolute: `/assets/...`, `/games/...`, `/index.html`.
-- Homepage: `style.css`, `catalog.js`, `player.js`, `cards.js`,
-  `script.js`, `assets/...`, `games/<slug>/`.
+- Homepage: `style.css`, `catalog.js`, `client-config.js`, `player.js`,
+  `cards.js`, `script.js`, `assets/...`, `games/<slug>/`.
 - Game pages (two levels deep): `../../style.css`,
   `../../catalog.js`, `../../player.js`, `../../cards.js`,
-  `../../launcher.js`, `../../assets/...`.
+  `../../client-config.js`, `../../launcher.js`, `../../assets/...`.
 - Catalog `playUrl` is root-relative; game-page `data-play-url` is
   page-relative — both must resolve to the same file.
 - `404.html` is self-contained (inline CSS/JS) since Pages can serve it

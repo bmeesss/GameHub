@@ -4,9 +4,11 @@ GameHub is a free browser gaming platform: a fast, fully static website
 where players browse HTML5, iframe, WebGL, WASM and external games —
 including a dedicated Minecraft section for Eaglercraft-style voxel
 clients — and launch them instantly. No backend, no database, no build
-step: just HTML, CSS and vanilla JavaScript. The catalog ships 51
-games: 46 original playable titles plus 5 coming-soon placeholders
-(including the Minecraft client slots).
+step: just HTML, CSS and vanilla JavaScript. The catalog ships 58
+games: 46 original playable titles, 7 real games streamed from or
+linked to official providers (GameDistribution, GameMonetize, itch.io,
+Poki) and 5 coming-soon placeholders (including the Minecraft client
+slots).
 
 Live project page (once Pages is enabled):
 
@@ -22,16 +24,22 @@ Live project page (once Pages is enabled):
 
 - Modern dark gaming interface, responsive from mobile to desktop
 - Homepage discovery: Spotlight, Play Again, Favorites, Featured,
-  Popular, Minecraft, New Games, sortable All Games, Categories
-- 46 original playable games across Arcade, Puzzle, Casual, Action,
-  Racing, Sports, Adventure and Strategy — each self-contained under
-  `games/<slug>/play/` with keyboard + touch controls. Newest additions:
+  Popular, Minecraft, Play Online, External Games, New Games,
+  sortable All Games, Categories
+- 53 playable games: 46 original GameHub games (each self-contained
+  under `games/<slug>/play/` with keyboard + touch controls — newest:
   Stack Tower, Sky Jump, Stellar Siege, Slide Puzzle, Glow Grid,
-  Air Hockey, Reversi, Idle Miner, Road Rush and Ember Keep
+  Air Hockey, Reversi, Idle Miner, Road Rush, Ember Keep) plus
+  7 real games from official providers
+- Provider games, CrazyGames-style: 5 officially embeddable games
+  (GameDistribution, GameMonetize) stream inside GameHub's own
+  launcher viewport, and 2 more (itch.io, Poki) deep-link to the
+  provider's page through a clear hand-off panel — every provider
+  game gets the same professional detail page as a local game
 - Live search (titles, descriptions, categories, types, tags,
-  versions) with recent searches, shareable URLs (`?q=...`,
-  `?category=...`, `?type=...`, `?sort=...`, `?favorites=1`), result
-  counts and an empty state
+  versions, providers) with recent searches, shareable URLs
+  (`?q=...`, `?category=...`, `?type=...`, `?sort=...`,
+  `?favorites=1`), result counts and an empty state
 - Catalog-generated filters: categories plus game-type labels
   (HTML5, Iframe, WebGL, WASM, External) with computed counts
 - One centralized game catalog (`catalog.js`) — new games appear on
@@ -39,27 +47,30 @@ Live project page (once Pages is enabled):
 - Player shelves with zero backend: favorites, recently played,
   per-game stats and recent searches, all in `localStorage`
 - Reusable per-game launcher (`launcher.js`) with cover, loading,
-  error and playing states, a live status area, responsive viewport,
-  fullscreen, restart and close — plus favorite toggle, personal
-  stats, controls and catalog-driven related games on every game page
+  running, blocked and error states, a live status area, responsive
+  viewport, fullscreen, restart and close — plus favorite toggle,
+  personal stats, hosting attribution ("Hosted by GameHub" vs
+  "Provided by <provider>"), controls and catalog-driven related
+  games on every game page
 - Minecraft-ready: WebGL client slots, per-version pages, placement
   docs and a central client configuration (`client-config.js`) that
   can point each slot at a legally obtained HTTPS-hosted client
   without rebuilding anything
-- Original SVG artwork only — no copyrighted game assets or logos
+- Original SVG artwork only — no copyrighted game assets, no fake
+  publisher logos
 - Accessible: skip link, semantic landmarks, keyboard-friendly controls,
   visible focus states, `prefers-reduced-motion` support
 - Zero dependencies, zero console errors, committed test suites
 
 ## Supported game types
 
-| Type       | How it launches                                                        |
-| ---------- | ---------------------------------------------------------------------- |
-| `html5`    | Verifies the local game page exists, then navigates to it              |
-| `iframe`   | Embeds the game in a sandboxed, responsive viewport                    |
-| `webgl`    | Embeds a WebGL client (e.g. Eaglercraft) in a large viewport           |
-| `wasm`     | Embeds a WebAssembly client in a large viewport                        |
-| `external` | Navigates to a configured HTTPS URL (same tab, never embedded blindly) |
+| Type       | How it launches                                                          |
+| ---------- | ------------------------------------------------------------------------ |
+| `html5`    | Verifies the local game page exists, then navigates to it                |
+| `iframe`   | Embeds the game in a responsive viewport — a local bundle or an official provider embed streamed over HTTPS |
+| `webgl`    | Embeds a WebGL client (e.g. Eaglercraft) in a large viewport             |
+| `wasm`     | Embeds a WebAssembly client in a large viewport                           |
+| `external` | Shows a clear "Open game" hand-off panel linking to the provider's HTTPS page in a new tab — GameHub never auto-navigates away |
 
 WebGL/WASM clients resolve in a strict order:
 
@@ -75,6 +86,97 @@ exact reason) instead of pretending to work. Game clients are never
 preloaded: the homepage and game pages only ever issue tiny HEAD
 requests, and the client itself loads exclusively inside the Play
 viewport.
+
+## Provider games (iframe & external)
+
+GameHub mixes its own games with real games from external providers,
+CrazyGames-style. Two integration modes exist:
+
+- **`iframe` with a remote `playUrl`** — the game is officially
+  embeddable by its provider and streams inside GameHub's own launcher
+  viewport: lazy-loaded (the iframe is only created after Play),
+  fullscreen, restart and close work exactly like local games. These
+  appear in the homepage's **Play Online** rail.
+- **`external`** — the provider does not permit embedding (X-Frame-
+  Options / CSP), so Play shows a clear hand-off panel ("Open game",
+  new tab, `rel="noopener noreferrer"`). GameHub stays open in the
+  original tab. These appear in the **External Games** rail.
+
+Every remote entry carries provider metadata:
+
+```js
+provider: "GameDistribution",                  // display name
+externalUrl: "https://gamedistribution.com/games/one-more-pass/",
+                                              // the provider's game page
+playUrl: "https://html5.gamedistribution.com/<id>/?gd_sdk_referrer_url=https://bmeesss.github.io/GameHub/games/one-more-pass/index.html"
+```
+
+- `provider` powers the card badge, the "Provided by X" pill and
+  hosting row on the game page, search matching and the neutral
+  disclaimer: *"Game provided by X. GameHub does not host the game
+  files."* Local games show "Hosted by GameHub" instead.
+- `externalUrl` is the target of every "Open game" fallback button.
+- The GameDistribution embed URLs carry a `gd_sdk_referrer_url`
+  parameter pointing at the game's page on the canonical GitHub Pages
+  deployment — their SDK documents this as the correct integration
+  (bare URLs still work but degrade ad performance for the provider).
+  Update it if you deploy under a different host.
+
+### The current provider batch
+
+| Game | Provider | Mode | Why |
+| ---- | -------- | ---- | -- |
+| One More Pass | GameDistribution | iframe | official embed platform, no frame restrictions |
+| Tennis Masters 2026 | GameDistribution | iframe | official embed platform |
+| Racing in City | GameDistribution | iframe | official embed platform |
+| Moto X3M Dead Ahead | GameDistribution | iframe | official embed platform |
+| Stellar Bastion | GameMonetize | iframe | official embed platform |
+| Sort the Court! | itch.io | external | itch.io serves no permissive embeds — deep link only |
+| Stickman Hook | Poki | external | Poki blocks embedding — deep link only |
+
+Only providers whose business model *is* embedding (GameDistribution,
+GameMonetize serve `html5.*` embed endpoints specifically for framing)
+are used in iframe mode; everybody else gets honest deep links.
+
+### Blocked embeds and the watchdog
+
+Cross-origin iframes cannot be inspected from the outside, so
+embeddability is decided by curation (only official embed endpoints)
+and enforced best-effort at runtime:
+
+- Remote embeds start under a **15-second load watchdog**. If the
+  iframe shows no sign of life, a blocked overlay appears:
+  *"This game cannot be embedded here."* with **Open game** (provider
+  page, new tab), **Try again** and **Keep waiting**.
+- The iframe is never destroyed — a slow-but-working game keeps
+  loading underneath, "Keep waiting" dismisses the overlay, and a late
+  `load` event clears it automatically and flips the status to
+  "Running".
+- While any remote game is embedded, the toolbar keeps a persistent
+  **Open game** link to the provider page — a one-click escape hatch
+  even when no overlay is showing.
+
+### How to add a provider game
+
+1. **Research first** — verify the game's official page, the official
+   embed URL (if any), whether framing actually works, and that
+   linking/embedding is appropriate for that provider. Never scrape,
+   mirror or bypass X-Frame-Options/CSP.
+2. Append a catalog entry: `type: "iframe"` with the https embed URL
+   as `playUrl` (plus `embed: { allow: "autoplay; fullscreen;
+   gamepad; pointer-lock" }`), or `type: "external"` with the
+   provider's page as `playUrl`. Always set `provider` and
+   `externalUrl` (both https; `tests/check.py` enforces this on every
+   remote entry).
+3. Copy `games/one-more-pass/index.html` (iframe) or
+   `games/stickman-hook/index.html` (external) as the page template —
+   it carries `data-provider`, `data-external-url`, the provider pill
+   and the neutral disclaimer notice.
+4. Add an original `assets/thumbnails/<slug>.svg` (640×360). Never
+   use provider logos or ripped artwork.
+5. Run the test suites. The Play Online / External Games rails,
+   category chips, type chips and search pick the game up
+   automatically.
 
 ## Project structure
 
@@ -133,7 +235,10 @@ Every entry supports:
   controls: "How to play…",      // shown in the game page How-to box
   difficulty: "Medium",          // Easy | Medium | Hard
   featuredOrder: 1,              // ordering inside the Featured rail
-  popularOrder: 1                // ordering inside the Popular rail
+  popularOrder: 1,               // ordering inside the Popular rail
+  // --- remote provider games only (see "Provider games") ---
+  provider: "GameDistribution",  // "Provided by X" attribution
+  externalUrl: "https://…"       // provider game page (https, fallback target)
 }
 ```
 
@@ -142,10 +247,16 @@ Rules:
 - Append new entries **last** — entries without `releaseDate` fall back
   to tail-of-array order, newest first.
 - `playUrl` for local games is relative to the **site root**
-  (`games/<slug>/play/index.html`). For `external` it must be a full
-  `https://` URL. Use `null` when nothing is wired up yet.
+  (`games/<slug>/play/index.html`). For remote entries (`iframe` from
+  a provider, or `external`) it must be a full `https://` URL —
+  `tests/check.py` refuses anything else, and remote entries must also
+  declare `provider` + `externalUrl`. Use `null` when nothing is wired
+  up yet.
 - `embed` overrides iframe attributes, e.g.
-  `{ sandbox: "allow-scripts", allow: "fullscreen" }`.
+  `{ sandbox: "allow-scripts", allow: "fullscreen" }`. Provider embeds
+  intentionally use **no sandbox** — their ad/SDK layer needs storage
+  access; sandboxing is for content you host yourself.
+- `provider`/`externalUrl` are only allowed on remote entries.
 - The game page's `data-*` attributes must mirror the catalog entry
   (`tests/check.py` enforces this).
 
@@ -175,12 +286,16 @@ Rules:
 
 ## How to add an iframe game
 
-Same as above, with `type: "iframe"` and
+**Local embed:** same as an HTML5 game, with `type: "iframe"` and
 `playUrl: "games/<slug>/embed/index.html"`
 (`data-play-url="embed/index.html"` on the page). Only embed content
 you host yourself or that explicitly permits framing. Use `embed` /
 `data-embed-sandbox` to sandbox untrusted content
 (see Security below).
+
+**Remote provider embed:** see "Provider games (iframe & external)"
+above — `type: "iframe"` with an https `playUrl`, plus `provider`
+and `externalUrl`.
 
 ## How to add a WebGL/WASM game
 
@@ -290,10 +405,12 @@ python3 -m http.server 8080
 node tests/smoke.mjs     # catalog, search, filters, sorting, player data,
                          # favorites, URL hydration, launcher flows,
                          # Minecraft client resolution (local/HTTPS/
-                         # missing/HTTP) + on-disk catalog integrity
+                         # missing/HTTP), the external-game architecture
+                         # (remote URL validation, blocked-embed fallback,
+                         # provider rails/metadata) + on-disk integrity
 node tests/games.mjs     # per-game runtime harness (every play bundle)
 python3 tests/check.py   # links, fragments, configs, artwork, Pages
-                         # rules, client-config discipline
+                         # rules, client-config + provider discipline
 ```
 
 All three are dependency-free (Node.js and Python 3 standard
@@ -329,13 +446,31 @@ Notes:
 
 ## Security considerations
 
-- **External games:** only `https://` URLs are accepted, and they are
-  navigated to — never embedded in a hidden iframe. Review every
-  external URL before publishing; you are sending players there.
-- **Iframe embeds:** default `allow` is limited to
+- **Remote game URLs:** every remote target (provider embed, external
+  link, configured client) passes one central validator
+  (`validateRemoteUrl` in `launcher.js`): **HTTPS only** (HTTP is
+  refused everywhere — no mixed content, ever), no credentials in the
+  URL, no `javascript:`/`data:` schemes. URLs come exclusively from
+  the catalog and page config — never from user input — and
+  `tests/check.py` re-verifies them statically. Review every external
+  URL before publishing; you are sending players there.
+- **External games:** `type: "external"` never embeds anything. Play
+  shows a hand-off panel; the provider's page opens in a new tab with
+  `rel="noopener noreferrer"`. GameHub never auto-navigates the
+  current tab away.
+- **Provider embeds:** only officially embeddable endpoints are used
+  (see "Provider games"). They intentionally ship **without** a
+  sandbox attribute — the providers' ad/SDK layer requires storage
+  access — so they are third-party content running in a frame on our
+  pages; that is the standard deal for embeddable game platforms.
+- **Iframe embeds you host:** default `allow` is limited to
   `autoplay; fullscreen; gamepad; pointer-lock`. For content you do not
   fully trust, set `embed.sandbox` (e.g. `"allow-scripts"`) and omit
   `allow-same-origin` so the embed cannot touch GameHub's origin.
+- **No frame-header bypassing:** GameHub never scrapes, proxies or
+  otherwise circumvents `X-Frame-Options` or CSP `frame-ancestors`.
+  Sites that refuse framing get a deep link (`type: "external"`),
+  nothing more.
 - **Local clients** (your own HTML5/WebGL/WASM builds) run unsandboxed
   by default since over-sandboxing breaks storage, pointer lock and
   WebGL. Only ship code you trust — treat `games/*/` like first-party

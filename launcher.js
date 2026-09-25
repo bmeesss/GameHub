@@ -10,9 +10,43 @@
    Nothing is preloaded: clients only load after the user
    presses Play. Missing files always fail gracefully — a game is
    never presented as playable when its files are absent.
+   The launcher also enhances game pages from the shared
+   catalog/player/cards modules: favorite toggle, personal stats,
+   controls, difficulty and catalog-driven related games.
+   Load order on game pages: catalog.js -> player.js -> cards.js
+   -> launcher.js. Every enhancement degrades gracefully when a
+   module failed to load.
    Run tests with: node tests/smoke.mjs && python3 tests/check.py
    ============================================================ */
 "use strict";
+
+/* ---------------- Shared modules (optional) ---------------- */
+const Catalog = (() => {
+  if (typeof GameHubCatalog !== "undefined" && GameHubCatalog) return GameHubCatalog;
+  if (typeof window !== "undefined" && window && window.GameHubCatalog) return window.GameHubCatalog;
+  return null;
+})();
+const Player = (() => {
+  if (typeof GameHubPlayer !== "undefined" && GameHubPlayer) return GameHubPlayer;
+  if (typeof window !== "undefined" && window && window.GameHubPlayer) return window.GameHubPlayer;
+  return null;
+})();
+const Cards = (() => {
+  if (typeof GameHubCards !== "undefined" && GameHubCards) return GameHubCards;
+  if (typeof window !== "undefined" && window && window.GameHubCards) return window.GameHubCards;
+  return null;
+})();
+
+/* Record a launch only when a game actually starts (verified
+   target), never when an info page is merely opened. */
+const recordLaunch = (slug) => {
+  if (!Player || !slug) return;
+  try {
+    Player.recordGamePlayed(slug);
+  } catch {
+    /* Player storage must never break launching. */
+  }
+};
 
 /* ---------------- Pure launch planner ---------------- */
 const LAUNCH_TYPES = ["html5", "iframe", "external", "webgl", "wasm"];
@@ -161,6 +195,7 @@ const readConfig = (section) => {
   return {
     slug: String(data.slug || "").trim(),
     title: String(data.title || "This game").trim(),
+    status: String(data.status || "").trim().toLowerCase(),
     type: String(data.type || "").trim().toLowerCase(),
     playUrl: String(data.playUrl || "").trim(),
     sandbox: String(data.embedSandbox || "").trim(),
@@ -223,6 +258,29 @@ const setToolbar = (launcher, { playing }) => {
   toolbar.hidden = !playing;
   const fullscreenBtn = $(".launcher-fullscreen", toolbar);
   if (fullscreenBtn) fullscreenBtn.hidden = !supportsFullscreen();
+  const restartBtn = $(".launcher-restart", toolbar);
+  if (restartBtn) {
+    const embedded = Boolean($("iframe", launcher));
+    restartBtn.hidden = !playing || !embedded;
+  }
+};
+
+const ensureRestartButton = (launcher, stage, config) => {
+  const toolbar = $(".launcher-toolbar", launcher);
+  if (!toolbar || $(".launcher-restart", toolbar)) return;
+  const restart = el("button", "btn btn-ghost btn-sm launcher-restart", "Restart game");
+  restart.type = "button";
+  restart.hidden = true;
+  restart.addEventListener("click", () => {
+    const frame = $("iframe", stage);
+    if (frame) {
+      const src = frame.getAttribute("src");
+      frame.setAttribute("src", src || "");
+    } else {
+      startLaunch(launcher, stage, config);
+    }
+  });
+  toolbar.appendChild(restart);
 };
 
 const embedGame = (launcher, stage, config, url) => {
@@ -268,11 +326,13 @@ const startLaunch = (launcher, stage, config) => {
   }
   if (plan.action === "external") {
     renderLoading(stage, config);
+    recordLaunch(config.slug);
     location.assign(plan.url);
     return;
   }
   if (!plan.probe) {
     renderLoading(stage, config);
+    recordLaunch(config.slug);
     embedGame(launcher, stage, config, plan.url);
     return;
   }
@@ -286,9 +346,11 @@ const startLaunch = (launcher, stage, config) => {
       return;
     }
     if (plan.action === "navigate") {
+      recordLaunch(config.slug);
       location.assign(plan.url);
       return;
     }
+    recordLaunch(config.slug);
     embedGame(launcher, stage, config, plan.url);
   });
 };
@@ -299,7 +361,9 @@ const initLauncher = () => {
   const stage = $("#launcher-stage", launcher);
   if (!stage) return;
   const config = readConfig(launcher);
+  initLauncher.config = config;
   renderCover(launcher, stage, config);
+  ensureRestartButton(launcher, stage, config);
 
   $(".launcher-fullscreen", launcher)?.addEventListener("click", () => toggleFullscreen(stage));
   $(".launcher-close", launcher)?.addEventListener("click", () => closeGame(launcher, stage, config));
@@ -329,7 +393,111 @@ const initCoverFallback = () => {
   }, true);
 };
 
+/* ---------------- Game page enhancements ----------------
+   Favorite toggle, personal stats, controls and related games
+   are injected from the shared modules so the 41 static pages
+   stay thin and never duplicate catalog metadata. */
+const HEART_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.7C6.4 17.2 3 13.6 3 9.9 3 7.2 5.1 5 7.8 5c1.7 0 3.2.9 4.2 2.3C13 5.9 14.5 5 16.2 5 18.9 5 21 7.2 21 9.9c0 3.7-3.4 7.3-9 10.8z"></path></svg>`;
+
+const catalogEntry = (config) => {
+  if (Catalog && typeof Catalog.gameBySlug === "function") {
+    const entry = Catalog.gameBySlug(config.slug);
+    if (entry) return entry;
+  }
+  return { id: config.slug, slug: config.slug, title: config.title, type: config.type };
+};
+
+const enhanceFavorite = (entry) => {
+  if (!Player) return;
+  const actions = $(".game-actions");
+  if (!actions || $("[data-fav-page]", actions)) return;
+  const button = el("button", "btn btn-ghost", `${HEART_ICON}<span>Favorite</span>`);
+  button.type = "button";
+  button.setAttribute("data-fav-page", entry.id || "");
+  const paint = () => {
+    const active = Player.isFavorite(entry.id);
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-pressed", String(active));
+    button.setAttribute("aria-label", `${active ? "Remove" : "Add"} ${entry.title || "this game"} ${active ? "from" : "to"} favorites`);
+    const label = $("span", button);
+    if (label) label.textContent = active ? "Favorited" : "Favorite";
+  };
+  button.addEventListener("click", () => {
+    Player.toggleFavorite(entry.id);
+    paint();
+  });
+  paint();
+  actions.appendChild(button);
+};
+
+const enhanceStats = (entry, config) => {
+  if (!Player) return;
+  const info = $(".game-info");
+  if (!info || $("#game-stats")) return;
+  if (config.status === "coming-soon") return;
+  const stats = Player.getStats(entry.id);
+  const box = el("dl", "game-stats");
+  box.id = "game-stats";
+  const rows = [];
+  rows.push(`<div><dt>Played</dt><dd>${stats.gamesPlayed > 0 ? `${stats.gamesPlayed} time${stats.gamesPlayed === 1 ? "" : "s"}` : "Not yet"}</dd></div>`);
+  if (stats.gamesPlayed > 0 && stats.lastPlayed) {
+    rows.push(`<div><dt>Last played</dt><dd>${escapeHtml(Player.formatLastPlayed(stats.lastPlayed))}</dd></div>`);
+  }
+  if (stats.bestScore) {
+    rows.push(`<div><dt>${escapeHtml(stats.bestLabel || "Best")}</dt><dd>${escapeHtml(stats.bestScore)}</dd></div>`);
+  }
+  box.innerHTML = rows.join("");
+  const heading = el("p", "game-stats-title", "Your stats <span>(this browser only)</span>");
+  const wrap = el("div", "game-stats-wrap");
+  wrap.appendChild(heading);
+  wrap.appendChild(box);
+  info.appendChild(wrap);
+};
+
+const enhanceMeta = (entry) => {
+  if (!entry.difficulty) return;
+  const meta = $(".game-meta");
+  if (!meta || $("[data-meta-difficulty]", meta)) return;
+  meta.innerHTML += `<div data-meta-difficulty><dt>Difficulty</dt><dd>${escapeHtml(entry.difficulty)}</dd></div>`;
+};
+
+const enhanceControls = (entry) => {
+  if (!entry.controls) return;
+  const about = $(".game-about");
+  if (!about || $(".how-to", about)) return;
+  about.appendChild(el("p", "how-to", `<strong>How to play:</strong> ${escapeHtml(entry.controls)}`));
+};
+
+const enhanceRelated = (entry) => {
+  if (!Catalog || !Cards) return;
+  const about = $(".game-about");
+  if (!about || $("#related-grid")) return;
+  const related = Catalog.getRelated(entry, 3);
+  if (!related.length) return;
+  const section = el("section", "game-related");
+  section.setAttribute("aria-labelledby", "related-title");
+  section.innerHTML = `<h2 id="related-title">More like this</h2><div class="grid" id="related-grid"></div>`;
+  const parent = about.parentNode;
+  if (parent) parent.appendChild(section);
+  else about.appendChild(section);
+  Cards.renderInto($("#related-grid"), related, { prefix: "../" });
+};
+
+const initGamePage = (config) => {
+  if (!config || !config.slug) return;
+  if (!$(".game-info") && !$(".game-about")) return;
+  const entry = catalogEntry(config);
+  if (!entry || !entry.id) return;
+  enhanceFavorite(entry);
+  enhanceStats(entry, config);
+  enhanceMeta(entry);
+  enhanceControls(entry);
+  enhanceRelated(entry);
+  if (Cards) Cards.wireFavorites(document, () => Cards.syncFavButtons(document));
+};
+
 /* ---------------- Init ---------------- */
 renderYear();
 initCoverFallback();
 initLauncher();
+initGamePage(initLauncher.config || null);

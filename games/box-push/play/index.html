@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Box Push — Play — GameHub</title>
+  <meta name="description" content="Play Box Push on GameHub: push every crate onto its target in 5 sokoban warehouses.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Box Push</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">Level</span><span class="hud-value" id="level">1/5</span></div>
+        <div class="hud-item"><span class="hud-label">Moves</span><span class="hud-value" id="moves">0</span></div>
+        <button class="hud-btn" id="restartBtn" type="button">Restart</button>
+      </div>
+      <div class="stage">
+        <canvas id="game" width="400" height="400" aria-label="Box Push game board"></canvas>
+        <div class="overlay" id="overlay">
+          <h2 id="overlayTitle">Box Push</h2>
+          <p id="overlayText">Push every crate onto a glowing target. Plan ahead — crates only move forward.</p>
+          <button class="primary-btn" id="primaryBtn" type="button">Start game</button>
+        </div>
+      </div>
+      <p class="hint">Arrows / WASD to push · R restarts the level · swipe on touch</p>
+    </main>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>

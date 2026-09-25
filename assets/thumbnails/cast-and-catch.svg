@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Cast and Catch artwork</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0b1226"/>
+      <stop offset=".7" stop-color="#0e1a33"/>
+      <stop offset="1" stop-color="#12325e"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <circle cx="520" cy="70" r="34" fill="#22d3ee" opacity=".7"/>
+  <circle cx="520" cy="70" r="52" fill="#22d3ee" opacity=".15"/>
+  <g>
+    <ellipse cx="180" cy="120" rx="26" ry="15" fill="#22d3ee"/>
+    <path d="M157 120 L135 106 L135 134 Z" fill="#22d3ee"/>
+    <circle cx="189" cy="117" r="3" fill="#05070f"/>
+    <ellipse cx="330" cy="80" rx="26" ry="15" fill="#fbbf24"/>
+    <path d="M307 80 L285 66 L285 94 Z" fill="#fbbf24"/>
+    <circle cx="339" cy="77" r="3" fill="#05070f"/>
+    <ellipse cx="430" cy="170" rx="26" ry="15" fill="#22d3ee"/>
+    <path d="M407 170 L385 156 L385 184 Z" fill="#22d3ee"/>
+    <circle cx="439" cy="167" r="3" fill="#05070f"/>
+  </g>
+  <g fill="#78350f">
+    <rect x="232" y="180" width="22" height="36"/>
+    <rect x="232" y="202" width="36" height="14"/>
+  </g>
+  <g stroke="#e2e8f0" stroke-width="6" fill="none" stroke-linecap="round">
+    <path d="M250 300 L250 340 L390 340 L390 300"/>
+  </g>
+  <g stroke="#e2e8f0" stroke-width="2" opacity=".6">
+    <path d="M278 306 L278 340 M306 306 L306 340 M334 306 L334 340 M362 306 L362 340"/>
+  </g>
+  <rect x="0" y="340" width="640" height="20" fill="#3f3f46"/>
+</svg>

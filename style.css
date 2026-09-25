@@ -5,7 +5,7 @@
    5. Header   6. Hero   7. Filter bar   8. Cards & grid
    9. Categories   10. Features   11. Empty state & notices
    12. Footer   13. Game detail page   14. Responsive
-   15. Motion & focus
+   15. Motion & focus   16. Discovery & player
    ============================================================ */
 
 /* ---------- 1. Tokens ---------- */
@@ -1033,4 +1033,241 @@ p { color: var(--muted); }
   }
   .card:hover { transform: none; }
   .card:hover .card-media img { transform: none; }
+}
+
+/* ---------- 16. Discovery & player ---------- */
+[hidden] { display: none !important; }
+
+.version-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--muted-soft);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 2px 10px;
+}
+
+/* Spotlight */
+.spotlight-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: 0;
+  background: linear-gradient(135deg, var(--surface-2), var(--surface));
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-glow);
+}
+
+.spotlight-media {
+  display: block;
+  min-height: 280px;
+  background: var(--bg-soft);
+}
+
+.spotlight-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.spotlight-media .media-art { font-size: 6rem; min-height: 280px; }
+
+.spotlight-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 36px 34px;
+}
+
+.spotlight-title { font-size: 2rem; letter-spacing: -0.02em; }
+.spotlight-desc { color: var(--muted); line-height: 1.6; }
+.spotlight-actions { display: flex; align-items: center; gap: 12px; margin-top: 6px; flex-wrap: wrap; }
+.spotlight-actions .fav-btn { position: static; }
+
+/* Favorite toggles */
+.card { position: relative; }
+
+.fav-btn {
+  position: absolute;
+  top: 12px; right: 12px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; height: 40px;
+  color: #fff;
+  background: rgba(11, 15, 26, 0.72);
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition: transform 0.2s ease, color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.fav-btn svg { width: 20px; height: 20px; }
+.fav-btn:hover { transform: scale(1.1); border-color: var(--accent-warm); color: var(--accent-warm); }
+
+.fav-btn.is-active {
+  color: #fff;
+  background: linear-gradient(135deg, #fb7185, #e11d48);
+  border-color: transparent;
+  box-shadow: 0 8px 20px -6px rgba(225, 29, 72, 0.7);
+}
+
+.fav-btn.is-active svg { fill: currentColor; }
+
+.game-actions .btn.is-active {
+  border-color: var(--accent-warm);
+  color: var(--accent-warm);
+}
+
+.card--soon .card-media img { filter: saturate(0.7); }
+
+/* Catalog toolbar */
+.catalog-toolbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+.catalog-toolbar .filter-bar { margin-bottom: 20px; flex: 1 1 auto; }
+
+.sort-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--muted-soft);
+  white-space: nowrap;
+}
+
+.sort-control select {
+  font: inherit;
+  color: var(--text);
+  background: var(--surface-2);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+
+/* Recent searches */
+.header-search { position: relative; }
+
+.recent-searches {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0; right: 0;
+  z-index: 50;
+  background: var(--surface-2);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 10px;
+}
+
+.recent-searches .recent-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-soft);
+  padding: 4px 10px 8px;
+}
+
+.recent-searches ul { list-style: none; margin: 0; padding: 0; }
+
+.recent-searches [data-search] {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--text);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  cursor: pointer;
+}
+
+.recent-searches [data-search]:hover { background: rgba(148, 163, 216, 0.12); }
+
+.recent-searches .recent-clear {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted-soft);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.recent-searches .recent-clear:hover { color: var(--accent-warm); }
+
+/* Game page: stats, how-to, related */
+.game-stats-wrap {
+  margin-top: 18px;
+  background: rgba(148, 163, 216, 0.07);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+}
+
+.game-stats-title { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted-soft); margin-bottom: 10px; }
+.game-stats-title span { font-weight: 500; text-transform: none; letter-spacing: 0; }
+
+.game-stats { display: grid; gap: 8px; margin: 0; }
+.game-stats > div { display: flex; justify-content: space-between; gap: 12px; font-size: 0.92rem; }
+.game-stats dt { color: var(--muted); }
+.game-stats dd { margin: 0; font-weight: 700; }
+
+.how-to {
+  background: rgba(34, 211, 238, 0.07);
+  border: 1px solid rgba(34, 211, 238, 0.25);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  margin-top: 14px !important;
+  line-height: 1.6;
+}
+
+.game-related { margin-top: 44px; }
+.game-related h2 { font-size: 1.25rem; margin-bottom: 18px; }
+
+/* Minecraft voxel flavor */
+.section--minecraft {
+  background:
+    linear-gradient(180deg, rgba(74, 222, 128, 0.05), transparent 40%),
+    repeating-linear-gradient(0deg, transparent 0 26px, rgba(74, 222, 128, 0.05) 26px 28px),
+    repeating-linear-gradient(90deg, transparent 0 26px, rgba(74, 222, 128, 0.05) 26px 28px);
+  border-block: 1px solid rgba(74, 222, 128, 0.16);
+}
+
+/* Launcher restart */
+.launcher-restart[hidden] { display: none; }
+
+@media (max-width: 860px) {
+  .spotlight-inner { grid-template-columns: 1fr; }
+  .spotlight-media { min-height: 200px; }
+  .spotlight-body { padding: 26px 22px; }
+  .spotlight-title { font-size: 1.6rem; }
+}
+
+@media (max-width: 560px) {
+  .catalog-toolbar { flex-direction: column; align-items: stretch; }
+  .sort-control { align-self: flex-start; }
 }

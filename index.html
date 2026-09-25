@@ -4,8 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GameHub — Play Free Browser Games</title>
-  <meta name="description" content="GameHub is a free browser game hub. Browse arcade, puzzle, casual, action, racing, strategy, multiplayer and Minecraft games and play instantly — no downloads, no sign-up.">
+  <meta name="description" content="GameHub is a free browser game hub. Browse arcade, puzzle, casual, action, racing, sports, adventure, strategy, multiplayer and Minecraft games and play instantly — no downloads, no sign-up.">
   <meta name="theme-color" content="#0b0f1a">
+  <meta property="og:title" content="GameHub — Play Free Browser Games">
+  <meta property="og:description" content="Fast, free browser games: arcade, puzzle, sports, racing, Minecraft and more. No downloads, no sign-up.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/thumbnails/snake.svg">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -45,6 +49,7 @@
           <label class="sr-only" for="search-input">Search games</label>
           <input type="search" id="search-input" name="q" placeholder="Search games…" autocomplete="off" maxlength="80">
         </div>
+        <div class="recent-searches" id="recent-searches" hidden></div>
       </form>
     </div>
   </header>
@@ -69,17 +74,49 @@
         <dl class="hero-stats" aria-label="GameHub at a glance">
           <div>
             <dt>Games</dt>
-            <dd id="stat-games">26</dd>
+            <dd id="stat-games">41</dd>
           </div>
           <div>
             <dt>Categories</dt>
-            <dd id="stat-categories">8</dd>
+            <dd id="stat-categories">10</dd>
           </div>
           <div>
             <dt>Cost to play</dt>
             <dd>Free</dd>
           </div>
         </dl>
+      </div>
+    </section>
+
+    <!-- Spotlight -->
+    <section class="section section--tight" id="spotlight" aria-labelledby="spotlight-title" hidden>
+      <div class="container">
+        <h2 id="spotlight-title" class="sr-only">Spotlight game</h2>
+        <div class="spotlight-inner"></div>
+      </div>
+    </section>
+
+    <!-- Play again -->
+    <section class="section section--tight" id="recent" aria-labelledby="recent-title" hidden>
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Continue playing</p>
+          <h2 id="recent-title">Play again</h2>
+          <p>Your recently played games, stored only in this browser.</p>
+        </div>
+        <div class="grid" id="recent-grid" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- Favorites -->
+    <section class="section section--tight" id="favorites" aria-labelledby="favorites-title" hidden>
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Your shelf</p>
+          <h2 id="favorites-title">Favorite games</h2>
+          <p>Tap the heart on any game to pin it here.</p>
+        </div>
+        <div class="grid" id="favorites-grid" aria-live="polite"></div>
       </div>
     </section>
 
@@ -141,13 +178,23 @@
           <div>
             <p class="eyebrow">Catalog</p>
             <h2 id="games-title">All games</h2>
-            <p>Search or filter by category to find your next game.</p>
+            <p>Search, filter or sort to find your next game.</p>
           </div>
           <p class="results-count" id="results-count" role="status"></p>
         </div>
 
-        <div class="filter-bar" id="filter-bar" role="group" aria-label="Filter games by category">
-          <span class="filter-label" id="filter-label">Category:</span>
+        <div class="catalog-toolbar">
+          <div class="filter-bar" id="filter-bar" role="group" aria-label="Filter games by category">
+            <span class="filter-label" id="filter-label">Category:</span>
+          </div>
+          <label class="sort-control" for="sort-select">Sort by
+            <select id="sort-select">
+              <option value="featured">Featured</option>
+              <option value="popular">Popular</option>
+              <option value="newest">Newest</option>
+              <option value="az">A–Z</option>
+            </select>
+          </label>
         </div>
 
         <div class="grid" id="games-grid" aria-live="polite"></div>
@@ -177,18 +224,6 @@
           <p>Jump into a genre. Selecting a category filters the catalog above.</p>
         </div>
         <div class="category-grid" id="categories-grid"></div>
-      </div>
-    </section>
-
-    <!-- Popular -->
-    <section class="section section--tight" id="popular" aria-labelledby="popular-title">
-      <div class="container">
-        <div class="section-head">
-          <p class="eyebrow">Player favorites</p>
-          <h2 id="popular-title">Popular games</h2>
-          <p>The most-played titles on GameHub right now.</p>
-        </div>
-        <div class="grid" id="popular-grid" aria-live="polite"></div>
       </div>
     </section>
 
@@ -267,6 +302,9 @@
     </div>
   </footer>
 
+  <script src="catalog.js" defer></script>
+  <script src="player.js" defer></script>
+  <script src="cards.js" defer></script>
   <script src="script.js" defer></script>
 </body>
 </html>

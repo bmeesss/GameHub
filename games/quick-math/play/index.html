@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quick Math — Play — GameHub</title>
+  <meta name="description" content="Play Quick Math on GameHub: solve rapid-fire arithmetic and build streaks.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Quick Math</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">Score</span><span class="hud-value" id="score">0</span></div>
+        <div class="hud-item"><span class="hud-label">Time</span><span class="hud-value" id="time">60</span></div>
+        <div class="hud-item"><span class="hud-label">Best</span><span class="hud-value" id="best">0</span></div>
+        <button class="hud-btn" id="pauseBtn" type="button">Pause</button>
+      </div>
+      <div class="stage">
+        <div class="math-panel">
+          <p class="math-q" id="question" aria-live="polite">2 + 2</p>
+          <p class="math-streak">Streak: <strong id="streak">0</strong></p>
+          <div class="math-answers" id="answers" role="group" aria-label="Answers"></div>
+        </div>
+        <div class="overlay" id="overlay">
+          <h2 id="overlayTitle">Quick Math</h2>
+          <p id="overlayText">Answer as many sums as you can in 60 seconds. Streaks are worth more.</p>
+          <button class="primary-btn" id="primaryBtn" type="button">Start game</button>
+        </div>
+      </div>
+      <p class="hint">Click the answer or press 1–4 · P to pause</p>
+    </main>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>

@@ -4,8 +4,8 @@ GameHub is a free browser gaming platform: a fast, fully static website
 where players browse HTML5, iframe, WebGL, WASM and external games —
 including a dedicated Minecraft section for Eaglercraft-style voxel
 clients — and launch them instantly. No backend, no database, no build
-step: just HTML, CSS and vanilla JavaScript. The catalog ships 26
-games: 21 original playable titles plus 5 coming-soon placeholders
+step: just HTML, CSS and vanilla JavaScript. The catalog ships 41
+games: 36 original playable titles plus 5 coming-soon placeholders
 (including the Minecraft client slots).
 
 Live project page (once Pages is enabled):
@@ -21,18 +21,25 @@ Live project page (once Pages is enabled):
 ## Features
 
 - Modern dark gaming interface, responsive from mobile to desktop
-- Homepage rails: Featured, Popular, Minecraft, New Games, All Games
-- 21 original playable games across Arcade, Puzzle, Casual, Action,
-  Racing and Strategy — each self-contained under `games/<slug>/play/`
-  with keyboard + touch controls
-- Live search (titles, descriptions, categories, types, tags) with
-  shareable URLs (`?q=...`, `?category=...`, `?type=...`) and an empty state
+- Homepage discovery: Spotlight, Play Again, Favorites, Featured,
+  Popular, Minecraft, New Games, sortable All Games, Categories
+- 36 original playable games across Arcade, Puzzle, Casual, Action,
+  Racing, Sports, Adventure and Strategy — each self-contained under
+  `games/<slug>/play/` with keyboard + touch controls
+- Live search (titles, descriptions, categories, types, tags,
+  versions) with recent searches, shareable URLs (`?q=...`,
+  `?category=...`, `?type=...`, `?sort=...`, `?favorites=1`), result
+  counts and an empty state
 - Catalog-generated filters: categories plus game-type labels
   (HTML5, Iframe, WebGL, WASM, External) with computed counts
-- One centralized game catalog — new games appear on the homepage
-  without touching homepage HTML
+- One centralized game catalog (`catalog.js`) — new games appear on
+  the homepage without touching homepage HTML
+- Player shelves with zero backend: favorites, recently played,
+  per-game stats and recent searches, all in `localStorage`
 - Reusable per-game launcher (`launcher.js`) with cover, loading,
-  error and playing states, responsive viewport and fullscreen support
+  error and playing states, responsive viewport, fullscreen and
+  restart support — plus favorite toggle, personal stats, controls
+  and catalog-driven related games on every game page
 - Minecraft-ready: WebGL client slots, per-version pages, placement docs
 - Original SVG artwork only — no copyrighted game assets or logos
 - Accessible: skip link, semantic landmarks, keyboard-friendly controls,
@@ -60,7 +67,10 @@ unavailable` + the exact reason) instead of pretending to work.
 GameHub/
 ├── index.html                  # Homepage (all rails render from catalog)
 ├── style.css                   # Design system (CSS variables, launcher UI)
-├── script.js                   # Game catalog + search/filter/render logic
+├── catalog.js                  # Game catalog + filters/sorts (source of truth)
+├── player.js                   # Favorites/recent/stats/searches (localStorage)
+├── cards.js                    # Shared game-card renderer + favorite toggles
+├── script.js                   # Homepage controller (rails, search, sort)
 ├── launcher.js                 # Reusable per-game launcher runtime
 ├── assets/
 │   ├── favicon.svg
@@ -81,7 +91,8 @@ GameHub/
 
 ## The catalog
 
-`script.js` holds the `GAMES` array — the single source of truth.
+`catalog.js` holds the `GAMES` array — the single source of truth —
+plus the shared filter/sort/related helpers (`window.GameHubCatalog`).
 Every entry supports:
 
 ```js
@@ -99,14 +110,20 @@ Every entry supports:
   version: "1.0.0",              // shown on the game page
   playUrl: "games/my-game/play/index.html",    // or https URL, or null
   embed: null,                   // or { sandbox, allow } iframe overrides
-  tags: ["single-player"]        // lowercase search keywords
+  tags: ["single-player"],       // lowercase search keywords
+  // --- optional (rendering never breaks when missing) ---
+  releaseDate: "2026-09-25",     // YYYY-MM-DD, drives New Games + newest sort
+  controls: "How to play…",      // shown in the game page How-to box
+  difficulty: "Medium",          // Easy | Medium | Hard
+  featuredOrder: 1,              // ordering inside the Featured rail
+  popularOrder: 1                // ordering inside the Popular rail
 }
 ```
 
 Rules:
 
-- Append new entries **last** — the New Games rail is the tail of the
-  array, newest first.
+- Append new entries **last** — entries without `releaseDate` fall back
+  to tail-of-array order, newest first.
 - `playUrl` for local games is relative to the **site root**
   (`games/<slug>/play/index.html`). For `external` it must be a full
   `https://` URL. Use `null` when nothing is wired up yet.
@@ -118,19 +135,26 @@ Rules:
 ## How to add a normal HTML5 game
 
 1. Append a catalog entry with `type: "html5"`,
-   `playUrl: "games/<slug>/play/index.html"`.
+   `playUrl: "games/<slug>/play/index.html"`, plus `releaseDate`,
+   `controls` and `difficulty`.
 2. Copy any page under `games/` to `games/<slug>/index.html` and update
-   the title, description, category, artwork path and the `#launcher`
-   `data-*` config (`data-type="html5"`,
-   `data-play-url="play/index.html"` — page-relative).
+   the title, description, category, artwork path, OG tags and the
+   `#launcher` `data-*` config (`data-type="html5"`,
+   `data-play-url="play/index.html"` — page-relative). Keep the four
+   module scripts (`catalog.js`, `player.js`, `cards.js`,
+   `launcher.js`): favorites, stats, controls and related games are
+   injected from the catalog automatically.
 3. Add `assets/thumbnails/<slug>.svg` (640×360, original art).
 4. Put the game itself in `games/<slug>/play/` as a self-contained
    bundle: `index.html` + `game.js` + `style.css`, with no external
    URLs. Every game needs a start screen, a game-over/restart flow,
    a score or objective, keyboard + touch controls, instructions,
    and pause where it makes sense (see the existing games for the
-   pattern).
-5. Run `node tests/smoke.mjs && python3 tests/check.py`.
+   pattern). Persist best scores as plain numbers under
+   `gh_best_<slug>` in `localStorage` and register the key in
+   `player.js` (`BEST_SCORES`) so the game page can display it.
+5. Run `node tests/smoke.mjs && node tests/games.mjs &&
+   python3 tests/check.py`.
 
 ## How to add an iframe game
 
@@ -207,13 +231,14 @@ python3 -m http.server 8080
 ## Tests
 
 ```bash
-node tests/smoke.mjs     # catalog, search, filters, URL hydration, launcher
+node tests/smoke.mjs     # catalog, search, filters, sorting, player data,
+                         # favorites, URL hydration, launcher flows
 node tests/games.mjs     # per-game runtime harness (every play bundle)
 python3 tests/check.py   # links, fragments, configs, artwork, Pages rules
 ```
 
-Both are dependency-free (Node.js and Python 3 standard libraries
-only — dev tools, not site dependencies).
+All three are dependency-free (Node.js and Python 3 standard
+libraries only — dev tools, not site dependencies).
 
 ## Deploying to GitHub Pages
 
@@ -233,8 +258,10 @@ Notes:
 ## Path rules
 
 - NEVER root-absolute: `/assets/...`, `/games/...`, `/index.html`.
-- Homepage: `style.css`, `script.js`, `assets/...`, `games/<slug>/`.
+- Homepage: `style.css`, `catalog.js`, `player.js`, `cards.js`,
+  `script.js`, `assets/...`, `games/<slug>/`.
 - Game pages (two levels deep): `../../style.css`,
+  `../../catalog.js`, `../../player.js`, `../../cards.js`,
   `../../launcher.js`, `../../assets/...`.
 - Catalog `playUrl` is root-relative; game-page `data-play-url` is
   page-relative — both must resolve to the same file.
@@ -269,8 +296,8 @@ gracefully without errors.
 
 - More original games across every category
 - More voxel client versions as legal builds become available
-- Recently-played rail and saved player preferences
-- Optional: combined category+type filtering, recently-played rail
+- Optional: combined category+type filtering, per-game achievements
+- Optional: export/import of local player data (still no accounts)
 
 ## Assets & license
 

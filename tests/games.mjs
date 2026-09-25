@@ -331,6 +331,7 @@ async function runGame(slug) {
 }
 
 console.log(`Discovered ${slugs.length} playable game(s): ${slugs.join(", ") || "(none)"}`);
+t("discovers all 36 play bundles", slugs.length === 36);
 for (const slug of slugs) {
   await runGame(slug);
 }

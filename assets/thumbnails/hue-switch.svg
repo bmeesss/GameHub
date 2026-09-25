@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Hue Switch artwork</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#101a2c"/>
+      <stop offset="1" stop-color="#0b0f1a"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <circle cx="120" cy="70" r="130" fill="#e879f9" opacity=".12"/>
+  <circle cx="540" cy="310" r="130" fill="#fbbf24" opacity=".10"/>
+  <rect x="0" y="60" width="220" height="20" fill="#22d3ee"/>
+  <rect x="380" y="60" width="260" height="20" fill="#22d3ee"/>
+  <rect x="220" y="60" width="160" height="20" fill="#22d3ee" opacity=".25"/>
+  <rect x="0" y="160" width="420" height="20" fill="#e879f9"/>
+  <rect x="580" y="160" width="60" height="20" fill="#e879f9"/>
+  <rect x="420" y="160" width="160" height="20" fill="#e879f9" opacity=".25"/>
+  <rect x="0" y="260" width="120" height="20" fill="#fbbf24"/>
+  <rect x="280" y="260" width="360" height="20" fill="#fbbf24"/>
+  <rect x="120" y="260" width="160" height="20" fill="#fbbf24" opacity=".25"/>
+  <circle cx="320" cy="330" r="30" fill="#22d3ee" opacity=".3"/>
+  <circle cx="320" cy="330" r="18" fill="#22d3ee"/>
+  <circle cx="314" cy="324" r="5" fill="#fff"/>
+</svg>

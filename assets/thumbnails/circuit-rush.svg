@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Circuit Rush artwork</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1626"/>
+      <stop offset="1" stop-color="#05070f"/>
+    </linearGradient>
+    <linearGradient id="trailA" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#22d3ee" stop-opacity="0"/>
+      <stop offset="1" stop-color="#22d3ee"/>
+    </linearGradient>
+    <linearGradient id="trailB" x1="1" y1="0" x2="0" y2="0">
+      <stop offset="0" stop-color="#fb7185" stop-opacity="0"/>
+      <stop offset="1" stop-color="#fb7185"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <g stroke="#94a3b8" stroke-width="1" opacity=".18">
+    <path d="M0 90 H640 M0 180 H640 M0 270 H640 M160 0 V360 M320 0 V360 M480 0 V360"/>
+  </g>
+  <path d="M20 300 L200 300 L200 180 L420 180" fill="none" stroke="url(#trailA)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M620 80 L460 80 L460 180 L430 180" fill="none" stroke="url(#trailB)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="408" y="168" width="26" height="24" rx="4" fill="#22d3ee"/>
+  <rect x="416" y="86" width="26" height="24" rx="4" fill="#fb7185" transform="rotate(90 429 98)"/>
+  <circle cx="421" cy="180" r="30" fill="#22d3ee" opacity=".2"/>
+  <circle cx="429" cy="98" r="30" fill="#fb7185" opacity=".2"/>
+</svg>

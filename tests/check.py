@@ -94,13 +94,15 @@ for path in HTML_FILES:
 ok()
 
 # ---- 3. Catalog integrity -------------------------------------------------
-js = open("script.js", encoding="utf-8").read()
+js = open("catalog.js", encoding="utf-8").read()
 match = re.search(r"const GAMES = \[(.*?)\n\];", js, re.S)
 if not match:
-    fail("script.js: GAMES catalog not found")
+    fail("catalog.js: GAMES catalog not found")
     ENTRIES = []
 else:
     ENTRIES = re.split(r"\n  \},\n  \{", match.group(1).strip()[1:-1])
+if "const GAMES" in open("script.js", encoding="utf-8").read():
+    fail("script.js: must not embed the catalog (catalog.js is the single source of truth)")
 
 REQUIRED = ["id", "title", "slug", "description", "category", "thumbnail",
             "featured", "popular", "status", "type", "version", "playUrl", "embed", "tags"]
@@ -152,6 +154,19 @@ for game in catalog:
                 fail(f"catalog {slug}: remote playUrl only allowed for type external")
         elif not url.startswith(f"games/{slug}/"):
             fail(f"catalog {slug}: local playUrl must live under games/{slug}/, got {url}")
+
+for entry in ENTRIES:
+    slug = (re.search(r'\bid:\s*"([^"]*)"', entry) or [None, "?"])[1]
+    date = re.search(r'\breleaseDate:\s*"([^"]*)"', entry)
+    if date and not re.fullmatch(r"\d{4}-\d{2}-\d{2}", date.group(1)):
+        fail(f"catalog {slug}: releaseDate must be YYYY-MM-DD, got {date.group(1)!r}")
+    diff = re.search(r'\bdifficulty:\s*"([^"]*)"', entry)
+    if diff and diff.group(1) not in ("Easy", "Medium", "Hard"):
+        fail(f"catalog {slug}: difficulty must be Easy/Medium/Hard, got {diff.group(1)!r}")
+    for field in ("featuredOrder", "popularOrder"):
+        order = re.search(rf"\b{field}:\s*(\S+?)(,|\n)", entry)
+        if order and not order.group(1).isdigit():
+            fail(f"catalog {slug}: {field} must be a positive integer, got {order.group(1)!r}")
 ok()
 
 slugs = [g["slug"] for g in catalog]
@@ -181,7 +196,9 @@ for game in catalog:
             fail(f"{page_path}: data-play-url mismatch for external URL")
     elif "data-play-url" in data:
         fail(f"{page_path}: data-play-url present but catalog playUrl is null")
-    for token in ['id="launcher"', 'id="launcher-stage"', "launcher-fullscreen", "launcher-close", 'src="../../launcher.js"', 'class="breadcrumb"']:
+    for token in ['id="launcher"', 'id="launcher-stage"', "launcher-fullscreen", "launcher-close", 'src="../../launcher.js"', 'class="breadcrumb"',
+                  'src="../../catalog.js"', 'src="../../player.js"', 'src="../../cards.js"',
+                  'property="og:title"', 'property="og:description"', 'property="og:type"', 'property="og:image"']:
         if token not in page:
             fail(f"{page_path}: missing launcher element {token}")
     if f"assets/thumbnails/{slug}.svg" not in page:
@@ -210,7 +227,11 @@ index = open("index.html", encoding="utf-8").read()
 for token in ["featured-grid", "popular-grid", "minecraft-grid", "new-grid",
               "games-grid", "categories-grid", "filter-bar", "empty-state",
               "search-form", "search-input", "results-count", "stat-games",
-              "stat-categories", "year", 'href="?category=Minecraft#games"']:
+              "stat-categories", "spotlight", "recent-grid", "favorites-grid",
+              "sort-select", "recent-searches",
+              'src="catalog.js"', 'src="player.js"', 'src="cards.js"', 'src="script.js"',
+              'property="og:title"', 'property="og:description"', 'property="og:image"',
+              "year", 'href="?category=Minecraft#games"']:
     if token not in index:
         fail(f"index.html: missing {token}")
 for slug in slugs:
@@ -219,6 +240,17 @@ for slug in slugs:
         fail(f"games/{slug}: missing Minecraft nav link")
 if "launcher.js" in index:
     fail("index.html: must not load launcher.js (game clients stay off the homepage)")
+ok()
+
+# ---- 6b. No duplicate ids within a page -------------------------------------
+for path in HTML_FILES:
+    with open(path, encoding="utf-8") as handle:
+        body = handle.read()
+    seen = set()
+    for found in re.findall(r'\bid="([^"]+)"', body):
+        if found in seen:
+            fail(f"{path}: duplicate id {found!r}")
+        seen.add(found)
 ok()
 
 # ---- 7. Relative-path + hygiene discipline ---------------------------------
@@ -265,6 +297,16 @@ launcher = open("launcher.js", encoding="utf-8").read()
 for token in ['"html5"', '"iframe"', '"external"', '"webgl"', '"wasm"', "resolveLaunch", "requestFullscreen"]:
     if token not in launcher:
         fail(f"launcher.js: missing {token}")
+modules = {
+    "catalog.js": ["GameHubCatalog", "getFeatured", "getPopular", "getNewGames", "filterGames", "sortGames", "getRelated"],
+    "player.js": ["GameHubPlayer", "getFavorites", "toggleFavorite", "getRecentlyPlayed", "recordGamePlayed", "getStats", "recordSearch"],
+    "cards.js": ["GameHubCards", "cardTemplate", "renderInto", "wireFavorites"],
+}
+for name, tokens in modules.items():
+    body = open(name, encoding="utf-8").read()
+    for token in tokens:
+        if token not in body:
+            fail(f"{name}: missing {token}")
 if "node_modules" in os.listdir(".") or os.path.exists("package.json"):
     fail("site must stay dependency-free (no node_modules/package.json)")
 ok()

@@ -1,0 +1,624 @@
+name: Temporary EaglercraftX 1.8.8 vanilla build
+
+# This workflow is deliberately build-only. It never copies a client into GameHub,
+# never edits catalog.js, and never uploads the upstream source tree.
+#
+# Required administrator-provided inputs:
+#   - either a trusted input artifact or a trusted input repository containing:
+#       1.8.8.jar, mcp918.zip, and 1.8.json
+#   - BUILD_INPUTS_TOKEN secret when that repository/artifact is private
+#
+# The Minecraft JAR, MCP archive, and assets index are intentionally not downloaded
+# by this workflow. TeaVM is fetched only from the fixed Maven Central URL selected
+# by the upstream compiler UI (repo1.maven.org); an unavailable dependency fails the
+# build. No mirror URL is accepted.
+
+on:
+  workflow_dispatch:
+    inputs:
+      input_source:
+        description: "Where the administrator-provided build inputs are staged"
+        required: true
+        type: choice
+        default: artifact
+        options:
+          - artifact
+          - repository
+      input_artifact_name:
+        description: "Trusted artifact name containing the input files (artifact mode)"
+        required: false
+        type: string
+        default: "eaglercraftx-1.8.8-build-inputs"
+      input_artifact_run_id:
+        description: "Completed workflow run ID that uploaded the trusted input artifact"
+        required: false
+        type: string
+        default: ""
+      input_artifact_repository:
+        description: "Repository that owns the trusted input artifact; blank means this repository"
+        required: false
+        type: string
+        default: ""
+      input_repository:
+        description: "Trusted repository containing the administrator-provided input files"
+        required: false
+        type: string
+        default: ""
+      input_ref:
+        description: "Immutable branch, tag, or commit for the trusted input repository"
+        required: false
+        type: string
+        default: "main"
+      minecraft_jar_path:
+        description: "Path inside the staged inputs to the user-provided Minecraft 1.8.8 JAR"
+        required: true
+        type: string
+        default: "1.8.8.jar"
+      mcp_zip_path:
+        description: "Path inside the staged inputs to the user-provided MCP 9.18 ZIP"
+        required: true
+        type: string
+        default: "mcp918.zip"
+      assets_index_path:
+        description: "Path inside the staged inputs to the user-provided Minecraft 1.8 assets index"
+        required: true
+        type: string
+        default: "1.8.json"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  vanilla-build:
+    name: Build pinned upstream client
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      UPSTREAM_REPOSITORY: Eaglercraft-Archive/Eaglercraftx-u19-source
+      UPSTREAM_COMMIT: 1cd68fc2b297aa273176cd9b497f50f494f99cee
+      TEAVM_MAVEN_URL: https://repo1.maven.org/maven2/
+      UPSTREAM_DIR: ${{ runner.temp }}/eaglercraftx-u19-source
+      UPSTREAM_CHECKOUT_PATH: .ci-upstream-eaglercraftx-u19
+      INPUT_CHECKOUT_PATH: .ci-provided-eaglercraftx-inputs
+      BUILD_ROOT: ${{ runner.temp }}/eaglercraftx-vanilla-build
+      BUILD_LOG_DIR: ${{ runner.temp }}/eaglercraftx-vanilla-logs
+      BUILD_REPORT_DIR: ${{ runner.temp }}/eaglercraftx-vanilla-report
+      BUILD_ARTIFACT_DIR: ${{ runner.temp }}/eaglercraftx-vanilla-artifact
+
+    steps:
+      - name: Checkout pinned upstream source
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.UPSTREAM_REPOSITORY }}
+          ref: ${{ env.UPSTREAM_COMMIT }}
+          path: ${{ env.UPSTREAM_CHECKOUT_PATH }}
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Move pinned upstream checkout to the isolated runner directory
+        run: |
+          set -Eeuo pipefail
+          rm -rf "$UPSTREAM_DIR"
+          mv "$GITHUB_WORKSPACE/$UPSTREAM_CHECKOUT_PATH" "$UPSTREAM_DIR"
+
+      - name: Verify upstream revision and build inputs configuration
+        env:
+          INPUT_SOURCE: ${{ inputs.input_source }}
+          INPUT_REPOSITORY: ${{ inputs.input_repository }}
+          INPUT_ARTIFACT_RUN_ID: ${{ inputs.input_artifact_run_id }}
+          INPUT_ARTIFACT_NAME: ${{ inputs.input_artifact_name }}
+          BUILD_INPUTS_TOKEN: ${{ secrets.BUILD_INPUTS_TOKEN }}
+        run: |
+          set -Eeuo pipefail
+          mkdir -p "$BUILD_LOG_DIR" "$BUILD_REPORT_DIR"
+
+          actual_commit="$(git -C "$UPSTREAM_DIR" rev-parse HEAD)"
+          if [[ "$actual_commit" != "$UPSTREAM_COMMIT" ]]; then
+            echo "::error::Upstream commit mismatch: expected $UPSTREAM_COMMIT, got $actual_commit"
+            exit 1
+          fi
+          git -C "$UPSTREAM_DIR" diff --exit-code
+          test -s "$UPSTREAM_DIR/LICENSE" || { echo "::error::Upstream LICENSE is missing"; exit 1; }
+          test -s "$UPSTREAM_DIR/README.md" || { echo "::error::Upstream README.md is missing"; exit 1; }
+          test -s "$UPSTREAM_DIR/CREDITS" || { echo "::error::Upstream CREDITS is missing"; exit 1; }
+          test -s "$UPSTREAM_DIR/buildtools/BuildTools.jar" || { echo "::error::BuildTools.jar is missing"; exit 1; }
+
+          case "$INPUT_SOURCE" in
+            artifact)
+              [[ -n "$INPUT_ARTIFACT_RUN_ID" ]] || {
+                echo "::error::input_artifact_run_id is required in artifact mode. No build input artifact was supplied."
+                exit 1
+              }
+              [[ -n "$INPUT_ARTIFACT_NAME" ]] || {
+                echo "::error::input_artifact_name is required in artifact mode."
+                exit 1
+              }
+              ;;
+            repository)
+              [[ -n "$INPUT_REPOSITORY" ]] || {
+                echo "::error::input_repository is required in repository mode. No build input repository was supplied."
+                exit 1
+              }
+              if [[ "$INPUT_REPOSITORY" != */* ]]; then
+                echo "::error::input_repository must be an owner/repository name, not a URL or mirror."
+                exit 1
+              fi
+              ;;
+            *)
+              echo "::error::Unsupported input_source '$INPUT_SOURCE'. Choose artifact or repository."
+              exit 1
+              ;;
+          esac
+
+          if [[ -z "${BUILD_INPUTS_TOKEN:-}" ]]; then
+            echo "::notice::BUILD_INPUTS_TOKEN is not set; public input sources can use GITHUB_TOKEN. Private input sources require BUILD_INPUTS_TOKEN."
+          fi
+
+          {
+            echo "upstream_repository=$UPSTREAM_REPOSITORY"
+            echo "upstream_commit=$actual_commit"
+            echo "input_source=$INPUT_SOURCE"
+            echo "runner=$RUNNER_OS"
+          } > "$BUILD_REPORT_DIR/build-metadata.txt"
+
+      - name: Set up Java 11
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "11"
+
+      - name: Verify Java 11 and native build prerequisites
+        run: |
+          set -Eeuo pipefail
+          {
+            echo '--- java -version ---'
+            java -version
+            echo '--- javac -version ---'
+            javac -version
+            echo '--- ffmpeg -version ---'
+            ffmpeg -version | sed -n '1p'
+          } 2>&1 | tee "$BUILD_REPORT_DIR/tool-versions.txt"
+
+          java_version="$(java -version 2>&1 | sed -n 's/.*version "\(11\.[^"]*\)".*/\1/p' | head -n1)"
+          [[ -n "$java_version" ]] || {
+            echo "::error::Java 11 is required, but java -version did not report a Java 11 runtime."
+            exit 1
+          }
+          javac -version 2>&1 | grep -Eq '^javac 11\.' || {
+            echo "::error::JDK 11 is required, but javac -version did not report javac 11.x."
+            exit 1
+          }
+          command -v ffmpeg >/dev/null || {
+            echo "::error::FFmpeg is missing. The upstream build requires it to process Minecraft audio resources."
+            exit 1
+          }
+          [[ -x "$UPSTREAM_DIR/build_init.sh" || -f "$UPSTREAM_DIR/build_init.sh" ]] || {
+            echo "::error::Upstream build_init.sh is missing."
+            exit 1
+          }
+
+      - name: Fetch administrator-provided build input artifact
+        if: inputs.input_source == 'artifact'
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.input_artifact_name }}
+          path: ${{ env.INPUT_CHECKOUT_PATH }}
+          repository: ${{ inputs.input_artifact_repository || github.repository }}
+          run-id: ${{ inputs.input_artifact_run_id }}
+          github-token: ${{ secrets.BUILD_INPUTS_TOKEN || github.token }}
+
+      - name: Checkout administrator-provided build input repository
+        if: inputs.input_source == 'repository'
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.input_repository }}
+          ref: ${{ inputs.input_ref }}
+          path: ${{ env.INPUT_CHECKOUT_PATH }}
+          fetch-depth: 1
+          persist-credentials: false
+          token: ${{ secrets.BUILD_INPUTS_TOKEN || github.token }}
+
+      - name: Stage and validate user-provided inputs
+        env:
+          INPUT_ROOT: ${{ github.workspace }}/${{ env.INPUT_CHECKOUT_PATH }}
+          INPUT_SOURCE: ${{ inputs.input_source }}
+          INPUT_REPOSITORY: ${{ inputs.input_repository }}
+          INPUT_REF: ${{ inputs.input_ref }}
+          INPUT_ARTIFACT_REPOSITORY: ${{ inputs.input_artifact_repository || github.repository }}
+          INPUT_ARTIFACT_NAME: ${{ inputs.input_artifact_name }}
+          INPUT_ARTIFACT_RUN_ID: ${{ inputs.input_artifact_run_id }}
+          MINECRAFT_JAR_PATH: ${{ inputs.minecraft_jar_path }}
+          MCP_ZIP_PATH: ${{ inputs.mcp_zip_path }}
+          ASSETS_INDEX_PATH: ${{ inputs.assets_index_path }}
+        run: |
+          set -Eeuo pipefail
+          test -d "$INPUT_ROOT" || {
+            echo "::error::No staged build-input directory exists. Supply a trusted artifact or repository."
+            exit 1
+          }
+
+          reject_path() {
+            local value="$1"
+            [[ -n "$value" && "$value" != /* && "$value" != *..* ]] || {
+              echo "::error::Input path '$value' must be a non-empty relative path without '..'."
+              exit 1
+            }
+          }
+
+          copy_input() {
+            local relative="$1"
+            local destination="$2"
+            reject_path "$relative"
+            local root resolved
+            root="$(realpath -e "$INPUT_ROOT")"
+            resolved="$(realpath -e "$INPUT_ROOT/$relative" 2>/dev/null || true)"
+            [[ -n "$resolved" && "$resolved" == "$root"/* && -f "$resolved" ]] || {
+              echo "::error::Required input file is missing: $relative"
+              echo "::error::Expected it under the trusted staged input root: $INPUT_ROOT"
+              exit 1
+            }
+            mkdir -p "$(dirname "$destination")"
+            cp -- "$resolved" "$destination"
+            [[ -s "$destination" ]] || {
+              echo "::error::Required input file is empty after staging: $relative"
+              exit 1
+            }
+            printf '%s\n' "$resolved"
+          }
+
+          mkdir -p "$UPSTREAM_DIR/mcp918" "$BUILD_ROOT" "$BUILD_LOG_DIR" "$BUILD_REPORT_DIR"
+          minecraft_source="$(copy_input "$MINECRAFT_JAR_PATH" "$UPSTREAM_DIR/mcp918/1.8.8.jar")"
+          mcp_source="$(copy_input "$MCP_ZIP_PATH" "$UPSTREAM_DIR/mcp918/mcp918.zip")"
+          assets_source="$(copy_input "$ASSETS_INDEX_PATH" "$UPSTREAM_DIR/mcp918/1.8.json")"
+
+          unzip -t "$UPSTREAM_DIR/mcp918/1.8.8.jar" >/dev/null || {
+            echo "::error::The supplied Minecraft input is not a readable ZIP/JAR: $MINECRAFT_JAR_PATH"
+            exit 1
+          }
+          unzip -t "$UPSTREAM_DIR/mcp918/mcp918.zip" >/dev/null || {
+            echo "::error::The supplied MCP input is not a readable ZIP archive: $MCP_ZIP_PATH"
+            exit 1
+          }
+          python3 - "$UPSTREAM_DIR/mcp918/1.8.json" <<'PY'
+          import json
+          import sys
+          path = sys.argv[1]
+          try:
+              with open(path, encoding="utf-8") as handle:
+                  value = json.load(handle)
+          except Exception as exc:
+              raise SystemExit(f"::error::The supplied assets index is not valid JSON: {exc}")
+          if not isinstance(value, dict) or not isinstance(value.get("objects"), dict):
+              raise SystemExit("::error::The supplied assets index does not contain the expected 'objects' map")
+          PY
+
+          {
+            echo "input_source=$INPUT_SOURCE"
+            if [[ "$INPUT_SOURCE" == repository ]]; then
+              echo "input_repository=$INPUT_REPOSITORY"
+              echo "input_ref=$INPUT_REF"
+            else
+              echo "input_artifact_repository=$INPUT_ARTIFACT_REPOSITORY"
+              echo "input_artifact_name=$INPUT_ARTIFACT_NAME"
+              echo "input_artifact_run_id=$INPUT_ARTIFACT_RUN_ID"
+            fi
+            echo "minecraft_jar_path=$MINECRAFT_JAR_PATH"
+            echo "minecraft_jar_sha256=$(sha256sum "$UPSTREAM_DIR/mcp918/1.8.8.jar" | cut -d' ' -f1)"
+            echo "mcp_zip_path=$MCP_ZIP_PATH"
+            echo "mcp_zip_sha256=$(sha256sum "$UPSTREAM_DIR/mcp918/mcp918.zip" | cut -d' ' -f1)"
+            echo "assets_index_path=$ASSETS_INDEX_PATH"
+            echo "assets_index_sha256=$(sha256sum "$UPSTREAM_DIR/mcp918/1.8.json" | cut -d' ' -f1)"
+            echo "input_source_root=$INPUT_ROOT"
+          } | tee "$BUILD_REPORT_DIR/input-manifest.txt"
+
+      - name: Configure isolated upstream build directories
+        run: |
+          set -Eeuo pipefail
+          rm -rf "$BUILD_ROOT" "$BUILD_LOG_DIR" "$BUILD_ARTIFACT_DIR"
+          mkdir -p "$BUILD_ROOT" "$BUILD_LOG_DIR" "$BUILD_REPORT_DIR" "$BUILD_ARTIFACT_DIR"
+          cat > "$UPSTREAM_DIR/buildtools_config.json" <<JSON
+          {
+            "temporary_directory": "$BUILD_ROOT/temporary",
+            "workspace_directory": "$BUILD_ROOT/workspace"
+          }
+          JSON
+          chmod +x "$UPSTREAM_DIR"/*.sh
+
+          python3 - "$UPSTREAM_DIR" "$BUILD_ROOT" "$TEAVM_MAVEN_URL" <<'PY'
+          import json
+          import os
+          import sys
+          upstream, build_root, maven_url = sys.argv[1:]
+          config = {
+              "repositoryFolder": upstream,
+              "modCoderPack": os.path.join(upstream, "mcp918", "mcp918.zip"),
+              "minecraftJar": os.path.join(upstream, "mcp918", "1.8.8.jar"),
+              "assetsIndex": os.path.join(upstream, "mcp918", "1.8.json"),
+              "temporaryDirectory": os.path.join(build_root, "compile-temporary"),
+              "outputDirectory": os.path.join(build_root, "output"),
+              "mavenURL": maven_url,
+              "mavenLocal": os.path.join(build_root, "teavm-maven"),
+              "productionIndex": os.path.join(upstream, "buildtools", "production-index.html"),
+              "productionFavicon": os.path.join(upstream, "buildtools", "production-favicon.png"),
+              "generateOfflineDownload": False,
+              "keepTemporaryFiles": False,
+              "writeSourceMap": False,
+              "minifying": True,
+              "ffmpeg": "ffmpeg",
+          }
+          os.makedirs(os.path.dirname(os.path.join(build_root, "compile-config.json")), exist_ok=True)
+          with open(os.path.join(build_root, "compile-config.json"), "w", encoding="utf-8") as handle:
+              json.dump(config, handle, indent=2)
+          PY
+
+      - name: Run official upstream build_init.sh
+        run: |
+          set -Eeuo pipefail
+          cd "$UPSTREAM_DIR"
+          set +e
+          yes '' | timeout --foreground 45m ./build_init.sh 2>&1 | tee "$BUILD_LOG_DIR/01-build_init.log"
+          status="${PIPESTATUS[1]}"
+          set -e
+          [[ "$status" -eq 0 ]] || {
+            echo "::error::build_init.sh failed with exit code $status."
+            exit "$status"
+          }
+          for required in \
+            "$BUILD_ROOT/temporary/ModCoderPack" \
+            "$BUILD_ROOT/temporary/MinecraftSrc/minecraft_src_javadoc.jar" \
+            "$BUILD_ROOT/temporary/MinecraftSrc/minecraft_res_patch.jar" \
+            "$BUILD_ROOT/temporary/MinecraftSrc/minecraft_languages.zip"; do
+            [[ -e "$required" ]] || {
+              echo "::error::build_init.sh did not produce required output: $required"
+              exit 1
+            }
+          done
+
+      - name: Run official upstream build_make_unpatched.sh
+        run: |
+          set -Eeuo pipefail
+          cd "$UPSTREAM_DIR"
+          rm -f MinecraftSrc.zip
+          set +e
+          yes '' | timeout --foreground 20m ./build_make_unpatched.sh 2>&1 | tee "$BUILD_LOG_DIR/02-build_make_unpatched.log"
+          status="${PIPESTATUS[1]}"
+          set -e
+          [[ "$status" -eq 0 ]] || {
+            echo "::error::build_make_unpatched.sh failed with exit code $status."
+            exit "$status"
+          }
+          [[ -s "$UPSTREAM_DIR/MinecraftSrc.zip" ]] || {
+            echo "::error::build_make_unpatched.sh did not produce MinecraftSrc.zip."
+            exit 1
+          }
+          echo "unpatched_output=$UPSTREAM_DIR/MinecraftSrc.zip (not uploaded)" >> "$BUILD_REPORT_DIR/build-metadata.txt"
+
+      - name: Run official upstream build_make_workspace.sh
+        run: |
+          set -Eeuo pipefail
+          cd "$UPSTREAM_DIR"
+          set +e
+          yes '' | timeout --foreground 20m ./build_make_workspace.sh 2>&1 | tee "$BUILD_LOG_DIR/03-build_make_workspace.log"
+          status="${PIPESTATUS[1]}"
+          set -e
+          [[ "$status" -eq 0 ]] || {
+            echo "::error::build_make_workspace.sh failed with exit code $status."
+            exit "$status"
+          }
+          for required in \
+            "$BUILD_ROOT/workspace/build.gradle" \
+            "$BUILD_ROOT/workspace/src/main/java" \
+            "$BUILD_ROOT/workspace/src/teavm/java" \
+            "$BUILD_ROOT/workspace/desktopRuntime" \
+            "$BUILD_ROOT/workspace/javascript/lang"; do
+            [[ -e "$required" ]] || {
+              echo "::error::build_make_workspace.sh did not produce required workspace output: $required"
+              exit 1
+            }
+          done
+
+      - name: Run official CompileLatestClient.sh with CI-safe upstream headless adapter
+        run: |
+          set -Eeuo pipefail
+          cat > "$RUNNER_TEMP/eaglercraftx-java-wrapper" <<'SH'
+          #!/usr/bin/env bash
+          set -Eeuo pipefail
+          if [[ " $* " == *" net.lax1dude.eaglercraft.v1_8.buildtools.gui.CompileLatestClientGUI "* ]]; then
+            set +e
+            "$JAVA_HOME/bin/java" -cp "$EAGLER_BUILDTOOLS_JAR" \
+              net.lax1dude.eaglercraft.v1_8.buildtools.gui.headless.CompileLatestClientHeadless \
+              -y "$EAGLER_COMPILE_CONFIG"
+            status=$?
+            set -e
+            printf '%s\n' "$status" > "$EAGLER_COMPILER_STATUS"
+            exit "$status"
+          fi
+          exec "$JAVA_HOME/bin/java" "$@"
+          SH
+          chmod +x "$RUNNER_TEMP/eaglercraftx-java-wrapper"
+
+          export EAGLER_BUILDTOOLS_JAR="$UPSTREAM_DIR/buildtools/BuildTools.jar"
+          export EAGLER_COMPILE_CONFIG="$BUILD_ROOT/compile-config.json"
+          export EAGLER_COMPILER_STATUS="$BUILD_ROOT/compiler-exit-code"
+          export PATH="$RUNNER_TEMP:$PATH"
+          ln -sf "$RUNNER_TEMP/eaglercraftx-java-wrapper" "$RUNNER_TEMP/java"
+
+          cd "$UPSTREAM_DIR"
+          echo "CompileLatestClient.sh is GUI-only in the upstream README. Its upstream GUI entry point is redirected only inside this temporary CI wrapper to the upstream-bundled headless compiler; no compiler/source code is modified."
+          set +e
+          ./CompileLatestClient.sh 2>&1 | tee "$BUILD_LOG_DIR/04-CompileLatestClient.log"
+          script_status="${PIPESTATUS[0]}"
+          set -e
+
+          if [[ ! -s "$EAGLER_COMPILER_STATUS" ]]; then
+            echo "::error::CompileLatestClient.sh did not reach the upstream compiler entry point."
+            exit 1
+          fi
+          compiler_status="$(cat "$EAGLER_COMPILER_STATUS")"
+          [[ "$compiler_status" == 0 ]] || {
+            echo "::error::The upstream client compiler failed with exit code $compiler_status."
+            exit "$compiler_status"
+          }
+          [[ "$script_status" -eq 0 ]] || {
+            echo "::error::CompileLatestClient.sh failed with exit code $script_status."
+            exit "$script_status"
+          }
+
+      - name: Validate vanilla browser output and local HTTP serving
+        run: |
+          set -Eeuo pipefail
+          output="$BUILD_ROOT/output"
+          expected=(
+            "$output/index.html"
+            "$output/classes.js"
+            "$output/assets.epk"
+            "$output/fix-webm-duration.js"
+          )
+          for required in "${expected[@]}"; do
+            [[ -s "$required" ]] || {
+              echo "::error::Expected browser build output is missing or empty: $required"
+              exit 1
+            }
+          done
+          [[ -d "$output/lang" ]] || {
+            echo "::error::Expected language output directory is missing: $output/lang"
+            exit 1
+          }
+          compgen -G "$output/lang/*" >/dev/null || {
+            echo "::error::Expected language output directory is empty: $output/lang"
+            exit 1
+          }
+          [[ ! -e "$output/classes.js.map" ]] || {
+            echo "::error::Unexpected source map was produced; source maps are not included in the allowed vanilla artifact."
+            exit 1
+          }
+
+          teavm_jars=(
+            teavm-core-0.6.1.jar
+            teavm-cli-0.6.1.jar
+            teavm-tooling-0.6.1.jar
+            teavm-platform-0.6.1.jar
+            teavm-classlib-0.6.1.jar
+            teavm-interop-0.6.1.jar
+            teavm-jso-0.6.1.jar
+            teavm-jso-apis-0.6.1.jar
+            teavm-jso-impl-0.6.1.jar
+            teavm-metaprogramming-api-0.6.1.jar
+            teavm-metaprogramming-impl-0.6.1.jar
+            joda-time-2.7.jar
+            jzlib-1.1.3.jar
+          )
+          for jar in "${teavm_jars[@]}"; do
+            [[ -s "$BUILD_ROOT/teavm-maven/$jar" ]] || {
+              echo "::error::TeaVM/build dependency is missing after compilation: $BUILD_ROOT/teavm-maven/$jar"
+              exit 1
+            }
+          done
+
+          python3 - "$output" <<'PY'
+          import html.parser
+          import os
+          import posixpath
+          import sys
+          from urllib.parse import urlsplit
+
+          root = os.path.realpath(sys.argv[1])
+          html_path = os.path.join(root, "index.html")
+
+          class References(html.parser.HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.refs = []
+              def handle_starttag(self, tag, attrs):
+                  for key, value in attrs:
+                      if key in {"src", "href"} and value:
+                          self.refs.append(value)
+
+          parser = References()
+          with open(html_path, encoding="utf-8") as handle:
+              parser.feed(handle.read())
+
+          for ref in parser.refs:
+              parsed = urlsplit(ref)
+              if parsed.scheme or ref.startswith("//"):
+                  raise SystemExit(f"::error::External or unsafe runtime reference in index.html: {ref}")
+              if ref.startswith("#"):
+                  continue
+              if ref.startswith("/"):
+                  raise SystemExit(f"::error::Root-absolute runtime reference breaks subpath deployment: {ref}")
+              relative = posixpath.normpath(parsed.path)
+              target = os.path.realpath(os.path.join(root, relative))
+              if os.path.commonpath([root, target]) != root or not os.path.isfile(target):
+                  raise SystemExit(f"::error::Local runtime reference does not exist: {ref}")
+          print(f"validated_relative_references={len(parser.refs)}")
+          PY
+
+          http_log="$BUILD_LOG_DIR/local-http.log"
+          python3 -m http.server 8765 --bind 127.0.0.1 --directory "$output" > "$http_log" 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for _ in $(seq 1 30); do
+            if curl --silent --fail http://127.0.0.1:8765/index.html >/dev/null; then break; fi
+            sleep 1
+          done
+          for path in index.html classes.js assets.epk; do
+            curl --silent --show-error --fail "http://127.0.0.1:8765/$path" >/dev/null || {
+              echo "::error::Local HTTP smoke request failed for /$path"
+              exit 1
+            }
+          done
+
+          js_bytes="$(stat -c '%s' "$output/classes.js")"
+          wasm_files=( "$output"/*.wasm )
+          wasm_count=0
+          wasm_bytes=0
+          if [[ -e "${wasm_files[0]}" ]]; then
+            wasm_count="${#wasm_files[@]}"
+            for wasm in "${wasm_files[@]}"; do
+              wasm_bytes=$((wasm_bytes + $(stat -c '%s' "$wasm")))
+            done
+          fi
+          total_bytes="$(du -sb "$output" | cut -f1)"
+          file_count="$(find "$output" -type f | wc -l | tr -d ' ')"
+          {
+            echo "vanilla_output_directory=$output"
+            echo "vanilla_output_files=$file_count"
+            echo "vanilla_output_bytes=$total_bytes"
+            echo "classes_js_bytes=$js_bytes"
+            echo "wasm_file_count=$wasm_count"
+            echo "wasm_bytes=$wasm_bytes"
+            echo "browser_entrypoint=$output/index.html"
+            echo "multiplayer_runtime=present in upstream classes.js; no server address configured"
+          } | tee "$BUILD_REPORT_DIR/output-summary.txt"
+
+      - name: Prepare allowed vanilla build artifact and report
+        if: success()
+        run: |
+          set -Eeuo pipefail
+          output="$BUILD_ROOT/output"
+          mkdir -p "$BUILD_ARTIFACT_DIR"
+          cp -a "$output/." "$BUILD_ARTIFACT_DIR/"
+          cp "$UPSTREAM_DIR/LICENSE" "$BUILD_ARTIFACT_DIR/UPSTREAM-LICENSE.txt"
+          cp "$UPSTREAM_DIR/CREDITS" "$BUILD_ARTIFACT_DIR/UPSTREAM-CREDITS.txt"
+          rm -f "$BUILD_ARTIFACT_DIR/classes.js.map"
+          cat > "$BUILD_ARTIFACT_DIR/BUILD-NOTES.txt" <<EOF
+          This is an upstream vanilla EaglercraftX 1.8.8 browser build only.
+          Upstream repository: $UPSTREAM_REPOSITORY
+          Upstream commit: $UPSTREAM_COMMIT
+          This artifact contains no upstream Java source tree, MCP archive, Minecraft JAR,
+          assets index, build workspace, or GameHub integration. It is not copied into
+          games/eaglercraft-1-8/client/ by this workflow.
+          See UPSTREAM-LICENSE.txt and UPSTREAM-CREDITS.txt before any redistribution.
+          EOF
+          find "$BUILD_ARTIFACT_DIR" -type f -print | sort > "$BUILD_REPORT_DIR/artifact-files.txt"
+
+      - name: Write GitHub Actions build summary
+        if: always()
+        run: |
+          set -Eeuo pipefail
+          {
+            echo '# EaglercraftX 1.8.8 vanilla build'
+            echo
+            echo "- Runner: $RUNNER_OS / $RUNNER_ARCH"
+            echo "- Upstream: $

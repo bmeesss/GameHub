@@ -74,7 +74,7 @@
         <dl class="hero-stats" aria-label="GameHub at a glance">
           <div>
             <dt>Games</dt>
-            <dd id="stat-games">41</dd>
+            <dd id="stat-games">58</dd>
           </div>
           <div>
             <dt>Categories</dt>
@@ -148,14 +148,50 @@
     <section class="section section--tight section--minecraft" id="minecraft" aria-labelledby="minecraft-title">
       <div class="container">
         <div class="section-head section-head--split">
-          <div>
-            <p class="eyebrow eyebrow--green">Blocky worlds</p>
-            <h2 id="minecraft-title">Minecraft on GameHub</h2>
-            <p>Browser voxel clients powered by WebGL. The launcher is ready — client files plug in per game.</p>
+          <div class="minecraft-head">
+            <span class="minecraft-cube" aria-hidden="true">
+              <svg viewBox="0 0 48 48">
+                <rect x="8" y="14" width="32" height="28" fill="#5b3b22"/>
+                <rect x="8" y="8" width="32" height="8" fill="#4ade80"/>
+                <rect x="8" y="8" width="32" height="3" fill="#86efac"/>
+                <rect x="14" y="20" width="7" height="7" fill="#3f2a18"/>
+                <rect x="27" y="28" width="7" height="7" fill="#3f2a18"/>
+                <rect x="18" y="34" width="7" height="6" fill="#3f2a18"/>
+              </svg>
+            </span>
+            <div>
+              <p class="eyebrow eyebrow--green">Minecraft in your browser</p>
+              <h2 id="minecraft-title">Minecraft on GameHub</h2>
+              <p>Eaglercraft-style voxel worlds powered by WebGL — play 1.8, 1.8X and 1.12.2 builds right here. Bring your own legally obtained client and the launcher handles the rest.</p>
+            </div>
           </div>
           <a class="btn btn-ghost btn-sm" href="?category=Minecraft#games">View all Minecraft</a>
         </div>
         <div class="grid" id="minecraft-grid" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- Play online: games streamed from official provider embeds -->
+    <section class="section section--tight" id="play-online" aria-labelledby="play-online-title" hidden>
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">In-browser action</p>
+          <h2 id="play-online-title">Play online</h2>
+          <p>Provider games that stream straight into GameHub&#39;s own viewport — just press Play.</p>
+        </div>
+        <div class="grid" id="play-online-grid" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- External games: open on the provider's website -->
+    <section class="section section--tight" id="external" aria-labelledby="external-title" hidden>
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Beyond the hub</p>
+          <h2 id="external-title">External games</h2>
+          <p>Great games that cannot be embedded — they open on the provider&#39;s own website.</p>
+        </div>
+        <div class="grid" id="external-grid" aria-live="polite"></div>
       </div>
     </section>
 
@@ -303,6 +339,7 @@
   </footer>
 
   <script src="catalog.js" defer></script>
+  <script src="client-config.js" defer></script>
   <script src="player.js" defer></script>
   <script src="cards.js" defer></script>
   <script src="script.js" defer></script>

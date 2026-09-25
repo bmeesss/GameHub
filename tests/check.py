@@ -118,6 +118,8 @@ for entry in ENTRIES:
     game["popular"] = get_raw("popular")
     game["playUrl"] = None if re.search(r"\bplayUrl:\s*null", entry) else get("playUrl")
     game["embed"] = None if re.search(r"\bembed:\s*null", entry) else "object"
+    game["provider"] = get("provider")
+    game["externalUrl"] = get("externalUrl")
     tags = re.search(r"\btags:\s*\[(.*?)\]", entry, re.S)
     game["tags"] = re.findall(r'"([^"]+)"', tags.group(1)) if tags else None
     game["_missing"] = [f for f in REQUIRED if not re.search(rf"\b{f}\s*:", entry)]
@@ -150,10 +152,21 @@ for game in catalog:
         if url.startswith("http"):
             if not url.startswith("https://"):
                 fail(f"catalog {slug}: remote playUrl must be https")
-            if game["type"] != "external":
-                fail(f"catalog {slug}: remote playUrl only allowed for type external")
+            if game["type"] not in ("iframe", "external"):
+                fail(f"catalog {slug}: remote playUrl only allowed for types iframe/external")
+            # Provider metadata is mandatory on every remote entry:
+            # it powers the "Provided by" attribution and the
+            # "Open game" fallback, so it must never be forgotten.
+            if not game["provider"]:
+                fail(f"catalog {slug}: remote entries must declare provider")
+            if not game["externalUrl"] or not game["externalUrl"].startswith("https://"):
+                fail(f"catalog {slug}: remote entries must declare an https externalUrl")
+            if game["provider"] != game["provider"].strip():
+                fail(f"catalog {slug}: provider must not have stray whitespace")
         elif not url.startswith(f"games/{slug}/"):
             fail(f"catalog {slug}: local playUrl must live under games/{slug}/, got {url}")
+    if game["provider"] and not (url and url.startswith("http")):
+        fail(f"catalog {slug}: provider metadata only allowed on remote entries")
 
 for entry in ENTRIES:
     slug = (re.search(r'\bid:\s*"([^"]*)"', entry) or [None, "?"])[1]
@@ -196,8 +209,19 @@ for game in catalog:
             fail(f"{page_path}: data-play-url mismatch for external URL")
     elif "data-play-url" in data:
         fail(f"{page_path}: data-play-url present but catalog playUrl is null")
-    for token in ['id="launcher"', 'id="launcher-stage"', "launcher-fullscreen", "launcher-close", 'src="../../launcher.js"', 'class="breadcrumb"',
+    # Provider metadata must round-trip: remote pages carry the
+    # provider + original URL for attribution and the fallback link.
+    if game["provider"]:
+        if data.get("provider") != game["provider"]:
+            fail(f"{page_path}: data-provider={data.get('provider')!r} != catalog {game['provider']!r}")
+        if data.get("external-url") != game["externalUrl"]:
+            fail(f"{page_path}: data-external-url={data.get('external-url')!r} != catalog {game['externalUrl']!r}")
+    elif "provider" in data or "external-url" in data:
+        fail(f"{page_path}: provider/external-url attributes only allowed on remote entries")
+    for token in ['id="launcher"', 'id="launcher-stage"', "launcher-fullscreen", "launcher-close", "launcher-status",
+                  'src="../../launcher.js"', 'class="breadcrumb"',
                   'src="../../catalog.js"', 'src="../../player.js"', 'src="../../cards.js"',
+                  'src="../../client-config.js"',
                   'property="og:title"', 'property="og:description"', 'property="og:type"', 'property="og:image"']:
         if token not in page:
             fail(f"{page_path}: missing launcher element {token}")
@@ -222,14 +246,26 @@ for game in catalog:
         fail(f"{client_dir}: must not ship game files, found {extra}")
 ok()
 
+# ---- 5b. Central client configuration --------------------------------------
+client_config = open("client-config.js", encoding="utf-8").read()
+minecraft_slugs = [g["slug"] for g in catalog if g["category"] == "Minecraft"]
+for slug in minecraft_slugs:
+    if f'"{slug}"' not in client_config:
+        fail(f"client-config.js: missing configuration slot for {slug}")
+for url in re.findall(r'url:\s*"([^"]*)"', client_config):
+    if url and not url.startswith("https://"):
+        fail(f"client-config.js: client URL must be https, got {url!r}")
+ok()
+
 # ---- 6. Homepage rails, nav and filters ------------------------------------
 index = open("index.html", encoding="utf-8").read()
 for token in ["featured-grid", "popular-grid", "minecraft-grid", "new-grid",
+              "play-online-grid", "external-grid",
               "games-grid", "categories-grid", "filter-bar", "empty-state",
               "search-form", "search-input", "results-count", "stat-games",
               "stat-categories", "spotlight", "recent-grid", "favorites-grid",
               "sort-select", "recent-searches",
-              'src="catalog.js"', 'src="player.js"', 'src="cards.js"', 'src="script.js"',
+              'src="catalog.js"', 'src="client-config.js"', 'src="player.js"', 'src="cards.js"', 'src="script.js"',
               'property="og:title"', 'property="og:description"', 'property="og:image"',
               "year", 'href="?category=Minecraft#games"']:
     if token not in index:
@@ -294,13 +330,16 @@ page404 = open("404.html", encoding="utf-8").read()
 if re.search(r'<link[^>]+href="(?!#)', page404) or "<script src" in page404 or "<img" in page404:
     fail("404.html: must stay self-contained (inline CSS/JS only)")
 launcher = open("launcher.js", encoding="utf-8").read()
-for token in ['"html5"', '"iframe"', '"external"', '"webgl"', '"wasm"', "resolveLaunch", "requestFullscreen"]:
+for token in ['"html5"', '"iframe"', '"external"', '"webgl"', '"wasm"', "resolveLaunch", "requestFullscreen",
+              "GameHubClients", "configuredClientUrl", "validateRemoteUrl"]:
     if token not in launcher:
         fail(f"launcher.js: missing {token}")
 modules = {
-    "catalog.js": ["GameHubCatalog", "getFeatured", "getPopular", "getNewGames", "filterGames", "sortGames", "getRelated"],
+    "catalog.js": ["GameHubCatalog", "getFeatured", "getPopular", "getNewGames", "filterGames", "sortGames", "getRelated",
+                   "providerOf", "externalUrlOf", "getPlayOnlineGames", "getExternalGames", "getProviders"],
     "player.js": ["GameHubPlayer", "getFavorites", "toggleFavorite", "getRecentlyPlayed", "recordGamePlayed", "getStats", "recordSearch"],
-    "cards.js": ["GameHubCards", "cardTemplate", "renderInto", "wireFavorites"],
+    "cards.js": ["GameHubCards", "cardTemplate", "renderInto", "wireFavorites", "markClientAvailable"],
+    "client-config.js": ["GameHubClients"],
 }
 for name, tokens in modules.items():
     body = open(name, encoding="utf-8").read()

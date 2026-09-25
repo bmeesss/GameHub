@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ember Keep — Play — GameHub</title>
+  <meta name="description" content="Play Ember Keep on GameHub: Keep the campfire alive and survive the night.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Ember Keep</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">Night</span><span class="hud-value" id="night">0</span></div>
+        <div class="hud-item"><span class="hud-label">Wood</span><span class="hud-value" id="wood">0</span></div>
+        <div class="hud-item"><span class="hud-label">Hearts</span><span class="hud-value" id="hearts">0</span></div>
+        <div class="hud-item"><span class="hud-label">Best</span><span class="hud-value" id="best">0</span></div>
+        <div class="fuel-row hud-item"><span class="hud-label">Fuel</span><span class="fuel-track"><span id="fuel-bar"></span></span><span class="hud-value" id="fuel" style="font-size:1rem">100%</span></div>
+        <button class="hud-btn" id="feedBtn" type="button">Feed fire</button>
+        <button class="hud-btn" id="pauseBtn" type="button">Pause</button>
+      </div>
+      <div class="stage">
+        <canvas id="game" width="480" height="620" aria-label="Ember Keep game board"></canvas>
+        <div class="overlay" id="overlay">
+          <h2 id="overlayTitle">Ember Keep</h2>
+          <p id="overlayText">Keep the campfire alive and survive the night.</p>
+          <button class="primary-btn" id="primaryBtn" type="button">Start game</button>
+        </div>
+      </div>
+      <p class="hint">WASD or arrows to move · wood feeds the fire automatically · wolves fear the light</p>
+    </main>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>

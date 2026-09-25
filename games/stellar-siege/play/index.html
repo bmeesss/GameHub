@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stellar Siege — Play — GameHub</title>
+  <meta name="description" content="Play Stellar Siege on GameHub: Stop the alien grid before it reaches your defense line.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Stellar Siege</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">Score</span><span class="hud-value" id="score">0</span></div>
+        <div class="hud-item"><span class="hud-label">Best</span><span class="hud-value" id="best">0</span></div>
+        <div class="hud-item"><span class="hud-label">Wave</span><span class="hud-value" id="wave">0</span></div>
+        <div class="hud-item"><span class="hud-label">Ships</span><span class="hud-value" id="lives">0</span></div>
+        <button class="hud-btn" id="pauseBtn" type="button">Pause</button>
+      </div>
+      <div class="stage">
+        <canvas id="game" width="480" height="620" aria-label="Stellar Siege game board"></canvas>
+        <div class="overlay" id="overlay">
+          <h2 id="overlayTitle">Stellar Siege</h2>
+          <p id="overlayText">Stop the alien grid before it reaches your defense line.</p>
+          <button class="primary-btn" id="primaryBtn" type="button">Start game</button>
+        </div>
+      </div>
+      <p class="hint">Arrows or A/D to move · Space to fire · P pauses · each wave is faster</p>
+    </main>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sky Jump — Play — GameHub</title>
+  <meta name="description" content="Play Sky Jump on GameHub: Bounce from platform to platform and climb as high as you can.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Sky Jump</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">Height</span><span class="hud-value" id="score">0</span></div>
+        <div class="hud-item"><span class="hud-label">Best</span><span class="hud-value" id="best">0</span></div>
+        <button class="hud-btn" id="pauseBtn" type="button">Pause</button>
+      </div>
+      <div class="stage">
+        <canvas id="game" width="400" height="620" aria-label="Sky Jump game board"></canvas>
+        <div class="overlay" id="overlay">
+          <h2 id="overlayTitle">Sky Jump</h2>
+          <p id="overlayText">Bounce from platform to platform and climb as high as you can.</p>
+          <button class="primary-btn" id="primaryBtn" type="button">Start game</button>
+        </div>
+      </div>
+      <div class="dir-btns" aria-label="Touch controls">
+        <button class="dir-btn" id="leftBtn" type="button" aria-label="Move left">◀</button>
+        <button class="dir-btn" id="rightBtn" type="button" aria-label="Move right">▶</button>
+      </div>
+      <p class="hint">Arrows or A/D to steer · on touch, hold the on-screen buttons · P pauses</p>
+    </main>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>

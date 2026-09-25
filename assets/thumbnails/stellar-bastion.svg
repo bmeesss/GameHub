@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Stellar Bastion artwork — original star fortress defense illustration</title>
+  <rect width="640" height="360" fill="#060a16"/>
+  <g fill="#e2e8f0" opacity=".35">
+    <rect x="80" y="60" width="3" height="3"/><rect x="180" y="120" width="2" height="2"/><rect x="540" y="80" width="3" height="3"/>
+    <rect x="580" y="180" width="2" height="2"/><rect x="120" y="220" width="2" height="2"/><rect x="470" y="40" width="2" height="2"/>
+  </g>
+  <defs>
+    <linearGradient id="deck" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#312e81"/>
+      <stop offset="1" stop-color="#1e1b4b"/>
+    </linearGradient>
+  </defs>
+  <path d="M120 360 L200 250 L440 250 L520 360 Z" fill="url(#deck)"/>
+  <g stroke="#818cf8" stroke-width="4" fill="none">
+    <path d="M200 250 L440 250"/>
+    <path d="M216 250 L206 296 M424 250 L434 296"/>
+  </g>
+  <g>
+    <rect x="286" y="212" width="68" height="40" rx="10" fill="#6366f1"/>
+    <rect x="300" y="196" width="40" height="24" rx="8" fill="#818cf8"/>
+    <path d="M320 196 L320 172" stroke="#22d3ee" stroke-width="8" stroke-linecap="round"/>
+    <circle cx="320" cy="166" r="10" fill="#67e8f9"/>
+    <path d="M292 220 L266 204 M348 220 L374 204" stroke="#a5b4fc" stroke-width="6" stroke-linecap="round"/>
+  </g>
+  <g fill="none" stroke="#f43f5e" stroke-width="3" stroke-dasharray="3 7" stroke-linecap="round" opacity=".8">
+    <path d="M80 90 Q 200 150 290 190"/>
+    <path d="M560 70 Q 460 150 356 186"/>
+    <path d="M120 300 Q 220 280 284 240"/>
+  </g>
+  <g fill="#f43f5e">
+    <path d="M80 86 L74 76 L86 74 Z"/>
+    <path d="M560 66 L554 56 L566 54 Z"/>
+    <path d="M120 296 L114 286 L126 284 Z"/>
+    <circle cx="430" cy="130" r="7"/>
+    <circle cx="212" cy="150" r="6"/>
+    <circle cx="490" cy="190" r="6"/>
+  </g>
+  <g fill="#fbbf24" opacity=".9">
+    <rect x="320" y="120" width="4" height="4"/><rect x="288" y="140" width="3" height="3"/><rect x="356" y="138" width="3" height="3"/>
+  </g>
+</svg>

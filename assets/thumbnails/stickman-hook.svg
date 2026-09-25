@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Stickman Hook artwork — original rope swing illustration</title>
+  <rect width="640" height="360" fill="#060a16"/>
+  <defs>
+    <linearGradient id="cityfade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1e1b4b"/>
+      <stop offset="1" stop-color="#060a16"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#cityfade)"/>
+  <g fill="#0f1a33">
+    <rect x="30" y="180" width="60" height="180"/>
+    <rect x="110" y="220" width="46" height="140"/>
+    <rect x="480" y="200" width="56" height="160"/>
+    <rect x="556" y="160" width="60" height="200"/>
+  </g>
+  <g fill="#fcd34d" opacity=".7">
+    <rect x="44" y="200" width="7" height="7"/><rect x="66" y="226" width="7" height="7"/>
+    <rect x="496" y="222" width="7" height="7"/><rect x="520" y="252" width="7" height="7"/>
+    <rect x="572" y="184" width="7" height="7"/><rect x="590" y="214" width="7" height="7"/>
+  </g>
+  <g stroke="#334155" stroke-width="4">
+    <path d="M0 330 L640 330"/>
+  </g>
+  <g>
+    <circle cx="150" cy="70" r="9" fill="#f43f5e"/>
+    <circle cx="360" cy="46" r="9" fill="#f43f5e"/>
+    <circle cx="540" cy="90" r="9" fill="#f43f5e"/>
+    <path d="M150 70 L258 170" stroke="#e2e8f0" stroke-width="3"/>
+    <path d="M360 46 L448 122" stroke="#e2e8f0" stroke-width="3" opacity=".55"/>
+  </g>
+  <g stroke="#22d3ee" stroke-width="8" stroke-linecap="round" fill="none">
+    <circle cx="258" cy="178" r="13"/>
+    <path d="M258 191 L252 216 M258 191 L268 214 M252 216 L240 236 M252 216 L262 238 M268 214 L282 230"/>
+  </g>
+  <g fill="#22d3ee">
+    <circle cx="240" cy="238" r="5"/>
+    <circle cx="263" cy="240" r="5"/>
+  </g>
+  <path d="M280 236 Q 330 210 366 150" stroke="#fde047" stroke-width="4" fill="none" stroke-dasharray="2 12" stroke-linecap="round"/>
+  <g stroke="#fde047" stroke-width="4" stroke-linecap="round">
+    <path d="M590 320 L616 320 M603 307 L603 333"/>
+  </g>
+  <g fill="#e2e8f0" opacity=".4">
+    <rect x="90" y="60" width="3" height="3"/><rect x="420" y="70" width="3" height="3"/><rect x="330" y="30" width="2" height="2"/>
+  </g>
+</svg>

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Glow Grid artwork — original lights-out puzzle</title>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#141c3a"/>
+      <stop offset="1" stop-color="#0b0f1a"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#sky)"/>
+  <g>
+    <rect x="170" y="40" width="300" height="280" rx="20" fill="#0a1120"/>
+  </g>
+  <g>
+    <rect x="190" y="60" width="48" height="48" rx="12" fill="#0e7490"/>
+    <rect x="246" y="60" width="48" height="48" rx="12" fill="#67e8f9"/>
+    <rect x="302" y="60" width="48" height="48" rx="12" fill="#0e7490"/>
+    <rect x="358" y="60" width="48" height="48" rx="12" fill="#164e63"/>
+    <rect x="414" y="60" width="48" height="48" rx="12" fill="#164e63"/>
+    <rect x="190" y="116" width="48" height="48" rx="12" fill="#67e8f9"/>
+    <rect x="246" y="116" width="48" height="48" rx="12" fill="#0e7490"/>
+    <rect x="302" y="116" width="48" height="48" rx="12" fill="#67e8f9"/>
+    <rect x="358" y="116" width="48" height="48" rx="12" fill="#67e8f9"/>
+    <rect x="414" y="116" width="48" height="48" rx="12" fill="#164e63"/>
+    <rect x="190" y="172" width="48" height="48" rx="12" fill="#0e7490"/>
+    <rect x="246" y="172" width="48" height="48" rx="12" fill="#67e8f9"/>
+    <rect x="302" y="172" width="48" height="48" rx="12" fill="#0e7490"/>
+    <rect x="358" y="172" width="48" height="48" rx="12" fill="#164e63"/>
+    <rect x="414" y="172" width="48" height="48" rx="12" fill="#67e8f9"/>
+    <rect x="190" y="228" width="48" height="48" rx="12" fill="#164e63"/>
+    <rect x="246" y="228" width="48" height="48" rx="12" fill="#67e8f9"/>
+    <rect x="302" y="228" width="48" height="48" rx="12" fill="#164e63"/>
+    <rect x="358" y="228" width="48" height="48" rx="12" fill="#67e8f9"/>
+    <rect x="414" y="228" width="48" height="48" rx="12" fill="#67e8f9"/>
+  </g>
+  <circle cx="270" cy="84" r="30" fill="#22d3ee" opacity=".18"/>
+  <circle cx="326" cy="196" r="30" fill="#22d3ee" opacity=".18"/>
+  <circle cx="382" cy="140" r="30" fill="#22d3ee" opacity=".18"/>
+</svg>

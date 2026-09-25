@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Slide Puzzle artwork — original sliding tile puzzle</title>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#141c3a"/>
+      <stop offset="1" stop-color="#0b0f1a"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#sky)"/>
+  <g>
+    <rect x="200" y="40" width="240" height="280" rx="18" fill="#0a1120"/>
+  </g>
+  <g>
+    <rect x="212" y="52" width="52" height="52" rx="10" fill="#0369a1"/><rect x="212" y="52" width="52" height="14" rx="7" fill="#38bdf8"/>
+    <rect x="272" y="52" width="52" height="52" rx="10" fill="#7e22ce"/><rect x="272" y="52" width="52" height="14" rx="7" fill="#c084fc"/>
+    <rect x="332" y="52" width="52" height="52" rx="10" fill="#0369a1"/><rect x="332" y="52" width="52" height="14" rx="7" fill="#38bdf8"/>
+    <rect x="392" y="52" width="36" height="52" rx="10" fill="#7e22ce"/><rect x="392" y="52" width="36" height="14" rx="7" fill="#c084fc"/>
+    <rect x="212" y="112" width="52" height="52" rx="10" fill="#be185d"/><rect x="212" y="112" width="52" height="14" rx="7" fill="#f472b6"/>
+    <rect x="272" y="112" width="52" height="52" rx="10" fill="#0369a1"/><rect x="272" y="112" width="52" height="14" rx="7" fill="#38bdf8"/>
+    <rect x="332" y="112" width="96" height="52" rx="10" fill="#7e22ce"/><rect x="332" y="112" width="96" height="14" rx="7" fill="#c084fc"/>
+    <rect x="212" y="172" width="112" height="52" rx="10" fill="#0369a1"/><rect x="212" y="172" width="112" height="14" rx="7" fill="#38bdf8"/>
+    <rect x="332" y="172" width="52" height="52" rx="10" fill="#be185d"/><rect x="332" y="172" width="52" height="14" rx="7" fill="#f472b6"/>
+    <rect x="392" y="172" width="36" height="52" rx="10" fill="#15803d"/><rect x="392" y="172" width="36" height="14" rx="7" fill="#4ade80"/>
+    <rect x="212" y="232" width="52" height="76" rx="10" fill="#7e22ce"/><rect x="212" y="232" width="52" height="16" rx="8" fill="#c084fc"/>
+    <rect x="272" y="232" width="52" height="76" rx="10" fill="#15803d"/><rect x="272" y="232" width="52" height="16" rx="8" fill="#4ade80"/>
+    <rect x="332" y="232" width="52" height="76" rx="10" fill="#0369a1"/><rect x="332" y="232" width="52" height="16" rx="8" fill="#38bdf8"/>
+    <rect x="392" y="232" width="36" height="76" rx="10" fill="#be185d"/><rect x="392" y="232" width="36" height="16" rx="8" fill="#f472b6"/>
+  </g>
+  <path d="M456 88 L520 152 M520 88 L456 152" stroke="#4ade80" stroke-width="10" stroke-linecap="round" opacity=".9"/>
+</svg>

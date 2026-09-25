@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Idle Miner — Play — GameHub</title>
+  <meta name="description" content="Play Idle Miner on GameHub: Swing the pickaxe, hire miners and watch the gems pile up.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Idle Miner</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">Gems</span><span class="hud-value" id="gems">0</span></div>
+        <div class="hud-item"><span class="hud-label">Per second</span><span class="hud-value" id="gps">0</span></div>
+        <div class="hud-item"><span class="hud-label">Per swing</span><span class="hud-value" id="per-click">0</span></div>
+        <div class="hud-item"><span class="hud-label">Total mined</span><span class="hud-value" id="total">0</span></div>
+        <div class="hud-item"><span class="hud-label">Best</span><span class="hud-value" id="best">0</span></div>
+        <button class="hud-btn" id="pauseBtn" type="button">Pause</button>
+      </div>
+      <div class="mine-zone">
+        <button id="mineBtn" type="button" aria-label="Mine gems">MINE</button>
+        <p class="mine-note">Every swing earns gems — upgrades keep mining while you are away from the button.</p>
+      </div>
+      <div id="shop" aria-label="Upgrade shop"></div>
+      <button class="reset-btn" id="resetBtn" type="button">Reset progress</button>
+      <p class="hint">Click the rock to mine · buy upgrades with gems · progress saves automatically</p>
+    </main>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>

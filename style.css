@@ -1311,6 +1311,27 @@ p { color: var(--muted); }
   border-block: 1px solid rgba(74, 222, 128, 0.16);
 }
 
+.minecraft-head { display: flex; align-items: flex-start; gap: 18px; }
+
+.minecraft-cube {
+  flex: none;
+  width: 58px;
+  height: 58px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(74, 222, 128, 0.1);
+  border: 1px solid rgba(74, 222, 128, 0.35);
+  border-radius: 14px;
+  box-shadow: 0 10px 26px -12px rgba(74, 222, 128, 0.55);
+}
+
+.minecraft-cube svg { width: 40px; height: 40px; }
+
+@media (max-width: 560px) {
+  .minecraft-head { flex-direction: column; gap: 10px; }
+}
+
 /* Launcher restart */
 .launcher-restart[hidden] { display: none; }
 

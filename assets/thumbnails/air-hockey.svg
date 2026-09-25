@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Air Hockey artwork — original table duel</title>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#141c3a"/>
+      <stop offset="1" stop-color="#0b0f1a"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#sky)"/>
+  <rect x="120" y="30" width="400" height="300" rx="24" fill="#0a1226"/>
+  <rect x="132" y="42" width="376" height="276" rx="18" fill="#0d1b3e"/>
+  <path d="M132 180 L508 180" stroke="#9faccd" stroke-width="3" opacity=".7"/>
+  <circle cx="320" cy="180" r="46" fill="none" stroke="#9faccd" stroke-width="3" opacity=".7"/>
+  <rect x="236" y="30" width="168" height="10" rx="5" fill="#4ade80"/>
+  <rect x="236" y="320" width="168" height="10" rx="5" fill="#4ade80"/>
+  <circle cx="320" cy="180" r="14" fill="#e6edff"/>
+  <circle cx="320" cy="180" r="8" fill="#fb7185"/>
+  <circle cx="230" cy="90" r="30" fill="#fb7185"/>
+  <circle cx="222" cy="82" r="9" fill="#fecdd3"/>
+  <circle cx="410" cy="270" r="30" fill="#22d3ee"/>
+  <circle cx="402" cy="262" r="9" fill="#a5f3fc"/>
+  <path d="M320 180 L398 262" stroke="#e2e8ff" stroke-width="4" stroke-dasharray="10 10" opacity=".55"/>
+</svg>

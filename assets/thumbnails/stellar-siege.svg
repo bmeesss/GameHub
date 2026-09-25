@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Stellar Siege artwork — original neon fixed shooter</title>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#141c3a"/>
+      <stop offset="1" stop-color="#0b0f1a"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#sky)"/>
+  <g fill="#e2e8ff" opacity=".5">
+    <rect x="60" y="50" width="6" height="6"/>
+    <rect x="180" y="90" width="4" height="4"/>
+    <rect x="560" y="60" width="6" height="6"/>
+    <rect x="480" y="130" width="4" height="4"/>
+    <rect x="300" y="40" width="4" height="4"/>
+  </g>
+  <g>
+    <rect x="120" y="90" width="34" height="22" fill="#fb7185"/>
+    <rect x="170" y="90" width="34" height="22" fill="#c084fc"/>
+    <rect x="220" y="90" width="34" height="22" fill="#22d3ee"/>
+    <rect x="270" y="90" width="34" height="22" fill="#22d3ee"/>
+    <rect x="320" y="90" width="34" height="22" fill="#22d3ee"/>
+    <rect x="145" y="128" width="34" height="22" fill="#c084fc"/>
+    <rect x="195" y="128" width="34" height="22" fill="#22d3ee"/>
+    <rect x="245" y="128" width="34" height="22" fill="#22d3ee"/>
+    <rect x="295" y="128" width="34" height="22" fill="#22d3ee"/>
+  </g>
+  <g fill="#0b0f1a">
+    <rect x="129" y="97" width="6" height="6"/>
+    <rect x="140" y="97" width="6" height="6"/>
+    <rect x="249" y="135" width="6" height="6"/>
+    <rect x="260" y="135" width="6" height="6"/>
+  </g>
+  <rect x="296" y="176" width="6" height="18" fill="#fb7185"/>
+  <rect x="180" y="206" width="6" height="16" fill="#fb7185"/>
+  <path d="M320 300 L352 336 L288 336 Z" fill="#e6edff"/>
+  <rect x="312" y="306" width="16" height="10" fill="#22d3ee"/>
+  <rect x="318" y="256" width="5" height="22" fill="#fbbf24"/>
+  <g>
+    <path d="M0 344 L640 344" stroke="#22d3ee" stroke-width="3" stroke-dasharray="14 12" opacity=".7"/>
+  </g>
+</svg>

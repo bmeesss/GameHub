@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Idle Miner artwork — original gem-mining clicker</title>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#141c3a"/>
+      <stop offset="1" stop-color="#0b0f1a"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#sky)"/>
+  <g>
+    <rect x="160" y="120" width="240" height="200" rx="26" fill="#3b2a55"/>
+    <rect x="160" y="120" width="240" height="52" rx="26" fill="#4c3770"/>
+    <path d="M200 320 L280 320 L262 262 L218 262 Z" fill="#241a38"/>
+    <path d="M290 320 L360 320 L348 276 L302 276 Z" fill="#241a38"/>
+  </g>
+  <g>
+    <path d="M236 196 L272 168 L308 196 L272 224 Z" fill="#a78bfa"/>
+    <path d="M236 196 L272 168 L272 224 Z" fill="#c4b5fd"/>
+    <path d="M300 232 L322 216 L344 232 L322 248 Z" fill="#67e8f9"/>
+    <path d="M300 232 L322 216 L322 248 Z" fill="#a5f3fc"/>
+    <path d="M212 248 L230 236 L248 248 L230 262 Z" fill="#fbbf24"/>
+    <path d="M212 248 L230 236 L230 262 Z" fill="#fde047"/>
+  </g>
+  <g>
+    <rect x="470" y="150" width="18" height="120" rx="9" fill="#8a6238"/>
+    <path d="M470 160 L560 96 L584 128 L494 190 Z" fill="#94a3b8"/>
+    <path d="M470 160 L560 96 L572 112 L482 172 Z" fill="#cbd5e1"/>
+  </g>
+  <g fill="#e2e8ff" opacity=".55">
+    <rect x="120" y="80" width="8" height="8"/>
+    <rect x="420" y="60" width="6" height="6"/>
+    <rect x="560" y="240" width="8" height="8"/>
+    <rect x="90" y="200" width="6" height="6"/>
+  </g>
+</svg>

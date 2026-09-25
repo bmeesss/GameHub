@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Reversi artwork — original disc-flipping duel</title>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#141c3a"/>
+      <stop offset="1" stop-color="#0b0f1a"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#sky)"/>
+  <rect x="160" y="40" width="280" height="280" rx="14" fill="#0b3d2e"/>
+  <rect x="172" y="52" width="256" height="256" rx="8" fill="#0d4a36"/>
+  <g stroke="#0b3d2e" stroke-width="3">
+    <path d="M236 52 L236 308"/><path d="M300 52 L300 308"/><path d="M364 52 L364 308"/>
+    <path d="M172 116 L428 116"/><path d="M172 180 L428 180"/><path d="M172 244 L428 244"/>
+  </g>
+  <g>
+    <circle cx="204" cy="84" r="22" fill="#111827"/><circle cx="197" cy="77" r="7" fill="#4b5563"/>
+    <circle cx="268" cy="84" r="22" fill="#f8fafc"/><circle cx="261" cy="77" r="7" fill="#ffffff"/>
+    <circle cx="332" cy="148" r="22" fill="#f8fafc"/><circle cx="325" cy="141" r="7" fill="#ffffff"/>
+    <circle cx="268" cy="212" r="22" fill="#111827"/><circle cx="261" cy="205" r="7" fill="#4b5563"/>
+    <circle cx="332" cy="276" r="22" fill="#111827"/><circle cx="325" cy="269" r="7" fill="#4b5563"/>
+    <circle cx="396" cy="212" r="22" fill="#f8fafc"/><circle cx="389" cy="205" r="7" fill="#ffffff"/>
+  </g>
+  <path d="M470 120 L560 120 M560 120 L560 210 M560 210 L520 210" fill="none" stroke="#4ade80" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/>
+  <circle cx="520" cy="250" r="26" fill="#22d3ee" opacity=".9"/>
+  <path d="M505 245 L520 232 L535 245 M520 232 L520 268" stroke="#0b0f1a" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

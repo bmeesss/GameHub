@@ -52,8 +52,18 @@ var GameHubPlayer = (function () {
     "mini-golf":      { key: "gh_best_mini-golf",      label: "Best total",    kind: "int" },
     "basketball-shot":{ key: "gh_best_basketball-shot",label: "Best streak",   kind: "int" },
     "cast-and-catch": { key: "gh_best_cast-and-catch", label: "Best catch",    kind: "int" },
-    "dungeon-escape": { key: "gh_best_dungeon-escape", label: "Best level",    kind: "int" },
-    "knife-dodge":    { key: "gh_best_knife-dodge",    label: "Best time",     kind: "int" }
+    "dungeon-escape": { key: "gh_best_dungeon-escape", label: "Best level",  kind: "int" },
+    "knife-dodge":    { key: "gh_best_knife-dodge",    label: "Best time",     kind: "int" },
+    "stack-tower":    { key: "gh_best_stack-tower",    label: "Best height",   kind: "int" },
+    "sky-jump":       { key: "gh_best_sky-jump",       label: "Best height",   kind: "int" },
+    "stellar-siege":  { key: "gh_best_stellar-siege",  label: "Best score",    kind: "int" },
+    "slide-puzzle":   { key: "gh_best_slide-puzzle",   label: "Fewest moves",  kind: "int" },
+    "glow-grid":      { key: "gh_best_glow-grid",      label: "Best level",    kind: "int" },
+    "air-hockey":     { key: "gh_best_air-hockey",     label: "Best streak",   kind: "int" },
+    "reversi":        { key: "gh_best_reversi",        label: "Best margin",   kind: "int" },
+    "idle-miner":     { key: "gh_best_idle-miner",     label: "Most gems",     kind: "int" },
+    "road-rush":      { key: "gh_best_road-rush",      label: "Best distance", kind: "int" },
+    "ember-keep":     { key: "gh_best_ember-keep",     label: "Best night",    kind: "int" }
   };
 
   /* ---------------- Safe storage ---------------- */

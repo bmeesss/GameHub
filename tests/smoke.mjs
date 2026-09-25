@@ -3,7 +3,9 @@
    Executes the real catalog.js + player.js + cards.js + script.js /
    launcher.js in stubbed DOM contexts and asserts catalog, filtering,
    sorting, URL hydration, player shelves, favorites and launching,
-   plus Minecraft client resolution (local, HTTPS, missing, HTTP). */
+   plus Minecraft client resolution (local, HTTPS, missing, HTTP)
+   and the external-game architecture (remote URL validation,
+   blocked-embed fallback, provider rails/metadata). */
 import { readFileSync, existsSync } from "node:fs";
 import vm from "node:vm";
 import path from "node:path";
@@ -535,14 +537,19 @@ const flush = () => new Promise((done) => setTimeout(done, 25));
   t("navigation records recent play", mods.GameHubPlayer.getRecentlyPlayed()[0] === "snake");
 }
 
-// External flow: direct navigation, no iframe.
+// External flow: clear hand-off panel, no auto-navigation, no iframe.
 {
   const sb = makeSandbox();
-  const { stage } = buildLauncherPage(sb, { slug: "partner-game", title: "Partner Game", status: "available", type: "external", playUrl: "https://example.com/play" });
+  const { stage } = buildLauncherPage(sb, { slug: "partner-game", title: "Partner Game", status: "available", type: "external", playUrl: "https://example.com/play", provider: "Example Provider", externalUrl: "https://example.com/game" });
   const mods = runWithStubs(PAGE_STACK, sb, ["resolveLaunch", "GameHubPlayer"]);
   stage.querySelector("#launcher-play").__click();
   await flush();
-  t("external game navigates to play URL", sb.location._assigned === "https://example.com/play");
+  const panel = stage.querySelector(".launcher-external");
+  const openLink = panel ? panel.querySelector("a") : null;
+  t("external game shows an open-game panel", Boolean(panel));
+  t("external panel never auto-navigates", sb.location._assigned === "");
+  t("external panel links to the provider page", Boolean(openLink) && openLink.getAttribute("href") === "https://example.com/play" && openLink.getAttribute("target") === "_blank" && (openLink.getAttribute("rel") || "").includes("noopener"));
+  t("external panel names the provider", Boolean(panel) && walkHtml(panel).includes("Example Provider"));
   t("external game embeds nothing", stage.children.filter((c) => c._tag === "iframe").length === 0);
   t("external launch records recent play", mods.GameHubPlayer.getRecentlyPlayed()[0] === "partner-game");
 }
@@ -635,6 +642,32 @@ const flush = () => new Promise((done) => setTimeout(done, 25));
   await flush();
   t("missing client keeps Coming soon status", statusEl.textContent === "Coming soon");
   t("missing client keeps the notice visible", noticeEl.hidden === false);
+}
+
+/* ---------------- Remote URL validation ---------------- */
+{
+  const sb = makeSandbox();
+  sb.__null.add("#launcher");
+  const mods = runWithStubs(load("launcher.js"), sb, ["validateRemoteUrl", "fallbackOpenUrl"]);
+  const v = mods.validateRemoteUrl;
+  t("validator exists and is centralized", typeof v === "function");
+  let r = v("https://html5.gamedistribution.com/abc123/");
+  t("validator accepts https URLs", r.ok === true && r.url === "https://html5.gamedistribution.com/abc123/");
+  r = v("http://example.com/game");
+  t("validator rejects http URLs", r.ok === false && /HTTPS/.test(r.reason));
+  r = v("javascript:alert(1)");
+  t("validator rejects javascript: scheme", r.ok === false);
+  r = v("data:text/html,hello");
+  t("validator rejects data: scheme", r.ok === false);
+  r = v("https://user:pass@example.com/game");
+  t("validator rejects embedded credentials", r.ok === false);
+  r = v("  ");
+  t("validator rejects empty URLs", r.ok === false);
+  r = v("https://example.com/game?a=1&b=2");
+  t("validator keeps query strings intact", r.ok === true && r.url.includes("?a=1&b=2"));
+  t("fallback prefers the provider page over the embed URL", mods.fallbackOpenUrl({ externalUrl: "https://provider.example/game" }, "https://cdn.example/embed/") === "https://provider.example/game");
+  t("fallback falls back to the embed URL when no provider page", mods.fallbackOpenUrl({}, "https://cdn.example/embed/") === "https://cdn.example/embed/");
+  t("fallback refuses unsafe provider pages", mods.fallbackOpenUrl({ externalUrl: "http://provider.example/game" }, "") === "");
 }
 
 if (failures) {

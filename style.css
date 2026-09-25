@@ -674,6 +674,13 @@ p { color: var(--muted); }
 
 .notice svg { width: 20px; height: 20px; flex: none; margin-top: 2px; }
 
+/* Neutral provider attribution on external game pages. */
+.notice--provider {
+  background: rgba(56, 189, 248, 0.07);
+  border-color: rgba(56, 189, 248, 0.28);
+  color: #7dd3fc;
+}
+
 .noscript-note {
   text-align: center;
   background: rgba(251, 113, 133, 0.1);
@@ -828,6 +835,36 @@ p { color: var(--muted); }
   padding: 3px 11px;
 }
 
+/* Provider badge: marks games streamed from or linking to an
+   external provider (GameDistribution, Poki, …). */
+.provider-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #7dd3fc;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  background: rgba(56, 189, 248, 0.08);
+  border-radius: 999px;
+  padding: 3px 10px;
+}
+
+/* Provider pill on game pages (hero pill row). */
+.provider-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #7dd3fc;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  background: rgba(56, 189, 248, 0.08);
+  border-radius: 999px;
+  padding: 4px 12px;
+}
+
+.provider-pill svg { width: 13px; height: 13px; }
+
 .section--minecraft {
   background:
     radial-gradient(640px 240px at 12% 0%, rgba(74, 222, 128, 0.09), transparent 65%),
@@ -895,7 +932,8 @@ p { color: var(--muted); }
 
 .launcher-cover,
 .launcher-loading,
-.launcher-error {
+.launcher-error,
+.launcher-external {
   position: absolute;
   inset: 0;
   display: flex;
@@ -954,6 +992,64 @@ p { color: var(--muted); }
 }
 
 .launcher-error-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+
+/* External-game hand-off panel (type "external"). */
+.launcher-external {
+  background:
+    radial-gradient(420px 220px at 50% 120%, rgba(56, 189, 248, 0.18), transparent 65%),
+    radial-gradient(300px 180px at 50% -40px, rgba(124, 92, 255, 0.12), transparent 65%);
+}
+
+.launcher-external h3 { font-size: 1.25rem; }
+.launcher-external p { max-width: 46ch; color: var(--muted-soft); font-size: 0.92rem; }
+.launcher-external-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+
+.launcher-external-icon {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+}
+
+.launcher-external-icon svg { width: 26px; height: 26px; color: #7dd3fc; }
+
+/* Blocked-embed overlay: shown on top of a remote iframe that
+   shows no sign of life before the watchdog fires. The iframe
+   keeps loading underneath ("Keep waiting" dismisses it). */
+.launcher-blocked {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  text-align: center;
+  padding: 32px 24px;
+  background:
+    radial-gradient(420px 260px at 50% 110%, rgba(251, 191, 36, 0.12), transparent 70%),
+    rgba(5, 7, 15, 0.92);
+  backdrop-filter: blur(3px);
+}
+
+.launcher-blocked h3 { font-size: 1.15rem; }
+.launcher-blocked p { max-width: 44ch; color: var(--muted-soft); font-size: 0.9rem; }
+.launcher-blocked-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+
+/* Toolbar link out to the provider while a remote game runs. */
+.launcher-open {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.launcher-open[hidden] { display: none; }
+
+.launcher-open svg { width: 15px; height: 15px; }
 
 .launcher-frame {
   position: absolute;

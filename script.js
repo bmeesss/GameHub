@@ -167,6 +167,28 @@ const renderMinecraft = () => {
   renderInto($("#minecraft-grid"), allGames().filter((g) => g.category === HOME_MINECRAFT));
 };
 
+/* Remote-provider rails: embeddable games (Play Online) and
+   deep-link-only games (External Games). Both sections stay
+   hidden when the catalog has no such games, so the homepage
+   layout never breaks. */
+const renderPlayOnline = () => {
+  const section = $("#play-online");
+  const grid = $("#play-online-grid");
+  if (!section || !grid) return;
+  const games = Catalog && typeof Catalog.getPlayOnlineGames === "function" ? Catalog.getPlayOnlineGames() : [];
+  section.hidden = games.length === 0;
+  renderInto(grid, games);
+};
+
+const renderExternalGames = () => {
+  const section = $("#external");
+  const grid = $("#external-grid");
+  if (!section || !grid) return;
+  const games = Catalog && typeof Catalog.getExternalGames === "function" ? Catalog.getExternalGames() : [];
+  section.hidden = games.length === 0;
+  renderInto(grid, games);
+};
+
 const renderNew = () => {
   renderInto($("#new-grid"), listNew());
 };
@@ -392,6 +414,8 @@ const refreshClientStatus = () => {
     renderMinecraft();
     renderFeatured();
     renderPopular();
+    renderPlayOnline();
+    renderExternalGames();
     renderNew();
     renderFavoritesShelf();
     renderRecent();
@@ -563,6 +587,8 @@ renderFavoritesShelf();
 renderFeatured();
 renderPopular();
 renderMinecraft();
+renderPlayOnline();
+renderExternalGames();
 renderNew();
 renderCategories();
 renderChips();

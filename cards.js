@@ -147,6 +147,10 @@ var GameHubCards = (function () {
     var badge = comingSoon ? "<span class=\"card-status\">Coming soon</span>" : "";
     var typeBadge = label ? "<span class=\"type-badge\">" + escapeHtml(label) + "</span>" : "";
     var versionBadge = game.version ? "<span class=\"version-badge\">v" + escapeHtml(game.version) + "</span>" : "";
+    /* Provider games carry a small provider badge so players can
+       see at a glance where a game comes from. */
+    var provider = typeof game.provider === "string" ? game.provider.trim() : "";
+    var providerBadge = provider ? "<span class=\"provider-badge\">" + escapeHtml(provider) + "</span>" : "";
     var action = comingSoon
       ? "<a class=\"btn btn-ghost btn-sm\" href=\"" + url + "\" aria-label=\"" + title + " details\">Details " + ARROW_SVG + "</a>"
       : "<a class=\"btn btn-primary btn-sm\" href=\"" + url + "\" aria-label=\"Play " + title + "\">Play " + ARROW_SVG + "</a>";
@@ -155,7 +159,7 @@ var GameHubCards = (function () {
         "<a class=\"card-media\" href=\"" + url + "\" tabindex=\"-1\" aria-hidden=\"true\">" + mediaInner(game, prefix) + badge + "</a>" +
         (showFav ? favButton(game) : "") +
         "<div class=\"card-body\">" +
-          "<div class=\"pill-row\"><span class=\"pill\">" + escapeHtml(game.category) + "</span>" + typeBadge + versionBadge + "</div>" +
+          "<div class=\"pill-row\"><span class=\"pill\">" + escapeHtml(game.category) + "</span>" + typeBadge + versionBadge + providerBadge + "</div>" +
           "<h3 class=\"card-title\">" + title + "</h3>" +
           "<p class=\"card-desc\">" + escapeHtml(game.description) + "</p>" +
           "<div class=\"card-foot\">" + action + "</div>" +

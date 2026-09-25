@@ -3,22 +3,31 @@
    Every games/<slug>/index.html carries a #launcher section with
    data-* config; this script reads it and launches by game type:
      html5    -> verify local game page, then navigate to it
-     iframe   -> verify (local) and embed in a safe container
+     iframe   -> verify (local) and embed in a safe container;
+                 remote provider games embed straight away
      webgl    -> verify local client, embed in a large viewport
      wasm     -> verify local client, embed in a large viewport
-     external -> navigate to the configured https URL
+     external -> clear "Open game" panel linking to the provider's
+                 https page (never auto-navigation)
    Minecraft-style clients (webgl/wasm) resolve in this order:
      1. a local client at games/<slug>/client/index.html
      2. a centrally configured HTTPS client (client-config.js)
      3. a friendly error — never a fake loading screen
-   Nothing is preloaded: clients only load after the user
-   presses Play. Missing files always fail gracefully — a game is
-   never presented as playable when its files are absent.
+   Remote safety: every remote target (provider embed, external
+   link, configured client) passes the central validateRemoteUrl
+   gate — HTTPS only, no credentials, no script-y schemes. URLs
+   come from the catalog/page config, never from user input.
+   Nothing is preloaded: games only load after the user presses
+   Play. Missing files always fail gracefully — a game is never
+   presented as playable when its files are absent.
+   Remote embeds are watched by a load watchdog: when a provider
+   refuses framing, a blocked overlay explains the problem and
+   offers "Open game" on the provider's site. The iframe is never
+   destroyed, so a slow-but-working game keeps loading.
    The launcher also enhances game pages from the shared
    catalog/player/cards modules: favorite toggle, personal stats,
-   controls, difficulty and catalog-driven related games. When a
-   valid client is present (local or configured), the page status
-   upgrades from "Coming soon" to "Available" at runtime.
+   controls, difficulty, hosting attribution ("Hosted by GameHub"
+   vs "Provided by <provider>") and catalog-driven related games.
    Load order on game pages: catalog.js -> player.js -> cards.js
    -> client-config.js -> launcher.js. Every enhancement degrades
    gracefully when a module failed to load.
@@ -62,6 +71,46 @@ const DEFAULT_IFRAME_ALLOW = "autoplay; fullscreen; gamepad; pointer-lock";
 const isRemoteUrl = (url) => /^https?:\/\//i.test(String(url || "").trim());
 
 const isHttpsUrl = (url) => /^https:\/\/[^/]/i.test(String(url || "").trim());
+
+/* ---------------- Central remote-URL validator ----------------
+   The single gate for every remote target: provider embeds
+   (iframe), provider links (external) and configured Minecraft
+   clients. Enforces HTTPS, refuses credentials and script-y
+   schemes. Every URL comes from the catalog or page config —
+   never from user input — so this is a consistency check that
+   also stops accidental http:// or misconfigured entries. */
+const BLOCKED_URL_SCHEMES = ["javascript:", "data:", "vbscript:", "file:", "blob:"];
+
+const validateRemoteUrl = (url) => {
+  const raw = String(url || "").trim();
+  if (!raw) return { ok: false, reason: "No remote URL is configured for this game." };
+  const lower = raw.toLowerCase();
+  for (const scheme of BLOCKED_URL_SCHEMES) {
+    if (lower.startsWith(scheme)) {
+      return { ok: false, reason: "Blocked an unsafe URL scheme." };
+    }
+  }
+  if (!lower.startsWith("https://")) {
+    return { ok: false, reason: "Remote game content must be served over HTTPS." };
+  }
+  const authority = raw.slice(8).split(/[/?#]/)[0];
+  if (!authority || authority.includes("@")) {
+    return { ok: false, reason: "Remote game URLs must not embed credentials." };
+  }
+  return { ok: true, url: raw };
+};
+
+/* Where a blocked/unembeddable game should send the player: the
+   provider's game page when known, otherwise the remote target
+   itself. Always re-validated — never trust page config blindly. */
+const fallbackOpenUrl = (config, embedUrl = "") => {
+  const candidates = [config && config.externalUrl, embedUrl];
+  for (const candidate of candidates) {
+    const check = validateRemoteUrl(candidate);
+    if (check.ok) return check.url;
+  }
+  return "";
+};
 
 /* Conventional client location for WebGL/WASM games missing files. */
 const clientHint = (slug) => `games/${slug}/client/index.html`;
@@ -110,10 +159,11 @@ const resolveLaunch = (config) => {
   if (!playUrl) {
     if (isClientType(type)) {
       if (clientUrl) {
-        if (!isHttpsUrl(clientUrl)) {
+        const check = validateRemoteUrl(clientUrl);
+        if (!check.ok) {
           return { action: "error", reason: "The configured client URL must use HTTPS.", detail: "Update client-config.js — HTTP clients are refused." };
         }
-        return { action: "embed", url: clientUrl, probe: false, remote: true };
+        return { action: "embed", url: check.url, probe: false, remote: true };
       }
       return {
         action: "error",
@@ -124,10 +174,11 @@ const resolveLaunch = (config) => {
     return { action: "error", reason: "A play URL has not been configured for this game yet." };
   }
   if (type === "external") {
-    if (!isHttpsUrl(playUrl)) {
-      return { action: "error", reason: "External games must use a secure (HTTPS) URL." };
+    const check = validateRemoteUrl(playUrl);
+    if (!check.ok) {
+      return { action: "error", reason: "External games must use a secure (HTTPS) URL.", detail: check.reason };
     }
-    return { action: "external", url: playUrl };
+    return { action: "external", url: check.url };
   }
   if (type === "html5") {
     if (isRemoteUrl(playUrl)) {
@@ -135,12 +186,15 @@ const resolveLaunch = (config) => {
     }
     return { action: "navigate", url: playUrl, probe: true };
   }
-  /* iframe, webgl, wasm: embeddable types. */
+  /* iframe, webgl, wasm: embeddable types. Remote targets stream
+     from a provider and cannot be probed (cross-origin), so they
+     embed unprobed under the load watchdog instead. */
   if (isRemoteUrl(playUrl)) {
-    if (!isHttpsUrl(playUrl)) {
-      return { action: "error", reason: "Remote game content must be served over HTTPS." };
+    const check = validateRemoteUrl(playUrl);
+    if (!check.ok) {
+      return { action: "error", reason: check.reason };
     }
-    return { action: "embed", url: playUrl, probe: false };
+    return { action: "embed", url: check.url, probe: false, remote: true };
   }
   return { action: "embed", url: playUrl, probe: true };
 };
@@ -167,6 +221,7 @@ const ICONS = {
   play: `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"></path></svg>`,
   expand: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"></path></svg>`,
   close: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>`,
+  open: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 13v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h6"></path></svg>`,
   warn: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v4M12 16h.01"></path></svg>`
 };
 
@@ -241,6 +296,8 @@ const readConfig = (section) => {
     type: String(data.type || "").trim().toLowerCase(),
     playUrl: String(data.playUrl || "").trim(),
     clientUrl: String(data.clientUrl || "").trim(),
+    provider: String(data.provider || "").trim(),
+    externalUrl: String(data.externalUrl || "").trim(),
     sandbox: String(data.embedSandbox || "").trim(),
     allow: String(data.embedAllow || DEFAULT_IFRAME_ALLOW).trim() || DEFAULT_IFRAME_ALLOW
   };
@@ -256,9 +313,9 @@ const withClientConfig = (config) => {
 /* Status read-out shown in the launcher toolbar. */
 const STATUS_TEXT = {
   ready: "Ready to play",
-  loading: "Loading client…",
+  loading: "Loading game…",
   running: "Running",
-  blocked: "Client not loading — it may block embedding"
+  blocked: "Not loading — the game may block embedding"
 };
 
 const setStatus = (launcher, key, url = "") => {
@@ -273,13 +330,25 @@ const setStatus = (launcher, key, url = "") => {
     link.setAttribute("href", url);
     link.setAttribute("target", "_blank");
     link.setAttribute("rel", "noopener");
-    link.textContent = "Open the client in a new tab";
+    link.textContent = "Open the game in a new tab";
     node.appendChild(link);
   }
 };
 
 const clearStage = (stage) => {
   while (stage.firstChild) stage.firstChild.remove();
+};
+
+/* Cover note adapts to where the game actually runs, so remote
+   games stay honest about what pressing Play will do. */
+const coverNoteFor = (config) => {
+  if (config.type === "external") {
+    return "The game opens on the provider's website in a new tab.";
+  }
+  if (config.type === "iframe" && isRemoteUrl(config.playUrl)) {
+    return "The game streams from the provider and loads only after you press Play.";
+  }
+  return "The game loads only after you press Play.";
 };
 
 const renderCover = (launcher, stage, config) => {
@@ -289,12 +358,13 @@ const renderCover = (launcher, stage, config) => {
   const play = el("button", "btn btn-primary btn-lg", `${ICONS.play}<span>Play now</span>`);
   play.type = "button";
   play.id = "launcher-play";
-  const note = el("p", "launcher-cover-note", "The game loads only after you press Play.");
+  const note = el("p", "launcher-cover-note", escapeHtml(coverNoteFor(config)));
   play.addEventListener("click", () => startLaunch(launcher, stage, config));
   cover.appendChild(title);
   cover.appendChild(play);
   cover.appendChild(note);
   stage.appendChild(cover);
+  setOpenGameButton(launcher, config, null);
   setToolbar(launcher, { playing: false });
   setStatus(launcher, "ready");
 };
@@ -309,7 +379,7 @@ const renderLoading = (launcher, stage, config) => {
   setStatus(launcher, "loading");
 };
 
-const renderError = (launcher, stage, config, reason, detail) => {
+const renderError = (launcher, stage, config, reason, detail, openUrl = "") => {
   clearStage(stage);
   const error = el("div", "launcher-error");
   error.appendChild(el("div", "launcher-error-icon", ICONS.warn));
@@ -317,6 +387,14 @@ const renderError = (launcher, stage, config, reason, detail) => {
   error.appendChild(el("p", "", escapeHtml(reason)));
   if (detail) error.appendChild(el("p", "launcher-error-detail", escapeHtml(detail)));
   const actions = el("div", "launcher-error-actions");
+  if (openUrl) {
+    /* Remote games always keep an escape hatch to the provider. */
+    const open = el("a", "btn btn-primary btn-sm", `<span>Open game</span>${ICONS.open}`);
+    open.setAttribute("href", openUrl);
+    open.setAttribute("target", "_blank");
+    open.setAttribute("rel", "noopener noreferrer");
+    actions.appendChild(open);
+  }
   const retry = el("button", "btn btn-ghost btn-sm", "Try again");
   retry.type = "button";
   retry.addEventListener("click", () => startLaunch(launcher, stage, config));
@@ -328,6 +406,99 @@ const renderError = (launcher, stage, config, reason, detail) => {
   stage.appendChild(error);
   setToolbar(launcher, { playing: false });
   setStatus(launcher, "");
+};
+
+/* ---------------- External (provider) games ----------------
+   type "external" games cannot run inside GameHub at all, so
+   Play shows a clear hand-off panel instead of navigating away:
+   the provider's page opens in a new tab, GameHub stays put. */
+const renderExternalPanel = (launcher, stage, config, url) => {
+  clearStage(stage);
+  const panel = el("div", "launcher-external");
+  panel.appendChild(el("div", "launcher-external-icon", ICONS.open));
+  panel.appendChild(el("h3", "", escapeHtml(config.title)));
+  const provider = config.provider ? escapeHtml(config.provider) : "the provider";
+  panel.appendChild(el("p", "", `This game runs on ${provider}&#39;s website, so it opens in a new tab. GameHub stays right here.`));
+  const actions = el("div", "launcher-external-actions");
+  const open = el("a", "btn btn-primary btn-lg", `<span>Open game</span>${ICONS.open}`);
+  open.setAttribute("href", url);
+  open.setAttribute("target", "_blank");
+  open.setAttribute("rel", "noopener noreferrer");
+  actions.appendChild(open);
+  panel.appendChild(actions);
+  panel.appendChild(el("p", "launcher-cover-note", "GameHub does not host the game files."));
+  stage.appendChild(panel);
+  setOpenGameButton(launcher, config, null);
+  setToolbar(launcher, { playing: false });
+  setStatus(launcher, "ready");
+};
+
+/* ---------------- Toolbar "Open game" link ----------------
+   While a remote game is embedded, the toolbar keeps a direct
+   link to the provider's page: if the embed misbehaves, the
+   player always has a one-click way out. */
+const setOpenGameButton = (launcher, config, embedUrl) => {
+  const toolbar = $(".launcher-toolbar", launcher);
+  if (!toolbar) return;
+  let link = $(".launcher-open", toolbar);
+  const openUrl = embedUrl === null ? "" : fallbackOpenUrl(config, embedUrl);
+  if (!openUrl) {
+    if (link) link.hidden = true;
+    return;
+  }
+  if (!link) {
+    link = el("a", "btn btn-ghost btn-sm launcher-open", `<span>Open game</span>${ICONS.open}`);
+    link.setAttribute("target", "_blank");
+    link.setAttribute("rel", "noopener noreferrer");
+    toolbar.appendChild(link);
+  }
+  link.hidden = false;
+  link.setAttribute("href", openUrl);
+};
+
+/* ---------------- Blocked-embed overlay ----------------
+   Cross-origin iframes cannot be inspected, so embeddability is
+   decided by curation and enforced best-effort: when a remote
+   game shows no sign of life before the watchdog fires, this
+   overlay explains the problem and offers the provider's page.
+   The iframe itself is kept (never destroyed) — "Keep waiting"
+   dismisses the overlay and a game that is merely slow keeps
+   loading underneath; a later load event clears everything. */
+const showBlockedOverlay = (launcher, stage, config, url) => {
+  if ($(".launcher-blocked", stage)) return;
+  const openUrl = fallbackOpenUrl(config, url);
+  const box = el("div", "launcher-blocked");
+  box.setAttribute("role", "alert");
+  box.appendChild(el("div", "launcher-error-icon", ICONS.warn));
+  box.appendChild(el("h3", "", "This game cannot be embedded here."));
+  box.appendChild(el("p", "", "It did not respond inside GameHub in time — the provider may refuse embedding."));
+  const actions = el("div", "launcher-blocked-actions");
+  if (openUrl) {
+    const open = el("a", "btn btn-primary btn-sm", `<span>Open game</span>${ICONS.open}`);
+    open.setAttribute("href", openUrl);
+    open.setAttribute("target", "_blank");
+    open.setAttribute("rel", "noopener noreferrer");
+    actions.appendChild(open);
+  }
+  const retry = el("button", "btn btn-ghost btn-sm", "Try again");
+  retry.type = "button";
+  retry.addEventListener("click", () => startLaunch(launcher, stage, config));
+  actions.appendChild(retry);
+  const keepWaiting = el("button", "btn btn-ghost btn-sm", "Keep waiting");
+  keepWaiting.type = "button";
+  keepWaiting.addEventListener("click", () => {
+    box.remove();
+    setStatus(launcher, "loading");
+  });
+  actions.appendChild(keepWaiting);
+  box.appendChild(actions);
+  stage.appendChild(box);
+  setStatus(launcher, "blocked", openUrl);
+};
+
+const hideBlockedOverlay = (stage) => {
+  const box = $(".launcher-blocked", stage);
+  if (box) box.remove();
 };
 
 const setToolbar = (launcher, { playing }) => {
@@ -361,11 +532,12 @@ const ensureRestartButton = (launcher, stage, config) => {
   toolbar.appendChild(restart);
 };
 
-/* Embed a verified client. For remote (unprobed) HTTPS clients a
-   load watchdog watches for hosts that refuse framing: instead of
-   silently showing a blank viewport, the status area explains the
-   problem and offers a new-tab escape hatch. The iframe itself is
-   never destroyed, so a slow-but-working client keeps loading. */
+/* Embed a verified game. Remote (unprobed) HTTPS targets —
+   provider embeds and configured clients — run under a load
+   watchdog: instead of silently showing a blank viewport, a
+   blocked overlay explains the problem and offers the provider's
+   page. The iframe itself is never destroyed, so a slow-but-
+   working game keeps loading and a late load event recovers. */
 const REMOTE_LOAD_TIMEOUT_MS = 15000;
 
 const embedGame = (launcher, stage, config, url, remote = false) => {
@@ -381,25 +553,33 @@ const embedGame = (launcher, stage, config, url, remote = false) => {
   let settled = false;
   frame.addEventListener("error", () => {
     settled = true;
-    renderError(launcher, stage, config, "The game failed to load in its viewport.", "");
+    if (remote) {
+      renderError(launcher, stage, config, "The game failed to load in its viewport.", "", fallbackOpenUrl(config, url));
+    } else {
+      renderError(launcher, stage, config, "The game failed to load in its viewport.", "");
+    }
   });
   frame.addEventListener("load", () => {
     settled = true;
+    hideBlockedOverlay(stage);
     setStatus(launcher, "running");
   });
   stage.appendChild(frame);
   setToolbar(launcher, { playing: true });
   setStatus(launcher, remote ? "loading" : "running");
-  if (remote && typeof setTimeout === "function") {
-    setTimeout(() => {
-      if (settled) return;
-      try {
-        if (typeof stage.contains === "function" && !stage.contains(frame)) return;
-      } catch {
-        return;
-      }
-      setStatus(launcher, "blocked", url);
-    }, REMOTE_LOAD_TIMEOUT_MS);
+  if (remote) {
+    setOpenGameButton(launcher, config, url);
+    if (typeof setTimeout === "function") {
+      setTimeout(() => {
+        if (settled) return;
+        try {
+          if (typeof stage.contains === "function" && !stage.contains(frame)) return;
+        } catch {
+          return;
+        }
+        showBlockedOverlay(launcher, stage, config, url);
+      }, REMOTE_LOAD_TIMEOUT_MS);
+    }
   }
 };
 
@@ -431,9 +611,10 @@ const startLaunch = (launcher, stage, baseConfig) => {
     return;
   }
   if (plan.action === "external") {
-    renderLoading(launcher, stage, config);
+    /* External games never auto-navigate: a clear hand-off panel
+       links to the provider (new tab) and records the launch. */
     recordLaunch(config.slug);
-    location.assign(plan.url);
+    renderExternalPanel(launcher, stage, config, plan.url);
     return;
   }
   if (!plan.probe) {
@@ -547,7 +728,7 @@ const initCoverFallback = () => {
 
 /* ---------------- Game page enhancements ----------------
    Favorite toggle, personal stats, controls and related games
-   are injected from the shared modules so the 41 static pages
+   are injected from the shared modules so the static pages
    stay thin and never duplicate catalog metadata. */
 const HEART_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.7C6.4 17.2 3 13.6 3 9.9 3 7.2 5.1 5 7.8 5c1.7 0 3.2.9 4.2 2.3C13 5.9 14.5 5 16.2 5 18.9 5 21 7.2 21 9.9c0 3.7-3.4 7.3-9 10.8z"></path></svg>`;
 
@@ -613,6 +794,19 @@ const enhanceMeta = (entry) => {
   meta.innerHTML += `<div data-meta-difficulty><dt>Difficulty</dt><dd>${escapeHtml(entry.difficulty)}</dd></div>`;
 };
 
+/* Hosting attribution row: GameHub's own games vs provider games.
+   Kept dynamic so all 58 game pages stay metadata-free and the
+   catalog remains the single source of truth. */
+const enhanceHosting = (entry, config) => {
+  const meta = $(".game-meta");
+  if (!meta || $("[data-meta-hosting]", meta)) return;
+  const provider = String((entry && entry.provider) || config.provider || "").trim();
+  const row = el("div");
+  row.setAttribute("data-meta-hosting", "");
+  row.innerHTML = `<dt>Hosting</dt><dd>${escapeHtml(provider ? `Provided by ${provider}` : "Hosted by GameHub")}</dd>`;
+  meta.appendChild(row);
+};
+
 const enhanceControls = (entry) => {
   if (!entry.controls) return;
   const about = $(".game-about");
@@ -642,6 +836,7 @@ const initGamePage = (config) => {
   if (!entry || !entry.id) return;
   enhanceFavorite(entry);
   enhanceStats(entry, config);
+  enhanceHosting(entry, config);
   enhanceMeta(entry);
   enhanceControls(entry);
   enhanceRelated(entry);

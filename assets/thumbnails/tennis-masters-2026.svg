@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Tennis Masters 2026 artwork — original tennis court illustration</title>
+  <rect width="640" height="360" fill="#060a16"/>
+  <defs>
+    <linearGradient id="courtblue" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1e3a8a"/>
+      <stop offset="1" stop-color="#0f1f4d"/>
+    </linearGradient>
+  </defs>
+  <rect x="70" y="70" width="500" height="260" rx="12" fill="url(#courtblue)"/>
+  <g stroke="#38bdf8" stroke-width="2" opacity=".7" fill="none">
+    <rect x="96" y="94" width="448" height="212" rx="6"/>
+    <path d="M96 200 L544 200"/>
+    <path d="M200 94 L200 306"/>
+    <path d="M440 94 L440 306"/>
+  </g>
+  <g>
+    <rect x="90" y="192" width="460" height="6" rx="3" fill="#e2e8f0"/>
+    <g fill="#cbd5e1">
+      <rect x="140" y="190" width="2" height="10"/>
+      <rect x="220" y="190" width="2" height="10"/>
+      <rect x="300" y="190" width="2" height="10"/>
+      <rect x="380" y="190" width="2" height="10"/>
+      <rect x="460" y="190" width="2" height="10"/>
+    </g>
+  </g>
+  <g>
+    <ellipse cx="352" cy="160" rx="12" ry="12" fill="#fde047"/>
+    <path d="M342 152 Q352 160 342 170 M362 152 Q352 160 362 170" stroke="#e2e8f0" stroke-width="2" fill="none"/>
+    <path d="M366 150 Q400 120 428 128" stroke="#fde047" stroke-width="3" fill="none" stroke-dasharray="4 8" stroke-linecap="round"/>
+  </g>
+  <g fill="#7c5cff">
+    <rect x="118" y="238" width="14" height="52" rx="7"/>
+    <ellipse cx="125" cy="228" rx="17" ry="24" fill="none" stroke="#a78bfa" stroke-width="5"/>
+    <rect x="508" y="112" width="14" height="52" rx="7" transform="rotate(180 515 138)"/>
+    <ellipse cx="515" cy="176" rx="17" ry="24" fill="none" stroke="#a78bfa" stroke-width="5"/>
+  </g>
+  <g fill="#fbbf24" opacity=".85">
+    <rect x="560" y="80" width="4" height="4"/>
+    <rect x="76" y="80" width="3" height="3"/>
+    <rect x="540" y="330" width="3" height="3"/>
+  </g>
+</svg>

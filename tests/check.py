@@ -335,7 +335,8 @@ for token in ['"html5"', '"iframe"', '"external"', '"webgl"', '"wasm"', "resolve
     if token not in launcher:
         fail(f"launcher.js: missing {token}")
 modules = {
-    "catalog.js": ["GameHubCatalog", "getFeatured", "getPopular", "getNewGames", "filterGames", "sortGames", "getRelated"],
+    "catalog.js": ["GameHubCatalog", "getFeatured", "getPopular", "getNewGames", "filterGames", "sortGames", "getRelated",
+                   "providerOf", "externalUrlOf", "getPlayOnlineGames", "getExternalGames", "getProviders"],
     "player.js": ["GameHubPlayer", "getFavorites", "toggleFavorite", "getRecentlyPlayed", "recordGamePlayed", "getStats", "recordSearch"],
     "cards.js": ["GameHubCards", "cardTemplate", "renderInto", "wireFavorites", "markClientAvailable"],
     "client-config.js": ["GameHubClients"],

@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Moto X3M Dead Ahead artwork — original stunt bike illustration</title>
+  <rect width="640" height="360" fill="#060a16"/>
+  <defs>
+    <radialGradient id="sun" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fb923c"/>
+      <stop offset="1" stop-color="#c2410c" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="480" cy="120" r="90" fill="url(#sun)"/>
+  <circle cx="480" cy="120" r="46" fill="#f97316"/>
+  <rect x="0" y="250" width="640" height="110" fill="#0b1020"/>
+  <path d="M0 250 L180 250 L280 180 L640 180 L640 360 L0 360 Z" fill="#101a30"/>
+  <path d="M0 250 L180 250 L280 180 L640 180" stroke="#f97316" stroke-width="5" fill="none"/>
+  <g>
+    <circle cx="250" cy="252" r="30" fill="none" stroke="#e2e8f0" stroke-width="10"/>
+    <circle cx="250" cy="252" r="30" fill="none" stroke="#334155" stroke-width="4"/>
+    <circle cx="358" cy="226" r="30" fill="none" stroke="#e2e8f0" stroke-width="10"/>
+    <circle cx="358" cy="226" r="30" fill="none" stroke="#334155" stroke-width="4"/>
+    <path d="M250 252 L292 224 L340 228 L358 226" stroke="#e2e8f0" stroke-width="9" fill="none" stroke-linecap="round"/>
+    <path d="M286 218 L318 196 L332 204" stroke="#22d3ee" stroke-width="7" fill="none" stroke-linecap="round"/>
+    <path d="M250 252 Q300 190 348 224" stroke="#f43f5e" stroke-width="7" fill="none" stroke-linecap="round"/>
+    <circle cx="272" cy="246" r="7" fill="#fbbf24"/>
+    <circle cx="336" cy="228" r="7" fill="#fbbf24"/>
+  </g>
+  <g stroke="#f97316" stroke-width="4" stroke-linecap="round" opacity=".8">
+    <path d="M420 120 L404 96 M440 100 L432 76 M396 130 L376 112"/>
+  </g>
+  <g fill="#fde047" opacity=".9">
+    <rect x="60" y="70" width="4" height="4"/>
+    <rect x="110" y="110" width="3" height="3"/>
+    <rect x="80" y="150" width="3" height="3"/>
+  </g>
+</svg>

@@ -9,7 +9,14 @@
    embed, tags.
    Optional entry fields (rendering must never break when they
    are missing): releaseDate, controls, difficulty, featuredOrder,
-   popularOrder.
+   popularOrder, provider, externalUrl.
+   Remote entries (type "iframe" with an https playUrl, or type
+   "external") carry provider metadata:
+     provider:    display name of the external game provider
+                  (e.g. GameDistribution). Absent on GameHub's
+                  own games — those are "Hosted by GameHub".
+     externalUrl: the original game page on the provider's site,
+                  used by the launcher's "Open game" fallback.
    Helpers are exposed as window.GameHubCatalog; classic scripts
    keep working from file:// with zero dependencies.
    Run tests with: node tests/smoke.mjs && python3 tests/check.py
@@ -18,10 +25,17 @@
 
 /* ---------------- Game catalog ----------------
    type:    "html5" | "iframe" | "external" | "webgl" | "wasm"
+              html5    -> GameHub's own game, navigated to
+              iframe   -> embeddable game (local or a remote
+                          https URL from a provider whose games
+                          are officially embeddable)
+              external -> opens on the provider's website only
+              webgl    -> local WebGL client (Minecraft slots)
+              wasm     -> local WebAssembly client
    status:  "available" | "coming-soon"
    version: free-form version string shown on the game page.
    playUrl: site-root-relative path (local game/client) or full
-            https URL (external only). Null when not supplied yet.
+            https URL (remote game only). Null when not supplied yet.
             Local targets are verified at Play time, never preloaded.
    embed:   null or { sandbox, allow } iframe overrides.
    tags:    lowercase search/filter keywords.
@@ -984,6 +998,154 @@ const GAMES = [
     releaseDate: "2026-09-25",
     controls: "Move with WASD or the arrow keys. Wood feeds the fire automatically when you carry it close.",
     difficulty: "Hard"
+  },
+  {
+    id: "one-more-pass",
+    title: "One More Pass",
+    slug: "one-more-pass",
+    description: "Pass the ball around the pitch, dodge the defenders and slot home spectacular goals.",
+    category: "Sports",
+    thumbnail: "assets/thumbnails/one-more-pass.svg",
+    featured: false,
+    popular: false,
+    status: "available",
+    type: "iframe",
+    version: "1.0",
+    playUrl: "https://html5.gamedistribution.com/fc224956ee8d4720b4ab3dfdd01f56bf/?gd_sdk_referrer_url=https://bmeesss.github.io/GameHub/games/one-more-pass/index.html",
+    embed: { allow: "autoplay; fullscreen; gamepad; pointer-lock" },
+    tags: ["soccer", "passing", "aim", "single-player"],
+    releaseDate: "2026-09-25",
+    controls: "Aim with the mouse and click to pass. Line up your shots and score before the defenders close in. Desktop mouse required.",
+    difficulty: "Easy",
+    provider: "GameDistribution",
+    externalUrl: "https://gamedistribution.com/games/One-More-Pass/"
+  },
+  {
+    id: "tennis-masters-2026",
+    title: "Tennis Masters 2026",
+    slug: "tennis-masters-2026",
+    description: "Serve, volley and smash your way through tournaments — solo against the CPU or in local 2-player matches.",
+    category: "Multiplayer",
+    thumbnail: "assets/thumbnails/tennis-masters-2026.svg",
+    featured: false,
+    popular: false,
+    status: "available",
+    type: "iframe",
+    version: "1.0",
+    playUrl: "https://html5.gamedistribution.com/ab2f156d72894fd8a5dedb85b34a05e4/?gd_sdk_referrer_url=https://bmeesss.github.io/GameHub/games/tennis-masters-2026/index.html",
+    embed: { allow: "autoplay; fullscreen; gamepad; pointer-lock" },
+    tags: ["tennis", "2-players", "local-multiplayer", "power-ups"],
+    releaseDate: "2026-09-25",
+    controls: "Player 1: arrow keys to move, X to hit, Z to smash. Player 2: W A S D to move, L to hit, K to smash.",
+    difficulty: "Medium",
+    provider: "GameDistribution",
+    externalUrl: "https://gamedistribution.com/games/tennis-masters-2026/"
+  },
+  {
+    id: "racing-in-city",
+    title: "Racing in City",
+    slug: "racing-in-city",
+    description: "Weave through busy city traffic, complete driving challenges and cash in your points for new rides and upgrades.",
+    category: "Racing",
+    thumbnail: "assets/thumbnails/racing-in-city.svg",
+    featured: false,
+    popular: false,
+    status: "available",
+    type: "iframe",
+    version: "1.0",
+    playUrl: "https://html5.gamedistribution.com/670fce13db0d4edbb396fa155db80f11/?gd_sdk_referrer_url=https://bmeesss.github.io/GameHub/games/racing-in-city/index.html",
+    embed: { allow: "autoplay; fullscreen; gamepad; pointer-lock" },
+    tags: ["traffic", "driving", "cars", "upgrades"],
+    releaseDate: "2026-09-25",
+    controls: "Steer with WASD or the arrow keys and hold Shift for slow motion through tight gaps. Desktop keyboard required.",
+    difficulty: "Medium",
+    provider: "GameDistribution",
+    externalUrl: "https://gamedistribution.com/games/racing-in-city/"
+  },
+  {
+    id: "moto-x3m-dead-ahead",
+    title: "Moto X3M Dead Ahead",
+    slug: "moto-x3m-dead-ahead",
+    description: "Rev a stunt bike through obstacle-packed tracks — flip over wrecked cars, dodge debris and beat the clock.",
+    category: "Racing",
+    thumbnail: "assets/thumbnails/moto-x3m-dead-ahead.svg",
+    featured: false,
+    popular: true,
+    status: "available",
+    type: "iframe",
+    version: "1.0",
+    playUrl: "https://html5.gamedistribution.com/8593f8d7add14ad398d9cece72ee7283/?gd_sdk_referrer_url=https://bmeesss.github.io/GameHub/games/moto-x3m-dead-ahead/index.html",
+    embed: { allow: "autoplay; fullscreen; gamepad; pointer-lock" },
+    tags: ["bike", "stunts", "levels", "time-trial"],
+    releaseDate: "2026-09-25",
+    controls: "Click or tap to accelerate, flip and shoot. Chain flips for time bonuses and finish each track in one piece.",
+    difficulty: "Hard",
+    provider: "GameDistribution",
+    externalUrl: "https://gamedistribution.com/games/moto-x3m-dead-ahead/",
+    popularOrder: 12
+  },
+  {
+    id: "stellar-bastion",
+    title: "Stellar Bastion",
+    slug: "stellar-bastion",
+    description: "Hold the line as the last gunner on a star-fortress deck — endless waves of space bugs, escalating swarms and 22 perk upgrades.",
+    category: "Action",
+    thumbnail: "assets/thumbnails/stellar-bastion.svg",
+    featured: false,
+    popular: false,
+    status: "available",
+    type: "iframe",
+    version: "1.0",
+    playUrl: "https://html5.gamemonetize.com/l51v249mbmf7kim7x98m4epn7h6l7lr5/",
+    embed: { allow: "autoplay; fullscreen; gamepad; pointer-lock" },
+    tags: ["shooter", "waves", "survival", "space"],
+    releaseDate: "2026-09-25",
+    controls: "Hold anywhere to walk toward your pointer — your gun fires automatically. WASD or arrow keys also move you, 1-4 switch weapons, Shift rolls.",
+    difficulty: "Medium",
+    provider: "GameMonetize",
+    externalUrl: "https://gamemonetize.com/stellar-bastion-game"
+  },
+  {
+    id: "sort-the-court",
+    title: "Sort the Court!",
+    slug: "sort-the-court",
+    description: "Give your royal decree in quick yes-or-no calls and balance gold, people and happiness as your kingdom grows.",
+    category: "Strategy",
+    thumbnail: "assets/thumbnails/sort-the-court.svg",
+    featured: false,
+    popular: false,
+    status: "available",
+    type: "external",
+    version: "1.0",
+    playUrl: "https://graebor.itch.io/sort-the-court",
+    embed: null,
+    tags: ["kingdom", "decisions", "management", "single-player"],
+    releaseDate: "2026-09-25",
+    controls: "Click Yes or No to give your decree. Every answer changes your gold, population and happiness.",
+    difficulty: "Easy",
+    provider: "itch.io",
+    externalUrl: "https://graebor.itch.io/sort-the-court"
+  },
+  {
+    id: "stickman-hook",
+    title: "Stickman Hook",
+    slug: "stickman-hook",
+    description: "Swing from hook to hook and let momentum do the work — cross the finish line like a true acrobat.",
+    category: "Arcade",
+    thumbnail: "assets/thumbnails/stickman-hook.svg",
+    featured: false,
+    popular: false,
+    status: "available",
+    type: "external",
+    version: "1.0",
+    playUrl: "https://poki.com/en/g/stickman-hook",
+    embed: null,
+    tags: ["swing", "grapple", "skill", "one-button"],
+    releaseDate: "2026-09-25",
+    controls: "Tap, click or press Space to attach your rope and release to let go. Rhythm is everything.",
+    difficulty: "Medium",
+    provider: "Poki",
+    externalUrl: "https://poki.com/en/g/stickman-hook"
   }
 ];
 
@@ -1085,7 +1247,7 @@ const getNewGames = (size = NEW_RAIL_SIZE) => {
 const searchMatches = (game, query) => {
   const q = String(query || "").trim().toLowerCase();
   if (!q) return true;
-  const haystack = `${game.title || ""} ${game.description || ""} ${game.category || ""} ${typeLabel(game.type)} ${game.version || ""} ${tagsOf(game).join(" ")}`.toLowerCase();
+  const haystack = `${game.title || ""} ${game.description || ""} ${game.category || ""} ${typeLabel(game.type)} ${game.version || ""} ${providerOf(game)} ${tagsOf(game).join(" ")}`.toLowerCase();
   return q.split(/\s+/).every((word) => haystack.includes(word));
 };
 
@@ -1144,6 +1306,49 @@ const getRelated = (game, size = 3) => {
   return scored.slice(0, want).map((row) => row.game);
 };
 
+/* ---------------- Provider / remote helpers ----------------
+   Remote entries serve their playUrl from an external provider
+   over https. Absent metadata must never break rendering. */
+const providerOf = (game) =>
+  game && typeof game.provider === "string" ? game.provider.trim() : "";
+
+const externalUrlOf = (game) => {
+  if (!game) return "";
+  if (typeof game.externalUrl === "string" && game.externalUrl.trim()) {
+    return game.externalUrl.trim();
+  }
+  /* type "external" always launches the provider's page itself. */
+  return game.type === "external" && typeof game.playUrl === "string" ? game.playUrl.trim() : "";
+};
+
+const isRemotePlayUrl = (game) =>
+  Boolean(game) && typeof game.playUrl === "string" && /^https?:\/\//i.test(game.playUrl.trim());
+
+/* Remote embeddable = iframe games that stream from a provider
+   (GameHub's own iframe games serve from this repository). */
+const isRemoteEmbeddable = (game) =>
+  Boolean(game) && game.type === "iframe" && isRemotePlayUrl(game);
+
+/* Everything that ultimately runs on a provider's site: embeddable
+   iframe games plus "external" deep links. */
+const isProviderGame = (game) => isRemoteEmbeddable(game) || (Boolean(game) && game.type === "external");
+
+const getPlayOnlineGames = () => validGames().filter(isRemoteEmbeddable);
+
+const getExternalGames = () => validGames().filter((game) => game.type === "external");
+
+const getProviders = () => {
+  const counts = new Map();
+  for (const game of validGames()) {
+    const name = providerOf(game);
+    if (name) counts.set(name, (counts.get(name) || 0) + 1);
+  }
+  return [...counts.entries()]
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+};
+
+
 var GameHubCatalog = {
   games: GAMES,
   CATEGORY_COLORS,
@@ -1168,7 +1373,15 @@ var GameHubCatalog = {
   searchMatches,
   filterGames,
   sortGames,
-  getRelated
+  getRelated,
+  providerOf,
+  externalUrlOf,
+  isRemotePlayUrl,
+  isRemoteEmbeddable,
+  isProviderGame,
+  getPlayOnlineGames,
+  getExternalGames,
+  getProviders
 };
 
 if (typeof window !== "undefined" && window) {

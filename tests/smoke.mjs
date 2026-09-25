@@ -4,8 +4,8 @@
    launcher.js in stubbed DOM contexts and asserts catalog, filtering,
    sorting, URL hydration, player shelves, favorites and launching,
    plus Minecraft client resolution (local, HTTPS, missing, HTTP)
-   and the external-game architecture (remote URL validation,
-   blocked-embed fallback, provider rails/metadata). */
+   and the external-game architecture (provider metadata, remote
+   URL validation, blocked-embed fallback, provider rails). */
 import { readFileSync, existsSync } from "node:fs";
 import vm from "node:vm";
 import path from "node:path";
@@ -164,21 +164,21 @@ const newHtml = sel("#new-grid").innerHTML;
 const gridHtml = sel("#games-grid").innerHTML;
 const GAMES = Catalog.games;
 
-t("catalog holds 51 games", GAMES.length === 51);
+t("catalog holds 58 games", GAMES.length === 58);
 t("catalog holds 10 categories", Catalog.getCategories().length === 10);
 t("featured renders 7 cards", count(featuredHtml, "<article") === 7);
 t("featured honors featuredOrder (Snake first)", featuredHtml.indexOf("Snake") !== -1 && featuredHtml.indexOf("Snake") < featuredHtml.indexOf("Star Voyager"));
-t("popular renders 11 cards", count(popularHtml, "<article") === 11);
+t("popular renders 12 cards", count(popularHtml, "<article") === 12);
 t("minecraft rail renders 3 cards", count(minecraftHtml, "<article") === 3);
 t("new rail renders 6 cards", count(newHtml, "<article") === 6);
-t("new rail leads with latest entries", newHtml.indexOf("Ember Keep") !== -1 && newHtml.indexOf("Ember Keep") < newHtml.indexOf("Road Rush") && newHtml.indexOf("Road Rush") < newHtml.indexOf("Idle Miner") && newHtml.includes("Glow Grid"));
-t("all games renders 51 cards", count(gridHtml, "<article") === 51);
+t("new rail leads with latest entries", newHtml.indexOf("Stickman Hook") !== -1 && newHtml.indexOf("Stickman Hook") < newHtml.indexOf("Sort the Court!") && newHtml.indexOf("Sort the Court!") < newHtml.indexOf("Stellar Bastion") && newHtml.includes("Moto X3M Dead Ahead"));
+t("all games renders 58 cards", count(gridHtml, "<article") === 58);
 t("cards carry generated type labels", gridHtml.includes("type-badge") && gridHtml.includes("HTML5") && gridHtml.includes("WebGL") && gridHtml.includes("WASM"));
 t("cards carry version badges", gridHtml.includes("version-badge") && gridHtml.includes("v1.0.0"));
-t("cards carry favorite toggles", count(gridHtml, "data-fav=") === 51 && gridHtml.includes("aria-pressed"));
+t("cards carry favorite toggles", count(gridHtml, "data-fav=") === 58 && gridHtml.includes("aria-pressed"));
 t("play links use relative games/ paths", gridHtml.includes('href="games/eaglercraft-1-8/index.html"'));
 t("no absolute paths in output", !/"\/(assets|games|index)/.test(gridHtml + featuredHtml));
-t("stats rendered", sel("#stat-games").textContent === "51" && sel("#stat-categories").textContent === "10");
+t("stats rendered", sel("#stat-games").textContent === "58" && sel("#stat-categories").textContent === "10");
 t("spotlight picks first featured available (Snake)", api.pickSpotlight() && api.pickSpotlight().slug === "snake");
 t("spotlight renders into mount", sel("#spotlight").querySelector(".spotlight-inner").innerHTML.includes("Snake"));
 t("empty shelves stay hidden", sel("#recent").hidden === true && sel("#favorites").hidden === true);
@@ -187,12 +187,12 @@ const REQUIRED_FIELDS = ["id", "title", "slug", "description", "category", "thum
 t("every entry supports all catalog fields", GAMES.every((g) => REQUIRED_FIELDS.every((f) => f in g)));
 t("types are known values", GAMES.every((g) => ["html5", "iframe", "external", "webgl", "wasm"].includes(g.type)));
 t("statuses are known values", GAMES.every((g) => ["available", "coming-soon"].includes(g.status)));
-t("46 games are available", GAMES.filter((g) => g.status === "available").length === 46);
+t("53 games are available", GAMES.filter((g) => g.status === "available").length === 53);
 t("available html5 entries link play pages", GAMES.filter((g) => g.status === "available" && g.type === "html5").every((g) => g.playUrl === `games/${g.slug}/play/index.html`));
 t("slugs are unique", new Set(GAMES.map((g) => g.slug)).size === GAMES.length);
 t("minecraft entries declare client playUrls", GAMES.filter((g) => g.category === "Minecraft").every((g) => g.playUrl === `games/${g.slug}/client/index.html`));
-t("type chips generated with counts", JSON.stringify(Catalog.getTypes().map((x) => x.label)) === JSON.stringify(["HTML5", "WebGL", "WASM"]));
-t("optional fields tolerated when missing", Catalog.getNewGames().length === 6 && Catalog.getFeatured().length === 7 && Catalog.sortGames(GAMES, "newest").length === 51);
+t("type chips generated with counts", JSON.stringify(Catalog.getTypes().map((x) => x.label)) === JSON.stringify(["HTML5", "Iframe", "WebGL", "WASM", "External"]));
+t("optional fields tolerated when missing", Catalog.getNewGames().length === 6 && Catalog.getFeatured().length === 7 && Catalog.sortGames(GAMES, "newest").length === 58);
 t("related games derive from catalog", Catalog.getRelated(Catalog.gameBySlug("snake"), 3).length === 3 && !Catalog.getRelated(Catalog.gameBySlug("snake"), 3).some((g) => g.slug === "snake"));
 
 /* ---------------- Catalog integrity on disk ---------------- */
@@ -243,9 +243,9 @@ t("search matches type label ('wasm' -> Steel Vanguard)", sel("#games-grid").inn
 api.state.query = "physics"; api.applyFilters();
 t("search matches new tags ('physics' -> 2)", count(sel("#games-grid").innerHTML, "<article") === 2);
 api.state.query = ""; api.state.category = "Racing"; api.applyFilters();
-t("category filter Racing finds 3 games", count(sel("#games-grid").innerHTML, "<article") === 3);
+t("category filter Racing finds 5 games", count(sel("#games-grid").innerHTML, "<article") === 5);
 api.state.category = "Sports"; api.applyFilters();
-t("category filter Sports finds 3 games", count(sel("#games-grid").innerHTML, "<article") === 3);
+t("category filter Sports finds 4 games", count(sel("#games-grid").innerHTML, "<article") === 4);
 api.state.category = "All"; api.state.type = "webgl"; api.applyFilters();
 t("type filter webgl finds 3 clients", count(sel("#games-grid").innerHTML, "<article") === 3);
 api.state.query = "zzz-no-such-game"; api.state.type = null; api.applyFilters();
@@ -644,7 +644,9 @@ const flush = () => new Promise((done) => setTimeout(done, 25));
   t("missing client keeps the notice visible", noticeEl.hidden === false);
 }
 
-/* ---------------- Remote URL validation ---------------- */
+/* ---------------- External-game architecture ---------------- */
+
+/* Remote URL validator: the single gate for every remote target. */
 {
   const sb = makeSandbox();
   sb.__null.add("#launcher");
@@ -668,6 +670,143 @@ const flush = () => new Promise((done) => setTimeout(done, 25));
   t("fallback prefers the provider page over the embed URL", mods.fallbackOpenUrl({ externalUrl: "https://provider.example/game" }, "https://cdn.example/embed/") === "https://provider.example/game");
   t("fallback falls back to the embed URL when no provider page", mods.fallbackOpenUrl({}, "https://cdn.example/embed/") === "https://cdn.example/embed/");
   t("fallback refuses unsafe provider pages", mods.fallbackOpenUrl({ externalUrl: "http://provider.example/game" }, "") === "");
+}
+
+/* Catalog integrity for the external batch. */
+const EXTERNAL_BATCH = {
+  "one-more-pass": { provider: "GameDistribution", type: "iframe" },
+  "tennis-masters-2026": { provider: "GameDistribution", type: "iframe" },
+  "racing-in-city": { provider: "GameDistribution", type: "iframe" },
+  "moto-x3m-dead-ahead": { provider: "GameDistribution", type: "iframe" },
+  "stellar-bastion": { provider: "GameMonetize", type: "iframe" },
+  "sort-the-court": { provider: "itch.io", type: "external" },
+  "stickman-hook": { provider: "Poki", type: "external" }
+};
+{
+  const slugs = Object.keys(EXTERNAL_BATCH);
+  const games = slugs.map((slug) => Catalog.gameBySlug(slug));
+  t("all 7 external games are cataloged", games.every(Boolean) && games.length === 7);
+  t("external games are available", games.every((g) => g.status === "available"));
+  t("external games carry providers + https externalUrls", games.every((g) => g.provider === EXTERNAL_BATCH[g.slug].provider && g.type === EXTERNAL_BATCH[g.slug].type && g.externalUrl.startsWith("https://")));
+  t("external games use https playUrls", games.every((g) => g.playUrl.startsWith("https://")));
+  t("iframe embeds declare allow permissions", games.filter((g) => g.type === "iframe").every((g) => g.embed && g.embed.allow && g.embed.allow.includes("fullscreen")));
+  t("external games ship pages + thumbnails", slugs.every((slug) => inRepo(`games/${slug}/index.html`) && inRepo(`assets/thumbnails/${slug}.svg`)));
+  t("external game pages carry provider data attributes", slugs.every((slug) => {
+    const page = load(`games/${slug}/index.html`);
+    const game = Catalog.gameBySlug(slug);
+    return page.includes(`data-provider="${game.provider}"`) && page.includes(`data-external-url="${game.externalUrl}"`) && page.includes(`data-play-url="${game.playUrl}"`);
+  }));
+  t("external game pages carry the neutral disclaimer", slugs.every((slug) => {
+    const page = load(`games/${slug}/index.html`);
+    const game = Catalog.gameBySlug(slug);
+    return page.includes(`Game provided by ${game.provider}. GameHub does not host the game files`);
+  }));
+  t("local games never carry provider metadata", GAMES.filter((g) => !Catalog.isProviderGame(g)).every((g) => !g.provider && !g.externalUrl));
+  t("play-online helper finds the 5 embeddable provider games", Catalog.getPlayOnlineGames().length === 5 && Catalog.getPlayOnlineGames().every((g) => g.type === "iframe" && g.playUrl.startsWith("https://")));
+  t("external helper finds the 2 deep-link games", Catalog.getExternalGames().length === 2 && Catalog.getExternalGames().map((g) => g.slug).sort().join(",") === "sort-the-court,stickman-hook");
+  t("provider helper counts all 4 providers", JSON.stringify(Catalog.getProviders()) === JSON.stringify([
+    { name: "GameDistribution", count: 4 },
+    { name: "GameMonetize", count: 1 },
+    { name: "itch.io", count: 1 },
+    { name: "Poki", count: 1 }
+  ]));
+  t("provider helpers tolerate missing fields", Catalog.providerOf({}) === "" && Catalog.externalUrlOf({}) === "" && Catalog.externalUrlOf({ type: "external", playUrl: "https://example.com/g" }) === "https://example.com/g" && Catalog.isRemoteEmbeddable({ type: "iframe", playUrl: "games/x/embed/index.html" }) === false);
+  t("search matches provider names", Catalog.searchMatches(Catalog.gameBySlug("stellar-bastion"), "gamemonetize") === true);
+  t("related games include external entries", Catalog.getRelated(Catalog.gameBySlug("turbo-drift"), 5).some((g) => g.slug === "racing-in-city" || g.slug === "moto-x3m-dead-ahead"));
+}
+
+/* Homepage provider rails. */
+{
+  const sb = makeSandbox();
+  const section = makeElement("section");
+  const grid = makeElement("div");
+  section.appendChild(grid);
+  sb.__cache.set("#play-online", section);
+  sb.__cache.set("#play-online-grid", grid);
+  const extSection = makeElement("section");
+  const extGrid = makeElement("div");
+  extSection.appendChild(extGrid);
+  sb.__cache.set("#external", extSection);
+  sb.__cache.set("#external-grid", extGrid);
+  const api2 = runWithStubs(HOME_STACK, sb, ["renderPlayOnline", "renderExternalGames", "GameHubCatalog"]);
+  api2.renderPlayOnline();
+  api2.renderExternalGames();
+  t("play-online rail renders 5 provider embeds", count(grid.innerHTML, "<article") === 5 && grid.innerHTML.includes("GameDistribution") && grid.innerHTML.includes("GameMonetize"));
+  t("play-online rail unhides with content", section.hidden === false);
+  t("external rail renders 2 deep-link games", count(extGrid.innerHTML, "<article") === 2 && extGrid.innerHTML.includes("Poki") && extGrid.innerHTML.includes("itch.io"));
+  t("external rail unhides with content", extSection.hidden === false);
+  t("provider cards carry provider badges", grid.innerHTML.includes("provider-badge"));
+  /* Rails collapse cleanly when the catalog has no such games. */
+  const empty = makeSandbox();
+  const esection = makeElement("section");
+  const egrid = makeElement("div");
+  esection.appendChild(egrid);
+  empty.__cache.set("#play-online", esection);
+  empty.__cache.set("#play-online-grid", egrid);
+  const eapi = runWithStubs([load("catalog.js"), load("player.js"), load("cards.js"), load("script.js")].join("\n"), empty, ["renderPlayOnline"]);
+  empty.GameHubCatalog.getPlayOnlineGames = () => [];
+  eapi.renderPlayOnline();
+  t("play-online rail stays hidden when empty", esection.hidden === true);
+}
+
+/* Remote iframe game: embeds under the watchdog with a toolbar
+   escape hatch to the provider page. */
+{
+  const sb = makeSandbox();
+  const timers = [];
+  sb.setTimeout = (fn, ms) => { timers.push({ fn, ms }); return timers.length; };
+  sb.clearTimeout = () => {};
+  const { stage, toolbar } = buildLauncherPage(sb, {
+    slug: "one-more-pass", title: "One More Pass", status: "available", type: "iframe",
+    playUrl: "https://html5.gamedistribution.com/fc224956ee8d4720b4ab3dfdd01f56bf/",
+    provider: "GameDistribution", externalUrl: "https://gamedistribution.com/games/One-More-Pass/"
+  });
+  const mods = runWithStubs(PAGE_STACK, sb, ["resolveLaunch", "GameHubPlayer"]);
+  stage.querySelector("#launcher-play").__click();
+  await flush();
+  const frame = stage.children.find((c) => c._tag === "iframe");
+  t("provider iframe game embeds in viewport", Boolean(frame) && frame.getAttribute("src").startsWith("https://html5.gamedistribution.com/fc224956ee8d4720b4ab3dfdd01f56bf/"));
+  t("provider embed arms the load watchdog", timers.some((timer) => timer.ms === 15000));
+  const openLink = toolbar.querySelector(".launcher-open");
+  t("toolbar offers Open game while a provider game runs", Boolean(openLink) && openLink.getAttribute("href") === "https://gamedistribution.com/games/One-More-Pass/" && openLink.getAttribute("target") === "_blank" && (openLink.getAttribute("rel") || "").includes("noopener"));
+  t("provider embed records recent play", mods.GameHubPlayer.getRecentlyPlayed()[0] === "one-more-pass");
+
+  /* Watchdog fires: blocked overlay explains the problem and the
+     iframe is preserved (a slow game keeps loading underneath). */
+  timers[0].fn();
+  const overlay = stage.querySelector(".launcher-blocked");
+  t("blocked overlay appears when the watchdog fires", Boolean(overlay));
+  t("blocked overlay explains the embedding problem", Boolean(overlay) && walkHtml(overlay).includes("cannot be embedded"));
+  t("blocked flow keeps the iframe alive", stage.children.some((c) => c._tag === "iframe"));
+  const blockedOpen = overlay ? overlay.querySelector("a") : null;
+  t("blocked overlay links to the provider page", Boolean(blockedOpen) && blockedOpen.getAttribute("href") === "https://gamedistribution.com/games/One-More-Pass/" && blockedOpen.getAttribute("target") === "_blank" && (blockedOpen.getAttribute("rel") || "").includes("noopener"));
+  const keepWaiting = overlay ? overlay.querySelectorAll("button").find((b) => (b.innerHTML || "").includes("Keep waiting")) : null;
+  if (keepWaiting) keepWaiting.__click();
+  t("keep waiting dismisses the overlay, iframe intact", stage.querySelector(".launcher-blocked") === null && stage.children.some((c) => c._tag === "iframe"));
+  /* A late load event also clears any lingering overlay. */
+  timers[0].fn();
+  t("watchdog re-fires an overlay after keep waiting", stage.querySelector(".launcher-blocked") !== null);
+  for (const fn of frame._listeners.load || []) fn();
+  t("late load event clears the overlay", stage.querySelector(".launcher-blocked") === null && stage.children.some((c) => c._tag === "iframe"));
+}
+
+/* Remote iframe error: the failure state keeps the provider link. */
+{
+  const sb = makeSandbox();
+  sb.setTimeout = () => 0;
+  const { stage } = buildLauncherPage(sb, {
+    slug: "stellar-bastion", title: "Stellar Bastion", status: "available", type: "iframe",
+    playUrl: "https://html5.gamemonetize.com/l51v249mbmf7kim7x98m4epn7h6l7lr5/",
+    provider: "GameMonetize", externalUrl: "https://gamemonetize.com/stellar-bastion-game"
+  });
+  runWithStubs(PAGE_STACK, sb, ["resolveLaunch"]);
+  stage.querySelector("#launcher-play").__click();
+  await flush();
+  const frame = stage.children.find((c) => c._tag === "iframe");
+  if (frame) for (const fn of frame._listeners.error || []) fn();
+  const errorBox = stage.querySelector(".launcher-error");
+  const openLink = errorBox ? errorBox.querySelector("a") : null;
+  t("remote load error offers the provider page", hasClass(stage, "launcher-error") && Boolean(openLink) && openLink.getAttribute("href") === "https://gamemonetize.com/stellar-bastion-game");
 }
 
 if (failures) {

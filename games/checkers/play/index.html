@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkers — Play — GameHub</title>
+  <meta name="description" content="Play Checkers on GameHub: mandatory captures, multi-jumps, kings, AI or local 2-player.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Checkers</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">Turn</span><span class="hud-value" id="turn">Red</span></div>
+        <div class="hud-item"><span class="hud-label">Pieces</span><span class="hud-value" id="count">12 - 12</span></div>
+        <div class="hud-item"><span class="hud-label">Wins</span><span class="hud-value" id="best">0</span></div>
+        <button class="hud-btn" id="modeBtn" type="button">Mode: vs AI</button>
+        <button class="hud-btn" id="pauseBtn" type="button">Pause</button>
+      </div>
+      <div class="stage">
+        <canvas id="game" width="560" height="560" aria-label="Checkers board"></canvas>
+        <div class="overlay" id="overlay">
+          <h2 id="overlayTitle">Checkers</h2>
+          <p id="overlayText">Captures are mandatory and multi-jumps chain automatically. Reach the far row to crown a king and win by taking every piece.</p>
+          <button class="primary-btn" id="primaryBtn" type="button">Start game</button>
+        </div>
+      </div>
+      <p class="hint">Click your piece, then a highlighted square · M toggles mode · P pauses</p>
+    </main>
+  </div>
+  <script src="../../../session.js" data-game="checkers"></script>
+  <script src="game.js"></script>
+</body>
+</html>

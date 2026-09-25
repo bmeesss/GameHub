@@ -126,6 +126,18 @@ var GameHubPlayer = (function () {
     } catch (err) { /* unserializable: ignore, UI still works */ }
   }
 
+  /* One change event for the whole hub: profile.js dispatches the
+     same name, so achievements.js and the card UI can react to
+     player-data changes (favorites, plays, searches) without any
+     module needing to know about the others. */
+  function notify(scope) {
+    try {
+      if (typeof document !== "undefined" && typeof document.dispatchEvent === "function" && typeof CustomEvent === "function") {
+        document.dispatchEvent(new CustomEvent("gamehub:change", { detail: { source: "player", scope: scope || "player" } }));
+      }
+    } catch (err) { /* events are a bonus: storage already changed */ }
+  }
+
   function cleanId(id) {
     return String(id == null ? "" : id).trim();
   }
@@ -158,6 +170,7 @@ var GameHubPlayer = (function () {
     var list = getFavorites().filter(function (x) { return x !== id; });
     list.unshift(id);
     writeJson("favorites", list);
+    notify("favorites");
     return list;
   }
 
@@ -165,6 +178,7 @@ var GameHubPlayer = (function () {
     id = cleanId(id);
     var list = getFavorites().filter(function (x) { return x !== id; });
     writeJson("favorites", list);
+    notify("favorites");
     return list;
   }
 
@@ -217,6 +231,7 @@ var GameHubPlayer = (function () {
       }
     }
     writeJson("recent", list);
+    notify("recent");
     recordPlay(id, now);
     return getStats(id);
   }
@@ -235,6 +250,31 @@ var GameHubPlayer = (function () {
     return { plays: count, lastPlayed: at };
   }
 
+  /* Read-only listing of every game this profile has launched,
+     newest first. Added for the profile/achievements layer so it
+     never has to re-implement this storage key. */
+  function getPlayedGames() {
+    var plays = readPlays();
+    var out = [];
+    for (var id in plays) {
+      if (!Object.prototype.hasOwnProperty.call(plays, id)) continue;
+      var row = plays[id] || {};
+      var count = typeof row.count === "number" && row.count > 0 ? Math.floor(row.count) : 0;
+      var at = typeof row.at === "number" && row.at > 0 ? row.at : 0;
+      if (!cleanId(id) || (!count && !at)) continue;
+      out.push({ id: cleanId(id), plays: count, at: at });
+    }
+    out.sort(function (a, b) { return b.at - a.at || b.plays - a.plays; });
+    return out;
+  }
+
+  function getTotalPlays() {
+    var rows = getPlayedGames();
+    var total = 0;
+    for (var i = 0; i < rows.length; i++) total += rows[i].plays;
+    return total;
+  }
+
   function recordPlay(id, now) {
     id = cleanId(id);
     if (!id) return getPlays("");
@@ -243,6 +283,7 @@ var GameHubPlayer = (function () {
     var count = typeof row.count === "number" && row.count > 0 ? Math.floor(row.count) : 0;
     plays[id] = { count: count + 1, at: typeof now === "number" ? now : Date.now() };
     writeJson("plays", plays);
+    notify("plays");
     return getPlays(id);
   }
 
@@ -328,12 +369,27 @@ var GameHubPlayer = (function () {
       if (prev[i].toLowerCase() !== term.toLowerCase()) list.push(prev[i]);
     }
     writeJson("searches", list);
+    notify("searches");
     return list;
   }
 
   function clearRecentSearches() {
     writeJson("searches", []);
+    notify("searches");
     return [];
+  }
+
+  /* Clears the player-owned keys. profile.js clearAll() removes the
+     rest of the namespace; both are safe to call together. */
+  function clearAll() {
+    var keys = ["favorites", "recent", "plays", "stats", "searches"];
+    for (var i = 0; i < keys.length; i++) {
+      try {
+        backend().removeItem(PREFIX + keys[i]);
+      } catch (err) { /* storage unavailable: nothing to clear */ }
+    }
+    notify("reset");
+    return true;
   }
 
   /* ---------------- Availability ---------------- */
@@ -354,6 +410,8 @@ var GameHubPlayer = (function () {
     recordGamePlayed: recordGamePlayed,
     recordRecent: recordGamePlayed,
     getPlays: getPlays,
+    getPlayedGames: getPlayedGames,
+    getTotalPlays: getTotalPlays,
     recordPlay: recordPlay,
     getBest: getBest,
     getStats: getStats,
@@ -361,6 +419,8 @@ var GameHubPlayer = (function () {
     getRecentSearches: getRecentSearches,
     recordSearch: recordSearch,
     clearRecentSearches: clearRecentSearches,
+    clearAll: clearAll,
+    notify: notify,
     storageAvailable: storageAvailable
   };
 })();

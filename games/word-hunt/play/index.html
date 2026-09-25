@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Word Hunt — Play — GameHub</title>
+  <meta name="description" content="Play Word Hunt on GameHub: find as many words as you can on a 4x4 letter board before time runs out.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Word Hunt</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">Score</span><span class="hud-value" id="score">0</span></div>
+        <div class="hud-item"><span class="hud-label">Words</span><span class="hud-value" id="words">0</span></div>
+        <div class="hud-item"><span class="hud-label">Time</span><span class="hud-value" id="time">90</span></div>
+        <div class="hud-item"><span class="hud-label">Best</span><span class="hud-value" id="best">0</span></div>
+        <button class="hud-btn" id="pauseBtn" type="button">Pause</button>
+      </div>
+      <div class="stage">
+        <canvas id="game" width="520" height="520" aria-label="Letter board"></canvas>
+        <div class="overlay" id="overlay">
+          <h2 id="overlayTitle">Word Hunt</h2>
+          <p id="overlayText">Drag across neighbouring letters to spell words of three letters or more. Longer words score far more — and every letter must be used once per word.</p>
+          <button class="primary-btn" id="primaryBtn" type="button">Start hunt</button>
+        </div>
+      </div>
+      <p class="hint" id="feed">Drag or click letters · Backspace clears the word · P pauses</p>
+    </main>
+  </div>
+  <script src="../../../session.js" data-game="word-hunt"></script>
+  <script src="game.js"></script>
+</body>
+</html>

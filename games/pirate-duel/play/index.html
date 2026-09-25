@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pirate Duel — Play — GameHub</title>
+  <meta name="description" content="Play Pirate Duel on GameHub: set your cannon angle and powder, then trade broadsides in a turn-based sea duel.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Pirate Duel</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">Turn</span><span class="hud-value" id="turn">Player 1</span></div>
+        <div class="hud-item"><span class="hud-label">Angle</span><span class="hud-value" id="angle">45</span></div>
+        <div class="hud-item"><span class="hud-label">Powder</span><span class="hud-value" id="power">60</span></div>
+        <div class="hud-item"><span class="hud-label">Wins</span><span class="hud-value" id="best">0</span></div>
+        <button class="hud-btn" id="modeBtn" type="button">Mode: vs AI</button>
+        <button class="hud-btn" id="fireBtn" type="button">Fire</button>
+        <button class="hud-btn" id="pauseBtn" type="button">Pause</button>
+      </div>
+      <div class="stage">
+        <canvas id="game" width="720" height="420" aria-label="Sea duel"></canvas>
+        <div class="overlay" id="overlay">
+          <h2 id="overlayTitle">Pirate Duel</h2>
+          <p id="overlayText">Turn-based broadsides: aim your cannon, load the powder and account for the wind. Two ships, one sea — sink the other first.</p>
+          <button class="primary-btn" id="primaryBtn" type="button">Set sail</button>
+        </div>
+      </div>
+      <p class="hint">↑/↓ angle · ←/→ powder · Space fires · M mode · P pauses</p>
+    </main>
+  </div>
+  <script src="../../../session.js" data-game="pirate-duel"></script>
+  <script src="game.js"></script>
+</body>
+</html>

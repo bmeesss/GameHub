@@ -1,5 +1,7 @@
-/* Air Hockey — original GameHub implementation.
-   Fast table duel: beat the AI or a friend on one keyboard. */
+/* Air Hockey — original GameHub implementation (GameHub 3.0 enhancement).
+   Fast table duel: beat the AI at three difficulty levels or share one
+   keyboard/multitouch table with a friend. Mouse, touch drag and arrow
+   keys all steer the paddle; wins and the best streak are stored locally. */
 "use strict";
 (function () {
   const shell = document.getElementById("shell");
@@ -26,6 +28,8 @@
   const primaryBtn = document.getElementById("primaryBtn");
   const pauseBtn = document.getElementById("pauseBtn");
   const modeBtn = document.getElementById("modeBtn");
+  const levelBtn = document.getElementById("levelBtn");
+  const winsEl = document.getElementById("wins");
   if (!canvas || typeof canvas.getContext !== "function") return;
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
@@ -46,6 +50,16 @@
   let twoPlayer = false;
   let streak = 0;
   let best = loadBest();
+  /* AI difficulty: reaction is how fast the paddle tracks the puck,
+     aim is the amount of prediction error and speed the paddle cap. */
+  const LEVELS = [
+    { id: "easy", label: "Easy", reaction: 0.045, aim: 0.55, speed: 4.6 },
+    { id: "normal", label: "Normal", reaction: 0.075, aim: 0.28, speed: 6.2 },
+    { id: "hard", label: "Hard", reaction: 0.12, aim: 0.12, speed: 8.4 }
+  ];
+  let level = loadLevel();
+  let wins = loadWins();
+  let losses = 0;
   let state = "ready";
   let keys = { left: false, right: false, a: false, d: false };
   let serveTimer = 0;
@@ -64,6 +78,37 @@
   function saveBest() {
     try {
       localStorage.setItem("gh_best_air-hockey", String(best));
+    } catch (err) { /* storage unavailable */ }
+  }
+
+  function loadWins() {
+    try {
+      const value = parseInt(localStorage.getItem("gh_wins_air-hockey"), 10);
+      return Number.isFinite(value) && value > 0 ? value : 0;
+    } catch (err) {
+      return 0;
+    }
+  }
+
+  function saveWins() {
+    try {
+      localStorage.setItem("gh_wins_air-hockey", String(wins));
+    } catch (err) { /* storage unavailable */ }
+  }
+
+  function loadLevel() {
+    try {
+      const stored = localStorage.getItem("gh_level_air-hockey");
+      const found = LEVELS.findIndex((entry) => entry.id === stored);
+      return found === -1 ? 1 : found;
+    } catch (err) {
+      return 1;
+    }
+  }
+
+  function saveLevel() {
+    try {
+      localStorage.setItem("gh_level_air-hockey", LEVELS[level].id);
     } catch (err) { /* storage unavailable */ }
   }
 
@@ -86,8 +131,14 @@
   function renderHud() {
     if (scoreAEl) scoreAEl.textContent = String(scoreA);
     if (scoreBEl) scoreBEl.textContent = String(scoreB);
-    if (bestEl) bestEl.textContent = best > 0 ? `Streak ${best}` : "—";
+    if (bestEl) bestEl.textContent = best > 0 ? String(best) : "0";
+    if (winsEl) winsEl.textContent = String(wins);
     if (modeBtn) modeBtn.textContent = twoPlayer ? "Mode: 2 players" : "Mode: vs AI";
+    if (levelBtn) {
+      levelBtn.textContent = `AI: ${LEVELS[level].label}`;
+      levelBtn.disabled = twoPlayer;
+      levelBtn.setAttribute("aria-disabled", String(twoPlayer));
+    }
   }
 
   function showOverlay(title, text, button) {
@@ -115,14 +166,17 @@
       showOverlay(scoreA > scoreB ? "Top player wins!" : "Bottom player wins!", `Final score ${scoreA}–${scoreB}.`, "Rematch");
     } else if (youWon) {
       streak += 1;
+      wins += 1;
       if (streak > best) {
         best = streak;
         saveBest();
       }
-      showOverlay("You win!", `${scoreB}–${scoreA}. Win streak: ${streak}.`, "Play again");
+      saveWins();
+      showOverlay("You win!", `${scoreB}–${scoreA} on ${LEVELS[level].label}. Win streak: ${streak} — ${wins} total wins in this browser.`, "Play again");
     } else {
       streak = 0;
-      showOverlay("AI wins", `${scoreA}–${scoreB}. Best streak: ${best}.`, "Try again");
+      losses += 1;
+      showOverlay("AI wins", `${scoreA}–${scoreB} on ${LEVELS[level].label}. Best streak: ${best}, ${wins} wins and ${losses} losses today.`, "Try again");
     }
     renderHud();
   }
@@ -144,10 +198,14 @@
   }
 
   function aiMove(dt) {
-    const target = serveTimer > 0 ? W / 2 : puck.x + puck.vx * 6;
+    const tune = LEVELS[level];
+    /* Prediction error shrinks as the difficulty rises, so Easy misses
+       shots that Hard reads cleanly. */
+    const error = (Math.random() - 0.5) * tune.aim * 90;
+    const target = serveTimer > 0 ? W / 2 : puck.x + puck.vx * 6 + error;
     const dy = puck.y < H / 2 ? puck.y : H / 4;
-    padA.x += (target - padA.x) * Math.min(0.09 * dt, 0.3);
-    padA.y += (dy - padA.y) * Math.min(0.05 * dt, 0.2);
+    padA.x += (target - padA.x) * Math.min(tune.reaction * dt, 0.3);
+    padA.y += (dy - padA.y) * Math.min(tune.reaction * 0.6 * dt, 0.2);
     clampPad(padA, true);
   }
 
@@ -171,7 +229,7 @@
 
     /* Bottom player: arrows. */
     const steerB = (keys.left ? -1 : 0) + (keys.right ? 1 : 0);
-    padB.x += steerB * 7 * dt;
+    padB.x += steerB * (twoPlayer ? 7 : LEVELS[level].speed) * dt;
     clampPad(padB, false);
 
     /* Top player: AI or A/D. */
@@ -354,9 +412,37 @@
     }
   });
   canvas.addEventListener("pointerdown", (event) => {
-    event.preventDefault();
-    if (state === "ready" || state === "over") start();
+    if (state === "ready" || state === "over") {
+      start();
+      return;
+    }
+    dragPointer(event);
   });
+  canvas.addEventListener("pointermove", (event) => {
+    if (event.buttons || event.pointerType === "touch") dragPointer(event);
+  });
+  canvas.addEventListener("touchmove", (event) => {
+    const touch = event.touches && event.touches[0];
+    if (!touch) return;
+    event.preventDefault();
+    dragPointer(touch);
+  }, { passive: false });
+
+  function dragPointer(event) {
+    if (state !== "running") return;
+    const rect = canvas.getBoundingClientRect ? canvas.getBoundingClientRect() : null;
+    if (!rect) return;
+    const scale = rect.width ? W / rect.width : 1;
+    const x = ((event.clientX || 0) - rect.left) * scale;
+    const y = ((event.clientY || 0) - rect.top) * (rect.height ? H / rect.height : 1);
+    if (y > H / 2 || !twoPlayer) {
+      padB.x = x;
+      clampPad(padB, false);
+    } else {
+      padA.x = x;
+      clampPad(padA, true);
+    }
+  }
 
   if (primaryBtn) primaryBtn.addEventListener("click", start);
   if (pauseBtn) pauseBtn.addEventListener("click", togglePause);
@@ -367,9 +453,17 @@
       renderHud();
     });
   }
+  if (levelBtn) {
+    levelBtn.addEventListener("click", () => {
+      if (twoPlayer) return;
+      level = (level + 1) % LEVELS.length;
+      saveLevel();
+      renderHud();
+    });
+  }
 
   reset();
   state = "ready";
-  showOverlay("Air Hockey", "First to 7 goals. Move with the mouse or arrow keys — flip to 2-player mode for a local duel.", "Start game");
+  showOverlay("Air Hockey", "First to 7 goals. Drag with the mouse or a finger, use the arrow keys, or switch on 2-player mode for a local duel. The AI button cycles Easy, Normal and Hard.", "Start game");
   requestAnimationFrame(frame);
 })();

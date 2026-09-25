@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Target Shooter artwork — original aim range</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a1620"/>
+      <stop offset="1" stop-color="#0b0f1a"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fb7185" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#fb7185" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <g stroke="#94a3b8" stroke-width="1" opacity=".18">
+    <path d="M0 60 H640"/>
+    <path d="M0 120 H640"/>
+    <path d="M0 180 H640"/>
+    <path d="M0 240 H640"/>
+    <path d="M0 300 H640"/>
+    <path d="M80 0 V360"/>
+    <path d="M160 0 V360"/>
+    <path d="M240 0 V360"/>
+    <path d="M320 0 V360"/>
+    <path d="M400 0 V360"/>
+    <path d="M480 0 V360"/>
+    <path d="M560 0 V360"/>
+  </g>
+  <circle cx="330" cy="180" r="160" fill="url(#glow)"/>
+  <circle cx="330" cy="180" r="120" fill="none" stroke="#e2e8f0" stroke-width="3" opacity=".35"/>
+  <circle cx="330" cy="180" r="82" fill="none" stroke="#fb7185" stroke-width="4" opacity=".5"/>
+  <circle cx="330" cy="180" r="46" fill="#fb7185" opacity=".85"/>
+  <circle cx="330" cy="180" r="46" fill="none" stroke="#fecdd3" stroke-width="3"/>
+  <circle cx="470" cy="96" r="26" fill="#f59e0b"/>
+  <circle cx="470" cy="96" r="12" fill="#2a1620"/>
+  <circle cx="180" cy="266" r="20" fill="#f59e0b"/>
+  <circle cx="180" cy="266" r="9" fill="#2a1620"/>
+  <path d="M330 120 V60 M330 240 V300 M270 180 H210 M390 180 H450" stroke="#e2e8f0" stroke-width="3" stroke-linecap="round" opacity=".85"/>
+</svg>

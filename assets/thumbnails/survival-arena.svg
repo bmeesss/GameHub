@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Survival Arena artwork — original wave arena</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a1322"/>
+      <stop offset="1" stop-color="#0b0f1a"/>
+    </linearGradient>
+    <radialGradient id="pulse" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#22d3ee" stop-opacity=".5"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <g stroke="#94a3b8" stroke-width="1" opacity=".12">
+    <path d="M0 90 H640"/>
+    <path d="M0 180 H640"/>
+    <path d="M0 270 H640"/>
+    <path d="M160 0 V360"/>
+    <path d="M320 0 V360"/>
+    <path d="M480 0 V360"/>
+  </g>
+  <circle cx="320" cy="180" r="150" fill="url(#pulse)"/>
+  <circle cx="320" cy="180" r="26" fill="#e2e8f0"/>
+  <path d="M320 180 L392 132" stroke="#22d3ee" stroke-width="9" stroke-linecap="round"/>
+  <circle cx="452" cy="112" r="17" fill="#f472b6"/>
+  <circle cx="452" cy="112" r="7" fill="#2a0b2f"/>
+  <circle cx="186" cy="118" r="14" fill="#f472b6"/>
+  <circle cx="186" cy="118" r="6" fill="#2a0b2f"/>
+  <circle cx="150" cy="252" r="20" fill="#f472b6"/>
+  <circle cx="150" cy="252" r="8" fill="#2a0b2f"/>
+  <circle cx="486" cy="264" r="15" fill="#f472b6"/>
+  <circle cx="486" cy="264" r="6" fill="#2a0b2f"/>
+  <circle cx="262" cy="70" r="10" fill="#f472b6"/>
+  <circle cx="558" cy="196" r="12" fill="#f472b6"/>
+  <circle cx="250" cy="300" r="13" fill="#34d399"/>
+  <circle cx="250" cy="300" r="22" fill="none" stroke="#34d399" stroke-width="3" opacity=".5"/>
+  <g fill="#34d399">
+    <rect x="60" y="308" width="24" height="12" rx="4"/>
+    <rect x="92" y="308" width="24" height="12" rx="4"/>
+    <rect x="124" y="308" width="24" height="12" rx="4"/>
+  </g>
+</svg>

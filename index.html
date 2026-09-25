@@ -11,7 +11,9 @@
   <meta property="og:type" content="website">
   <meta property="og:image" content="assets/thumbnails/snake.svg">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="style.css">
+  <script src="theme.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
@@ -38,6 +40,9 @@
         <a href="#home" aria-current="true">Home</a>
         <a href="#games">Games</a>
         <a href="#categories">Categories</a>
+        <a href="?category=Minecraft#games">Minecraft</a>
+        <a href="?favorites=1#games">Favorites</a>
+        <a href="profile/index.html">Profile</a>
       </nav>
 
       <form id="search-form" class="header-search" role="search" action="index.html" method="get">
@@ -74,11 +79,11 @@
         <dl class="hero-stats" aria-label="GameHub at a glance">
           <div>
             <dt>Games</dt>
-            <dd id="stat-games">58</dd>
+            <dd id="stat-games">&mdash;</dd>
           </div>
           <div>
             <dt>Categories</dt>
-            <dd id="stat-categories">10</dd>
+            <dd id="stat-categories">&mdash;</dd>
           </div>
           <div>
             <dt>Cost to play</dt>
@@ -93,6 +98,18 @@
       <div class="container">
         <h2 id="spotlight-title" class="sr-only">Spotlight game</h2>
         <div class="spotlight-inner"></div>
+      </div>
+    </section>
+
+    <!-- Continue playing: the six most recent games, newest first -->
+    <section class="section section--tight" id="continue" aria-labelledby="continue-title" hidden>
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Pick up where you left off</p>
+          <h2 id="continue-title">Continue playing</h2>
+          <p>Your six most recent games, newest first. Hidden until you have played something.</p>
+        </div>
+        <div class="grid" id="continue-grid" aria-live="polite"></div>
       </div>
     </section>
 
@@ -321,6 +338,8 @@
             <li><a href="#categories">Categories</a></li>
             <li><a href="?category=Minecraft#games">Minecraft</a></li>
             <li><a href="#new">New games</a></li>
+            <li><a href="?favorites=1#games">Favorites</a></li>
+            <li><a href="profile/index.html">Profile</a></li>
           </ul>
         </nav>
         <div>
@@ -341,7 +360,11 @@
   <script src="catalog.js" defer></script>
   <script src="client-config.js" defer></script>
   <script src="player.js" defer></script>
+  <script src="profile.js" defer></script>
+  <script src="achievements.js" defer></script>
   <script src="cards.js" defer></script>
+  <script src="search.js" defer></script>
   <script src="script.js" defer></script>
+  <script src="pwa.js" defer></script>
 </body>
 </html>

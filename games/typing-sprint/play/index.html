@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Typing Sprint — Play — GameHub</title>
+  <meta name="description" content="Play Typing Sprint on GameHub: type the words, watch your words per minute and accuracy climb.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Typing Sprint</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">WPM</span><span class="hud-value" id="wpm">0</span></div>
+        <div class="hud-item"><span class="hud-label">Accuracy</span><span class="hud-value" id="accuracy">100%</span></div>
+        <div class="hud-item"><span class="hud-label">Words</span><span class="hud-value" id="words">0</span></div>
+        <div class="hud-item"><span class="hud-label">Time</span><span class="hud-value" id="time">60</span></div>
+        <div class="hud-item"><span class="hud-label">Best WPM</span><span class="hud-value" id="best">0</span></div>
+        <button class="hud-btn" id="pauseBtn" type="button">Pause</button>
+      </div>
+      <div class="stage">
+        <canvas id="game" width="720" height="380" aria-label="Typing lane"></canvas>
+        <div class="overlay" id="overlay">
+          <h2 id="overlayTitle">Typing Sprint</h2>
+          <p id="overlayText">Sixty seconds on the clock. Type each word exactly and press Space or Enter to send it — mistakes cost accuracy, speed earns points.</p>
+          <button class="primary-btn" id="primaryBtn" type="button">Start sprint</button>
+        </div>
+      </div>
+      <p class="hint" id="buffer">Just start typing · Backspace fixes the current word · P pauses</p>
+    </main>
+  </div>
+  <script src="../../../session.js" data-game="typing-sprint"></script>
+  <script src="game.js"></script>
+</body>
+</html>

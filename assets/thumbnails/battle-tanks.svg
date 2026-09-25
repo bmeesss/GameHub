@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Battle Tanks artwork — original arena duel</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#241230"/>
+      <stop offset="1" stop-color="#0b0f1a"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <g stroke="#94a3b8" stroke-width="1" opacity=".12">
+    <path d="M0 60 H640"/>
+    <path d="M0 120 H640"/>
+    <path d="M0 180 H640"/>
+    <path d="M0 240 H640"/>
+    <path d="M0 300 H640"/>
+    <path d="M120 0 V360"/>
+    <path d="M240 0 V360"/>
+    <path d="M360 0 V360"/>
+    <path d="M480 0 V360"/>
+  </g>
+  <g fill="#b45309" stroke="#fbbf24" stroke-width="2">
+    <rect x="300" y="60" width="40" height="40" rx="6"/>
+    <rect x="300" y="250" width="40" height="40" rx="6"/>
+    <rect x="430" y="156" width="40" height="40" rx="6"/>
+    <rect x="180" y="160" width="40" height="40" rx="6"/>
+  </g>
+  <g transform="translate(120 180)">
+    <rect x="-34" y="-27" width="68" height="54" rx="12" fill="#e879f9"/>
+    <rect x="-19" y="-19" width="38" height="38" rx="10" fill="#3b1544"/>
+    <rect x="20" y="-7" width="46" height="14" rx="7" fill="#f5d0fe"/>
+    <rect x="-42" y="-33" width="44" height="8" rx="4" fill="#34d399"/>
+  </g>
+  <g transform="translate(510 200) rotate(180)">
+    <rect x="-34" y="-27" width="68" height="54" rx="12" fill="#22d3ee"/>
+    <rect x="-19" y="-19" width="38" height="38" rx="10" fill="#083344"/>
+    <rect x="20" y="-7" width="46" height="14" rx="7" fill="#cffafe"/>
+    <rect x="-42" y="-33" width="44" height="8" rx="4" fill="#34d399"/>
+  </g>
+  <circle cx="330" cy="180" r="10" fill="#fbbf24"/>
+  <circle cx="330" cy="180" r="18" fill="#fbbf24" opacity=".28"/>
+  <path d="M170 176 L306 176" stroke="#fbbf24" stroke-width="4" stroke-dasharray="10 8" opacity=".6"/>
+  <path d="M470 196 L362 190" stroke="#fbbf24" stroke-width="4" stroke-dasharray="10 8" opacity=".45"/>
+</svg>

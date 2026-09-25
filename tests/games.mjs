@@ -321,6 +321,24 @@ async function runGame(slug) {
     // Buttons must exist for core flows (start/restart surfaced in UI).
     const buttons = sandbox.document.querySelectorAll("button");
     t(`${label} exposes buttons in play UI`, buttons.length > 0);
+
+    // GameHub 3.0: every play page reports its playtime through the
+    // shared session helper with the matching slug attribute.
+    t(`${label} loads session.js with its slug`,
+      html.includes(`<script src="../../../session.js" data-game="${slug}"></script>`));
+    // Play-shell contract: shell + fullscreen + relative css/js, plus a
+    // start/restart surface. New bundles use the overlay trio; the
+    // pre-3.0 idle-miner ships a direct action button instead.
+    const shellOk = html.includes('id="shell"') && html.includes('id="fullscreenBtn"') &&
+      html.includes('src="game.js"') && html.includes('href="style.css"');
+    const overlayOk = html.includes('id="overlay"') && html.includes('id="overlayTitle"') &&
+      html.includes('id="primaryBtn"');
+    const actionOk = overlayOk || /<button[^>]+id="(mineBtn|startBtn|restartBtn)"/.test(html);
+    t(`${label} is a self-contained play shell`, shellOk && actionOk);
+    t(`${label} keeps provider URLs out of the bundle`,
+      !/https?:\/\//.test(html) && !/https?:\/\//.test(js));
+    t(`${label} stores progress under a gh_ key`,
+      js.includes("gh_") || !/localStorage/.test(js));
     void elements;
     for (const id of sandbox.__timers) {
       try { clearTimeout(id); clearInterval(id); } catch { /* noop */ }
@@ -331,7 +349,7 @@ async function runGame(slug) {
 }
 
 console.log(`Discovered ${slugs.length} playable game(s): ${slugs.join(", ") || "(none)"}`);
-t("discovers all 46 play bundles", slugs.length === 46);
+t("discovers all 61 play bundles", slugs.length === 61);
 for (const slug of slugs) {
   await runGame(slug);
 }

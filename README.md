@@ -4,11 +4,21 @@ GameHub is a free browser gaming platform: a fast, fully static website
 where players browse HTML5, iframe, WebGL, WASM and external games —
 including a dedicated Minecraft section for Eaglercraft-style voxel
 clients — and launch them instantly. No backend, no database, no build
-step: just HTML, CSS and vanilla JavaScript. The catalog ships 58
-games: 46 original playable titles, 7 real games streamed from or
-linked to official providers (GameDistribution, GameMonetize, itch.io,
-Poki) and 5 coming-soon placeholders (including the Minecraft client
-slots).
+step: just HTML, CSS and vanilla JavaScript.
+
+**GameHub 3.0** adds a complete local player layer: three themes, a
+profile with statistics and 14 original avatars, 20 achievements,
+collections, per-game ratings and notes, playtime tracking, a
+command-palette style search overlay, catalog-generated category
+landing pages, multiplayer metadata and an optional installable
+offline mode — all in `localStorage`, no accounts, no tracking.
+
+The catalog ships **73 games**: 61 original playable titles (each a
+self-contained bundle under `games/<slug>/play/`), 5 real games from
+officially embeddable providers (GameDistribution, GameMonetize), 2
+provider deep-links (itch.io, Poki) and 5 coming-soon placeholders
+(three Minecraft/Eaglercraft client slots, one WASM title, one online
+multiplayer title). 68 entries are launchable today.
 
 Live project page (once Pages is enabled):
 
@@ -22,30 +32,64 @@ Live project page (once Pages is enabled):
 
 ## Features
 
-- Modern dark gaming interface, responsive from mobile to desktop
-- Homepage discovery: Spotlight, Play Again, Favorites, Featured,
-  Popular, Minecraft, Play Online, External Games, New Games,
-  sortable All Games, Categories
-- 53 playable games: 46 original GameHub games (each self-contained
-  under `games/<slug>/play/` with keyboard + touch controls — newest:
-  Stack Tower, Sky Jump, Stellar Siege, Slide Puzzle, Glow Grid,
-  Air Hockey, Reversi, Idle Miner, Road Rush, Ember Keep) plus
-  7 real games from official providers
+- Modern gaming interface with **three themes** — Dark, Midnight and
+  Light — switchable from the header or the profile page, remembered
+  locally and applied before first paint
+- **Profile system** (`profile/index.html`): display name, one of 14
+  original inline-SVG avatars, lifetime statistics (games played,
+  sessions, playtime, achievements), collections, ratings, notes and
+  played-game history — 100% local, no accounts, no network calls
+- **Achievements**: 20 original definitions (first launch, explore 5/10
+  games, 25 launches, favorites, first highscore, multiple categories,
+  multiple days, per-game milestones…) auto-checked after player-data
+  changes, with locked/unlocked state, progress bars, unlock dates and
+  toast notifications
+- **Collections**: Favorites, Play Later and Completed, with a card
+  button for each (real `<button>`s, delegated handlers, no inline
+  `onclick` anywhere)
+- **My Rating** (1–5 stars) on every game page — local only, never
+  presented as a global rating — and **one private note per game**
+  (500 characters, live counter, text-only rendering)
+- **Continue Playing** homepage rail: up to 6 newest games,
+  deduplicated, hidden when empty, driven by the existing recent-play
+  data (no second tracking system)
+- **Global search overlay** (`Ctrl+K` or `/`): live results across
+  titles, descriptions, categories, tags, types, versions and
+  providers, full keyboard navigation (↑/↓/Enter/Escape), recent
+  searches and shareable `?q=…` URLs
+- **Category landing pages** for all ten categories, generated from the
+  catalog: description, computed count, featured/popular/recent rails,
+  complete grid, related tags and an empty state
+- Homepage discovery order: Spotlight, Continue Playing, Play Again,
+  Favorites, Featured, Popular, Minecraft, Play Online, External
+  Games, New Games, Categories, sortable All Games — empty personal
+  rails hide themselves
 - Provider games, CrazyGames-style: 5 officially embeddable games
   (GameDistribution, GameMonetize) stream inside GameHub's own
   launcher viewport, and 2 more (itch.io, Poki) deep-link to the
   provider's page through a clear hand-off panel — every provider
   game gets the same professional detail page as a local game
-- Live search (titles, descriptions, categories, types, tags,
-  versions, providers) with recent searches, shareable URLs
-  (`?q=...`, `?category=...`, `?type=...`, `?sort=...`,
-  `?favorites=1`), result counts and an empty state
+- **Multiplayer metadata**: every entry declares `multiplayer` and —
+  when true — `multiplayerMode: "local" | "online"`; 11 local
+  head-to-head games (Air Hockey, Chess, Checkers, Pool, Battle Tanks,
+  Pirate Duel…), never a faked online mode
+- **Optional PWA**: `manifest.webmanifest` plus a same-origin-only
+  service worker that precaches the local shell; provider games and
+  `games/*/client/` files are never cached
+- 68 launchable games: 61 original HTML5 titles (newest: Chess,
+  Checkers, Pool, Target Shooter, Word Hunt, Maze Escape, Helicopter
+  Run, Rocket Landing, Survival Arena, Farm Defender, Pirate Duel,
+  Snowboard Rush, Color Match, Battle Tanks, Typing Sprint) plus
+  5 provider-streamed and 2 provider-linked games — each self-contained
+  under `games/<slug>/play/` with keyboard + touch controls
 - Catalog-generated filters: categories plus game-type labels
   (HTML5, Iframe, WebGL, WASM, External) with computed counts
-- One centralized game catalog (`catalog.js`) — new games appear on
-  the homepage without touching homepage HTML
+- One centralized game catalog (`catalog.js`) — new games appear on the
+  homepage, category pages and search without touching HTML
 - Player shelves with zero backend: favorites, recently played,
-  per-game stats and recent searches, all in `localStorage`
+  collections, ratings, notes, per-game stats and recent searches, all
+  in one `localStorage` namespace (`gamehub:*`) with corruption-safe
+  parsing and an in-memory fallback when storage is blocked
 - Reusable per-game launcher (`launcher.js`) with cover, loading,
   running, blocked and error states, a live status area, responsive
   viewport, fullscreen, restart and close — plus favorite toggle,
@@ -58,9 +102,121 @@ Live project page (once Pages is enabled):
   without rebuilding anything
 - Original SVG artwork only — no copyrighted game assets, no fake
   publisher logos
-- Accessible: skip link, semantic landmarks, keyboard-friendly controls,
-  visible focus states, `prefers-reduced-motion` support
-- Zero dependencies, zero console errors, committed test suites
+- Accessible: skip link, semantic landmarks, ARIA dialog/combobox/
+  listbox search, real buttons, keyboard-friendly controls, visible
+  focus states, `prefers-reduced-motion` support
+- Zero dependencies, zero build step, zero console errors, committed
+  test suites
+
+## The 3.0 platform layer
+
+Everything below is client-side only. The whole personal layer lives in
+`localStorage` under the single `gamehub:` prefix and degrades to an
+in-memory store when storage is blocked (private mode, disabled
+cookies) — the site stays fully usable either way.
+
+| Module | Responsibility |
+| ------ | -------------- |
+| `theme.js` | Applies and remembers the colour theme (`gamehub:theme`); injects the header switcher |
+| `profile.js` | Profile document, collections, ratings, notes, playtime and session tracking, day log, statistics, `clearAll()` |
+| `achievements.js` | 20 achievement definitions, progress evaluation, unlock storage, toast notifications |
+| `search.js` | Global search overlay: ranking, DOM rendering, keyboard model, recent searches |
+| `session.js` | Play-page playtime sessions (flushed every 15 s and on `pagehide`) |
+| `game-page.js` | Per-game panels: rating, notes, collections, activity, game-specific achievements |
+| `profile-page.js` | Profile page controller (statistics, avatar picker, collections, ratings, notes, reset) |
+| `category-page.js` | Category landing pages rendered from catalog data |
+| `pwa.js` | Registers `service-worker.js` relative to the site root, on http(s) only |
+
+### Profile & storage
+
+One namespace, one parser. Every read goes through a corruption-safe
+`readJson` that discards broken values instead of throwing; every write
+is wrapped so a full or blocked `localStorage` can never break a page.
+Keys used: `profile`, `favorites`, `recent`, `plays`, `playtime`,
+`session`, `days`, `achievements`, `ratings`, `notes`, `playlater`,
+`completed`, `searches`. The profile page can wipe everything with one
+**Clear data** action (`profile.clearAll()`), and per-game storage
+written by the games themselves (`gh_*` keys) is listed but never
+touched by the platform.
+
+### Themes
+
+Dark (default), Midnight and Light. The theme is stored in
+`gamehub:theme`, applied to `<html data-theme>` before first paint,
+mirrored to `<meta name="theme-color">`, and switched by real
+`<button>` elements (`[data-theme-set]`, `aria-pressed`) in the header
+and on the profile page. First visit honours `prefers-color-scheme`.
+
+### Achievements
+
+20 original definitions: first launch, 5 and 10 different games, 25
+total launches, first and fifth favorite, first highscore, high scores
+in 5 games, 3 categories, 3 and 7 distinct days, 5 Puzzle games, any
+Racing game, 3 Play Later entries, 5 Completed games, 5 personal
+ratings, first note — plus per-game milestones (Snake 100, Air Hockey
+streak 5, Tower Tactics wave 10). Definitions are plain data with
+inline SVG icons; progress is computed from existing player data and
+re-checked whenever a `gamehub:change` event fires. The UI shows
+locked, unlocked, progress percentage and unlock date.
+
+### Collections, ratings and notes
+
+Favorites, Play Later and Completed each get their own card button and
+appear on the game page and the profile page. Ratings are 1–5 stars
+stored per game; the wording everywhere is deliberately personal
+("My rating"), never a global score. Notes are one per game, capped at
+500 characters, saved explicitly, and rendered with `textContent` —
+HTML or script input is displayed as literal text, never executed.
+
+### Continue Playing
+
+The homepage rail reuses the existing recent-play list (no second
+tracking system): newest first, deduplicated by game id, capped at six
+entries, and hidden entirely when empty.
+
+### Global search
+
+`Ctrl+K` (or `/`) opens a real overlay dialog with a combobox input and
+a listbox of results. Ranking weighs title matches first, then
+category, tags, type, provider, version and description; results are
+full game cards' worth of information with keyboard navigation,
+`aria-activedescendant`, Home/End, Escape, and a "See all results" row
+that hands the query to the homepage's `?q=…#games` view. Recent
+searches are stored locally (max 8) and the homepage's existing URL
+search behaviour is untouched.
+
+### Category pages
+
+`categories/<slug>/index.html` exists for all ten categories and is
+generated, not hand-maintained: title, description, count, colour dot,
+featured/popular/recent rails where data exists, the complete grid,
+tag-derived chips and an empty state all come from `catalog.js`
+helpers. Category pages load catalog → player → profile →
+achievements → cards → search → `category-page.js` (never the
+launcher).
+
+### Multiplayer metadata
+
+```js
+multiplayer: true,
+multiplayerMode: "local"   // "local" | "online", required when multiplayer is true
+```
+
+`"online"` is only ever set when a real backend/protocol exists — today
+none do, so every multiplayer entry is `"local"` (shared keyboard or
+pointer, two players on one device). `tests/platform.mjs` fails the
+build if an entry claims online play without a backend.
+
+### PWA / offline
+
+`manifest.webmanifest` describes an installable app (standalone, `./`
+scope, original icons: two SVGs and three PNGs). `service-worker.js`
+precaches the local shell (HTML, CSS, JS, manifest, icons) and uses
+network-first navigation with a cache fallback. It is deliberately
+strict: same-origin `GET` only, `/client/` paths are never cached, and
+cross-origin requests (provider games, external links) are never
+intercepted or stored. Registration happens in `pwa.js` and requires
+`http(s):`, so `file://` previews are unaffected.
 
 ## Supported game types
 
@@ -183,16 +339,35 @@ and enforced best-effort at runtime:
 ```text
 GameHub/
 ├── index.html                  # Homepage (all rails render from catalog)
-├── style.css                   # Design system (CSS variables, launcher UI)
+├── style.css                   # Design system (CSS variables, all themes)
+├── theme.js                    # Theme engine (dark/midnight/light) — head
 ├── catalog.js                  # Game catalog + filters/sorts (source of truth)
 ├── client-config.js            # Central Minecraft/WebGL client URLs
-├── player.js                   # Favorites/recent/stats/searches (localStorage)
-├── cards.js                    # Shared game-card renderer + favorite toggles
+├── player.js                   # Favorites/recent/plays/stats/searches
+├── profile.js                  # Profile, collections, ratings, notes, playtime
+├── achievements.js             # 20 achievements, progress + unlock state
+├── cards.js                    # Shared game-card renderer + card tools
+├── search.js                   # Global search overlay (Ctrl+K / "/")
+├── session.js                  # Play-page playtime sessions
+├── game-page.js                # Per-game platform panels (rating, notes…)
+├── profile-page.js             # Profile page controller
+├── category-page.js            # Category landing page controller
 ├── script.js                   # Homepage controller (rails, search, sort)
 ├── launcher.js                 # Reusable per-game launcher runtime
+├── pwa.js                      # Service-worker registration bootstrap
+├── service-worker.js           # Offline shell cache (local assets only)
+├── manifest.webmanifest        # Installable-app manifest
 ├── assets/
 │   ├── favicon.svg
+│   ├── icon.svg                # App icon (any-purpose)
+│   ├── icon-maskable.svg       # App icon (maskable, safe zone)
+│   ├── icon-192.png            # Generated PNG icons (192/512/maskable 512)
 │   └── thumbnails/             # One SVG per game: <slug>.svg
+├── profile/
+│   └── index.html              # Profile page
+├── categories/
+│   └── <category-slug>/
+│       └── index.html          # Catalog-generated category landing page
 ├── games/
 │   └── <game-slug>/
 │       ├── index.html          # Launcher page (Play/fullscreen/back)
@@ -200,8 +375,9 @@ GameHub/
 │       ├── embed/              # (optional) local iframe game files
 │       └── client/             # (optional) local WebGL/WASM client files
 ├── tests/
-│   ├── smoke.mjs               # Runtime tests: node tests/smoke.mjs
+│   ├── smoke.mjs               # Runtime + architecture: node tests/smoke.mjs
 │   ├── games.mjs               # Per-game harness: node tests/games.mjs
+│   ├── platform.mjs            # 3.0 platform layer: node tests/platform.mjs
 │   └── check.py                # Static checks: python3 tests/check.py
 ├── 404.html                    # Self-contained not-found page
 ├── .nojekyll                   # Disables Jekyll on GitHub Pages
@@ -236,6 +412,8 @@ Every entry supports:
   difficulty: "Medium",          // Easy | Medium | Hard
   featuredOrder: 1,              // ordering inside the Featured rail
   popularOrder: 1,               // ordering inside the Popular rail
+  multiplayer: false,            // true when more than one player shares a device
+  multiplayerMode: "local",      // required when multiplayer is true: "local" | "online"
   // --- remote provider games only (see "Provider games") ---
   provider: "GameDistribution",  // "Provided by X" attribution
   externalUrl: "https://…"       // provider game page (https, fallback target)
@@ -257,6 +435,15 @@ Rules:
   intentionally use **no sandbox** — their ad/SDK layer needs storage
   access; sandboxing is for content you host yourself.
 - `provider`/`externalUrl` are only allowed on remote entries.
+- `multiplayerMode` is only allowed when `multiplayer: true`, and
+  `"online"` is only allowed when a real backend/protocol exists. Until
+  one does, every multiplayer game is `"local"` (two players, one
+  device). `getMultiplayerGames()`, `getLocalMultiplayerGames()` and
+  `getOnlineMultiplayerGames()` expose the split, and the card UI shows
+  a multiplayer pill on those entries.
+- `tests/check.py` and `tests/platform.mjs` both enforce the field
+  rules; the platform suite fails if a game ever claims online play
+  without a backend.
 - The game page's `data-*` attributes must mirror the catalog entry
   (`tests/check.py` enforces this).
 
@@ -408,13 +595,21 @@ node tests/smoke.mjs     # catalog, search, filters, sorting, player data,
                          # missing/HTTP), the external-game architecture
                          # (remote URL validation, blocked-embed fallback,
                          # provider rails/metadata) + on-disk integrity
-node tests/games.mjs     # per-game runtime harness (every play bundle)
+node tests/games.mjs     # per-game runtime harness (all 61 play bundles:
+                         # each bundle boots, renders, responds to input and
+                         # stores progress under its own gh_* key)
+node tests/platform.mjs  # 3.0 platform layer: profile storage + corruption,
+                         # notes/XSS escaping, themes, achievements,
+                         # sessions/playtime, multiplayer + provider
+                         # metadata, card escaping, category pages, PWA
+                         # files, shared navigation, inline-handler audit
 python3 tests/check.py   # links, fragments, configs, artwork, Pages
                          # rules, client-config + provider discipline
 ```
 
-All three are dependency-free (Node.js and Python 3 standard
-libraries only — dev tools, not site dependencies).
+All four are dependency-free (Node.js and Python 3 standard libraries
+only — dev tools, not site dependencies). Run them from the repository
+root; they are the contract for every catalog or page change.
 
 ## Deploying to GitHub Pages
 
@@ -430,19 +625,40 @@ Notes:
   user URL, custom domain or localhost.
 - Large clients stay out of the homepage bundle: each loads only when
   its game page's Play button is pressed.
+- The service worker (`service-worker.js`) is registered by `pwa.js`
+  only over `https:`/`http:` — Pages serves over HTTPS, so the site
+  becomes installable there. It caches **local shell files only**;
+  provider games, remote embeds and `games/*/client/` files are never
+  cached or served from the cache. Bump `CACHE_NAME` when the shell
+  changes.
+- The manifest lives at the site root; icons are generated PNG/SVG files
+  under `assets/` and must keep their relative paths for the same
+  project-URL portability.
 
 ## Path rules
 
 - NEVER root-absolute: `/assets/...`, `/games/...`, `/index.html`.
-- Homepage: `style.css`, `catalog.js`, `client-config.js`, `player.js`,
-  `cards.js`, `script.js`, `assets/...`, `games/<slug>/`.
-- Game pages (two levels deep): `../../style.css`,
-  `../../catalog.js`, `../../player.js`, `../../cards.js`,
-  `../../client-config.js`, `../../launcher.js`, `../../assets/...`.
+- Homepage: `style.css`, `theme.js`, `catalog.js`, `client-config.js`,
+  `player.js`, `profile.js`, `achievements.js`, `cards.js`, `search.js`,
+  `script.js`, `pwa.js`, `manifest.webmanifest`, `assets/...`.
+- Game pages (two levels deep): `../../style.css`, `../../theme.js`
+  (head), later `../../catalog.js`, `../../player.js`, `../../profile.js`,
+  `../../achievements.js`, `../../cards.js`, `../../client-config.js`,
+  `../../search.js`, `../../launcher.js`, `../../game-page.js`,
+  `../../pwa.js`, `../../assets/...`.
+- Play bundles (three levels deep) load only their sibling
+  `style.css`/`game.js` plus `../../../session.js` with a
+  `data-game="<slug>"` attribute, which is how playtime is attributed.
+- Category pages (two levels deep) load the platform modules and
+  `category-page.js` — never `launcher.js`.
+- Homepage and `profile/index.html` must never load `launcher.js`:
+  game clients stay off those pages.
 - Catalog `playUrl` is root-relative; game-page `data-play-url` is
   page-relative — both must resolve to the same file.
+- `search.js` derives its own path prefix from its `<script src>`, so
+  every page must include it with the correct relative depth.
 - `404.html` is self-contained (inline CSS/JS) since Pages can serve it
-  from any depth.
+  from any depth; it reads the theme from `localStorage` directly.
 
 ## Security considerations
 
@@ -477,6 +693,31 @@ Notes:
   code and review it accordingly.
 - **No secrets:** the site is 100% static and public; never commit API
   keys, tokens or private URLs.
+- **User-controlled content:** display names, notes, ratings and
+  recent searches are rendered exclusively with `textContent` (never
+  `innerHTML`), so `<script>`/`<svg onload=…>` payloads are displayed
+  as literal text. Display names additionally strip `<`/`>` and cap at
+  24 characters; notes cap at 500. `tests/platform.mjs` feeds hostile
+  payloads through the real rendering paths and asserts no element or
+  event-handler attribute is ever created.
+- **`innerHTML` uses are audited:** every remaining `innerHTML` write
+  in the codebase builds trusted, catalog- or constant-derived markup
+  (icons, pills, templates). Catalog text passes through `escapeHtml`
+  in `cards.js` before it is interpolated at all.
+- **No inline event handlers:** there is no `onclick=`/`onload=` in any
+  shipped file — all behaviour is delegated or bound with
+  `addEventListener`, and a test asserts it.
+- **Search input:** the overlay never echoes the query as HTML, never
+  navigates to a URL built from raw input (the "See all results" row
+  uses a fixed `index.html?q=` prefix and re-encodes), and result rows
+  are created as DOM nodes, not markup strings.
+- **Storage parsing:** every `localStorage` read is wrapped and
+  type-checked; corrupt JSON, wrong types and out-of-range values fall
+  back to safe defaults instead of throwing. No `eval`, no `Function`,
+  no `setTimeout("string")` anywhere in the codebase.
+- **Iframe sources** are limited to the catalog's curated HTTPS URLs;
+  no user input can ever set a frame `src`, and no page allows arbitrary
+  `javascript:` or `data:` URLs.
 - Advise players to use official server addresses with voxel clients
   and never enter Mojang/Microsoft credentials into third-party pages.
 
@@ -490,8 +731,11 @@ gracefully without errors.
 
 - More original games across every category
 - More voxel client versions as legal builds become available
-- Optional: combined category+type filtering, per-game achievements
+- Optional: combined category+type filtering on top of the existing
+  category and type chips
 - Optional: export/import of local player data (still no accounts)
+- Optional: real online multiplayer — only with an actual backend and
+  protocol, never a simulated lobby
 
 ## Assets & license
 

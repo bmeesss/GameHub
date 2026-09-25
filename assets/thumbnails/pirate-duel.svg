@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Pirate Duel artwork — original sea duel</title>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0b2340"/>
+      <stop offset="1" stop-color="#061529"/>
+    </linearGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0c4a6e"/>
+      <stop offset="1" stop-color="#062a44"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#sky)"/>
+  <circle cx="520" cy="70" r="46" fill="#fbbf24" opacity=".85"/>
+  <circle cx="520" cy="70" r="70" fill="#fbbf24" opacity=".18"/>
+  <rect y="240" width="640" height="120" fill="url(#sea)"/>
+  <g stroke="#93c5fd" stroke-width="3" opacity=".3">
+    <path d="M0 268 H120"/>
+    <path d="M180 268 H320"/>
+    <path d="M380 268 H520"/>
+    <path d="M40 306 H180"/>
+    <path d="M260 306 H420"/>
+    <path d="M470 306 H640"/>
+  </g>
+  <g transform="translate(120 200)">
+    <path d="M-70 40 H70 L52 66 H-52 Z" fill="#6b4a2b"/>
+    <rect x="-4" y="-54" width="12" height="96" rx="4" fill="#e2e8f0"/>
+    <path d="M10 -52 L58 -22 L10 -4 Z" fill="#38bdf8"/>
+    <rect x="-70" y="36" width="140" height="8" rx="4" fill="#080b16" fill-opacity="0.55"/>
+    <circle cx="-42" cy="20" r="9" fill="#1e293b"/>
+  </g>
+  <g transform="translate(520 216)">
+    <path d="M-70 40 H70 L52 66 H-52 Z" fill="#6b4a2b"/>
+    <rect x="-4" y="-50" width="12" height="92" rx="4" fill="#e2e8f0"/>
+    <path d="M-10 -48 L-58 -18 L-10 0 Z" fill="#fb7185"/>
+    <rect x="-70" y="36" width="140" height="8" rx="4" fill="#080b16" fill-opacity="0.55"/>
+  </g>
+  <path d="M180 172 C 260 60 400 60 470 168" fill="none" stroke="#fbbf24" stroke-width="5" stroke-dasharray="12 10" opacity=".85"/>
+  <circle cx="330" cy="98" r="12" fill="#fbbf24"/>
+  <circle cx="330" cy="98" r="22" fill="#fbbf24" opacity=".3"/>
+</svg>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Air Hockey — Play — GameHub</title>
-  <meta name="description" content="Play Air Hockey on GameHub: Fast table duel against the AI or a friend.">
+  <meta name="description" content="Play Air Hockey on GameHub: fast table duel against the AI at three difficulty levels or a friend on one keyboard.">
   <meta name="theme-color" content="#0b0f1a">
   <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
   <link rel="stylesheet" href="style.css">
@@ -20,7 +20,9 @@
       <div class="hud">
         <div class="hud-item"><span class="hud-label">Top</span><span class="hud-value" id="score-a">0</span></div>
         <div class="hud-item"><span class="hud-label">You</span><span class="hud-value" id="score-b">0</span></div>
-        <div class="hud-item"><span class="hud-label">Streak</span><span class="hud-value" id="best">0</span></div>
+        <div class="hud-item"><span class="hud-label">Best streak</span><span class="hud-value" id="best">0</span></div>
+        <div class="hud-item"><span class="hud-label">Wins</span><span class="hud-value" id="wins">0</span></div>
+        <button class="hud-btn" id="levelBtn" type="button">AI: Normal</button>
         <button class="hud-btn" id="modeBtn" type="button">Mode: vs AI</button>
         <button class="hud-btn" id="pauseBtn" type="button">Pause</button>
       </div>
@@ -28,13 +30,14 @@
         <canvas id="game" width="520" height="700" aria-label="Air Hockey game board"></canvas>
         <div class="overlay" id="overlay">
           <h2 id="overlayTitle">Air Hockey</h2>
-          <p id="overlayText">Fast table duel against the AI or a friend.</p>
+          <p id="overlayText">First to 7 goals. Drag with the mouse or a finger, use the arrow keys, or switch on 2-player mode. The AI button cycles Easy, Normal and Hard.</p>
           <button class="primary-btn" id="primaryBtn" type="button">Start game</button>
         </div>
       </div>
-      <p class="hint">Mouse or arrows move your paddle · first to 7 wins · 2P: A/D for the top paddle</p>
+      <p class="hint">Drag with the mouse or a finger, or use the arrow keys · first to 7 goals · 2P: A/D for the top paddle · the AI button cycles Easy / Normal / Hard</p>
     </main>
   </div>
+  <script src="../../../session.js" data-game="air-hockey"></script>
   <script src="game.js"></script>
 </body>
 </html>

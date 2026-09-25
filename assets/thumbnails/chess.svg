@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Chess artwork — original board duel</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#171a3a"/>
+      <stop offset="1" stop-color="#0b0f1a"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <circle cx="520" cy="60" r="140" fill="#7c5cff" opacity=".16"/>
+  <circle cx="90" cy="310" r="120" fill="#22d3ee" opacity=".12"/>
+  <g transform="translate(160 30)">
+    <rect width="320" height="320" rx="14" fill="#0a0f22"/>
+    <g>
+      <rect x="10" y="10" width="75" height="75" fill="#cdd6f4"/>
+      <rect x="160" y="10" width="75" height="75" fill="#cdd6f4"/>
+      <rect x="85" y="85" width="75" height="75" fill="#cdd6f4"/>
+      <rect x="235" y="85" width="75" height="75" fill="#cdd6f4"/>
+      <rect x="10" y="160" width="75" height="75" fill="#cdd6f4"/>
+      <rect x="160" y="160" width="75" height="75" fill="#cdd6f4"/>
+      <rect x="85" y="235" width="75" height="75" fill="#cdd6f4"/>
+      <rect x="235" y="235" width="75" height="75" fill="#cdd6f4"/>
+    </g>
+    <rect x="10" y="10" width="300" height="300" rx="10" fill="#4c5480" opacity=".45"/>
+    <circle cx="122" cy="97" r="26" fill="#f2f5ff"/>
+    <path d="M112 118 L134 118 L138 132 L106 132 Z" fill="#f2f5ff"/>
+    <path d="M120 92 L128 92 L132 106 L118 106 Z" fill="#0b0f1a" opacity=".35"/>
+    <path d="M200 210 L236 210 L244 240 L192 240 Z" fill="#12172c"/>
+    <path d="M206 176 L230 176 L234 194 L202 194 Z" fill="#12172c"/>
+    <circle cx="218" cy="168" r="13" fill="#12172c"/>
+    <path d="M206 172 L214 186 L222 172 L230 186 L234 172" fill="none" stroke="#0b0f1a" stroke-width="3"/>
+  </g>
+  <circle cx="120" cy="96" r="16" fill="#22d3ee" opacity=".5"/>
+  <circle cx="500" cy="270" r="13" fill="#fb7185" opacity=".7"/>
+</svg>

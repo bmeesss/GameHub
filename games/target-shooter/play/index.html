@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Target Shooter — Play — GameHub</title>
+  <meta name="description" content="Play Target Shooter on GameHub: quick-draw aim training against shrinking, racing targets.">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="play-shell" id="shell">
+    <header class="play-bar">
+      <a class="play-back" href="../index.html">← Game page</a>
+      <span class="play-title">Target Shooter</span>
+      <button class="play-fullscreen" id="fullscreenBtn" type="button">Fullscreen</button>
+    </header>
+    <main class="game-wrap">
+      <div class="hud">
+        <div class="hud-item"><span class="hud-label">Score</span><span class="hud-value" id="score">0</span></div>
+        <div class="hud-item"><span class="hud-label">Round</span><span class="hud-value" id="round">1</span></div>
+        <div class="hud-item"><span class="hud-label">Ammo</span><span class="hud-value" id="ammo">10</span></div>
+        <div class="hud-item"><span class="hud-label">Best</span><span class="hud-value" id="best">0</span></div>
+        <button class="hud-btn" id="pauseBtn" type="button">Pause</button>
+      </div>
+      <div class="stage">
+        <canvas id="game" width="640" height="480" aria-label="Target range"></canvas>
+        <div class="overlay" id="overlay">
+          <h2 id="overlayTitle">Target Shooter</h2>
+          <p id="overlayText">Hit every target before it escapes. Ten shots per round — reload between rounds and keep your accuracy up for bonus points.</p>
+          <button class="primary-btn" id="primaryBtn" type="button">Start round</button>
+        </div>
+      </div>
+      <p class="hint">Move the mouse to aim, click or tap to shoot · R to reload · P pauses</p>
+    </main>
+  </div>
+  <script src="../../../session.js" data-game="target-shooter"></script>
+  <script src="game.js"></script>
+</body>
+</html>

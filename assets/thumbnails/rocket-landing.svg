@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <title>Rocket Landing artwork — original descent</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0a0c22"/>
+      <stop offset="1" stop-color="#0b0f1a"/>
+    </linearGradient>
+    <linearGradient id="body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f2f5ff"/>
+      <stop offset="1" stop-color="#c1cbe6"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <g fill="#e2e8f0" opacity=".8">
+    <circle cx="60" cy="50" r="2"/>
+    <circle cx="140" cy="120" r="1.6"/>
+    <circle cx="220" cy="40" r="2.4"/>
+    <circle cx="320" cy="90" r="1.6"/>
+    <circle cx="420" cy="36" r="2"/>
+    <circle cx="500" cy="110" r="2.4"/>
+    <circle cx="590" cy="60" r="1.8"/>
+    <circle cx="90" cy="220" r="1.6"/>
+    <circle cx="470" cy="200" r="2"/>
+    <circle cx="600" cy="250" r="1.6"/>
+  </g>
+  <rect x="0" y="300" width="640" height="60" fill="#1b2340"/>
+  <rect x="250" y="290" width="140" height="12" rx="6" fill="#34d399"/>
+  <rect x="250" y="286" width="140" height="8" rx="4" fill="#34d399" opacity=".35"/>
+  <g transform="translate(320 150) rotate(-8)">
+    <path d="M0 -60 L26 34 L-26 34 Z" fill="url(#body)"/>
+    <rect x="-26" y="26" width="52" height="12" rx="6" fill="#7c5cff"/>
+    <circle cx="0" cy="-14" r="13" fill="#22d3ee" opacity=".9"/>
+    <circle cx="0" cy="-14" r="7" fill="#0b0f1a" opacity=".55"/>
+    <path d="M-18 38 L-30 64 M18 38 L30 64" stroke="#a9b6dd" stroke-width="7" stroke-linecap="round"/>
+    <path d="M-14 44 L0 92 L14 44 Z" fill="#fbbf24" opacity=".9"/>
+    <path d="M-7 44 L0 70 L7 44 Z" fill="#fb7185" opacity=".9"/>
+  </g>
+  <path d="M430 90 L470 60 M470 60 L458 62 M470 60 L468 72" stroke="#22d3ee" stroke-width="3" stroke-linecap="round" opacity=".7"/>
+</svg>
